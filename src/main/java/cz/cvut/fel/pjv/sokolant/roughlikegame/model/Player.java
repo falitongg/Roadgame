@@ -106,8 +106,11 @@ public class Player {
     //sprint function
     public void sprint(Direction direction) {
 
-    }//take damage function
+    }//deals damage to the player, reduces his health
     public void takeDamage(float amount) {
+
+    }//permadeath function
+    public void die(){
 
     }
 }
