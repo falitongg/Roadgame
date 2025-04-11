@@ -1,5 +1,7 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
+
 public class Player {
     private float health;// Player's total health, dies at 0
     private float stamina;// Energy for running and
@@ -97,4 +99,8 @@ public class Player {
         this.x = 0;
         this.y = 0;
     }
+    public void move(Direction direction) {
+
+    }
+
 }
