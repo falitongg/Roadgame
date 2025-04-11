@@ -99,7 +99,12 @@ public class Player {
         this.x = 0;
         this.y = 0;
     }
+    //move function
     public void move(Direction direction) {
+
+    }
+    //sprint function
+    public void sprint(Direction direction) {
 
     }
 
