@@ -31,7 +31,7 @@ public class Game {
         if (!player.isAlive()) {
             endGame();
         }
-        //TODO логика тиков
+        //TODO логика тиков, проверка столкновений и урона от врагов
     }
     public void endGame() {
         gameOver = true;
