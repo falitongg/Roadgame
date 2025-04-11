@@ -3,7 +3,7 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 import java.util.ArrayList;
 
 public class Inventory {
-    private ArrayList<Item> items;
+    private final ArrayList<Item> items;
 
     public Inventory() {
         items = new ArrayList<>();
