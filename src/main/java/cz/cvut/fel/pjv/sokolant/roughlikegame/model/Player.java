@@ -101,21 +101,27 @@ public class Player {
     }
     //move function
     public void move(Direction direction) {
-
+        //TODO реализовать перемещение игрока
     }
     //sprint function
     public void sprint(Direction direction) {
-
+        //TODO реализовать бег игрока
     }
     //deals damage to the player, reduces his health
     public void takeDamage(float amount) {
-
+        //TODO реализовать получение урона игроком
     }
     //permadeath function
     public void die() {
+        //TODO реализовать смерть игрока как конец игры
     }
     //use item function
     public void useItem(Item item) {
-
+        //TODO реализовать функцию использования предмета
     }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
 }
