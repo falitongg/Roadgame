@@ -102,6 +102,18 @@ public class Player {
         this.y = 0;
         this.inventory = new Inventory();
     }
+    public Player(){
+        this.inventory = new Inventory();
+        this.health = 100;
+        this.armor = 10;
+        this.stamina = 100;
+        this.thirst = 0;
+        this.hunger = 0;
+        this.radiation = 0;
+        this.speed = 1.0f;
+        this.x = 0;
+        this.y = 0;
+    }
 
     //move function
     public void move(Direction direction) {
