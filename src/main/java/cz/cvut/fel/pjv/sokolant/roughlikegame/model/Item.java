@@ -5,7 +5,7 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 public class Item {
     private String itemName;
     private String itemDescription;
-    private ItemType itemType;
+    private ItemType itemType;  //Category from ItemType
     private float effectValue;
 
     public Item(String itemName, String itemDescription, ItemType itemType, float effectValue) {
