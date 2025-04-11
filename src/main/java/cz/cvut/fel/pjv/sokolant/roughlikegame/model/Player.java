@@ -106,6 +106,8 @@ public class Player {
     //sprint function
     public void sprint(Direction direction) {
 
-    }
+    }//take damage function
+    public void takeDamage(float amount) {
 
+    }
 }
