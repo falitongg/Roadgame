@@ -12,6 +12,8 @@ public class Player {
     private float speed;//Affects movement speed, may vary depending on the player's state (e.g. 0 stamina - temporary inability to move).
     private float x;
     private float y;
+    private Inventory inventory;
+
 
     // === SETTERS ===
     public void setHealth(float health) {
@@ -98,7 +100,9 @@ public class Player {
         this.speed = speed;
         this.x = 0;
         this.y = 0;
+        this.inventory = new Inventory();
     }
+
     //move function
     public void move(Direction direction) {
         //TODO реализовать перемещение игрока
@@ -115,6 +119,13 @@ public class Player {
     public void die() {
         //TODO реализовать смерть игрока как конец игры
     }
+    public void useItemFromInventory(int index) {
+        Item item = inventory.getItem(index);
+        if (item != null) {
+            useItem(item); // этот метод у тебя уже есть
+        }
+    }
+
     //use item function
     public void useItem(Item item) {
         //TODO реализовать функцию использования предмета
