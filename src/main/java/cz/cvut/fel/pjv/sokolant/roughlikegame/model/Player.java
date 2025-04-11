@@ -5,10 +5,10 @@ public class Player {
     private int stamina;    // Energy for running and fighting
     private int thirst;     // Increases over time, affects health
     private int hunger;     // Like starvation, but grows faster, also harmful
-    private int armor;      // Gets from surroundings/enemies, deals damage
-    private int radiation;  // Defense - reduces the damage received
+    private int armor;      // Defense — reduces the damage received
+    private int radiation;  // Radiation level — causes damage over time
     private int speed;      //Affects movement speed, may vary depending on the player's state (e.g. 0 stamina - temporary inability to move).
-
+//SETTERS
     public void setHealth(int health) {
         this.health = health;
     }
@@ -36,7 +36,7 @@ public class Player {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-
+//GETTERS
     public int getHealth() {
         return health;
     }
@@ -63,5 +63,15 @@ public class Player {
 
     public int getSpeed() {
         return speed;
+    }
+//CONSTRUCTOR
+    public Player(int health, int stamina, int thirst, int armor, int hunger, int radiation, int speed) {
+        this.health = health;
+        this.stamina = stamina;
+        this.thirst = thirst;
+        this.armor = armor;
+        this.hunger = hunger;
+        this.radiation = radiation;
+        this.speed = speed;
     }
 }
