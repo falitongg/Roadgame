@@ -6,4 +6,5 @@ public enum EnemyType {
     BANDIT,
     MUTANT,
     BOSS,
+    ANIMAL
 }
