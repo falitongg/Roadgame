@@ -125,7 +125,7 @@ public class Player {
     public void useItemFromInventory(int index) {
         Item item = inventory.getItem(index);
         if (item != null) {
-            useItem(item); // этот метод у тебя уже есть
+            useItem(item);
         }
     }
 
