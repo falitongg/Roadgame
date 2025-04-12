@@ -2,109 +2,29 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 
-public class Player {
-    private float health;// Player's total health, dies at 0
+public class Player extends Entity {
     private float stamina;// Energy for running and
     private float thirst;// Increases over time, affects
     private float hunger;// Like starvation, but grows faster, also harmful
     private float armor;// Defense — reduces the damage received
     private float radiation; // Radiation level — causes damage over time
     private float speed;//Affects movement speed, may vary depending on the player's state (e.g. 0 stamina - temporary inability to move).
-    private float x;
-    private float y;
-    private Inventory inventory;
+    private final Inventory inventory;
 
-
-    // === SETTERS ===
-    public void setHealth(float health) {
-        this.health = health;
-    }
-
-    public void setStamina(float stamina) {
+    public Player(float x, float y, float health, float damage, Inventory inventory, float speed, float radiation, float armor, float hunger, float thirst, float stamina) {
+        super(x, y, health, damage);
+        this.inventory = inventory;
+        this.speed = speed;
+        this.radiation = radiation;
+        this.armor = armor;
+        this.hunger = hunger;
+        this.thirst = thirst;
         this.stamina = stamina;
     }
-
-    public void setThirst(float thirst) {
-        this.thirst = thirst;
+    public Player() {
+        this(0, 0, 100, 10, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
     }
 
-    public void setHunger(float hunger) {
-        this.hunger = hunger;
-    }
-
-    public void setArmor(float armor) {
-        this.armor = armor;
-    }
-
-    public void setRadiation(float radiation) {
-        this.radiation = radiation;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    // === GETTERS ===
-    public float getHealth() {
-        return health;
-    }
-
-    public float getStamina() {
-        return stamina;
-    }
-
-    public float getThirst() {
-        return thirst;
-    }
-
-    public float getHunger() {
-        return hunger;
-    }
-
-    public float getRadiation() {
-        return radiation;
-    }
-
-    public float getArmor() {
-        return armor;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    // === CONSTRUCTOR ===
-    public Player(float health, float armor, float stamina, float thirst, float hunger, float radiation, float speed) {
-        this.health = health;
-        this.armor = armor;
-        this.stamina = stamina;
-        this.thirst = thirst;
-        this.hunger = hunger;
-        this.radiation = radiation;
-        this.speed = speed;
-        this.x = 0;
-        this.y = 0;
-        this.inventory = new Inventory();
-    }
-    public Player(){
-        this(100, 10, 100, 0, 0, 0, 1.0f);
-    }
 
     //move function
     public void move(Direction direction) {
@@ -113,10 +33,6 @@ public class Player {
     //sprint function
     public void sprint(Direction direction) {
         //TODO реализовать бег игрока
-    }
-    //deals damage to the player, reduces his health
-    public void takeDamage(float amount) {
-        //TODO реализовать получение урона игроком
     }
     //permadeath function
     public void die() {
@@ -134,8 +50,5 @@ public class Player {
         //TODO реализовать функцию использования предмета
     }
 
-    public boolean isAlive() {
-        return health > 0;
-    }
 
 }

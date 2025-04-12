@@ -11,7 +11,7 @@ public abstract class Entity {
         this.y = y;
         this.health = health;
         this.damage = damage;
-    }
+    }//decreases  the entity's health
     public void takeDamage(float amount) {
         health -= amount;
         if (health < 0) health = 0;
