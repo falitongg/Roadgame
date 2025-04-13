@@ -27,9 +27,10 @@ public class Game {
         //TODO логика инициализации мира, врагов и т. п
     }
     public void update() {
+        if (currentState != GameState.PLAYING) return;
         if (!player.isAlive()) {
             endGame();
-        }if (currentState != GameState.PLAYING) return;
+        }
         //TODO логика тиков, проверка столкновений и урона от врагов
     }
     public GameState getState() {
