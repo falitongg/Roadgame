@@ -52,14 +52,17 @@ public class Player extends Entity implements Renderable {
     //move function
     public void move(Direction direction) {
         //TODO реализовать перемещение игрока
+
+        final double STEP = 30;
+
         this.currentDirection = direction;
         this.currentState = VisualState.MOVING;
 
         switch (direction) {
-            case UP -> super.move(0, -speed);
-            case DOWN -> super.move(0, speed);
-            case LEFT -> super.move(-speed, 0);
-            case RIGHT -> super.move(speed, 0);
+            case UP -> y -= STEP;
+            case DOWN -> y += STEP;
+            case LEFT -> x -= STEP;
+            case RIGHT -> x += STEP;
         }
     }
     //sprint function

@@ -1,8 +1,11 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
+import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import javafx.application.Application;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -18,6 +21,8 @@ public class GameView extends Application {
     private GraphicsContext gc;
     private Game game;
     private Image background;
+    private Scene scene;
+
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
@@ -37,16 +42,9 @@ public class GameView extends Application {
 
 
     private void initUI(Stage primaryStage) {
-        Canvas canvas = new Canvas(WIDTH, HEIGHT);
-        gc = canvas.getGraphicsContext2D();
-
-        Pane root = new Pane();
-        root.getChildren().add(canvas);
-
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
-
-        primaryStage.setTitle("Roughlike");
-        primaryStage.setScene(scene);
+        setupCnvasAndGraphics();
+        setupScene(primaryStage);
+        setupInputHandling();
         primaryStage.show();
     }
 
@@ -74,6 +72,27 @@ public class GameView extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+    public void setupCnvasAndGraphics(){
+        canvas = new Canvas(WIDTH, HEIGHT);
+        gc = canvas.getGraphicsContext2D();
+
+    }
+    public void setupScene(Stage primaryStage) {
+        Pane root = new Pane();
+        root.getChildren().add(canvas);
+
+        scene = new Scene(root, WIDTH, HEIGHT);
+
+        primaryStage.setTitle("Roughlike");
+        primaryStage.setScene(scene);
+    }
+    public void setupInputHandling(){
+        InputHandler inputHandler = new InputHandler(game);
+
+        scene.setOnKeyPressed(event -> {
+            inputHandler.handleInput(event);
+        });
     }
 
 }
