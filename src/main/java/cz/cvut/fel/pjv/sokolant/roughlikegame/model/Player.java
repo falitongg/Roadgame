@@ -32,20 +32,20 @@ public class Player extends Entity implements Renderable {
         this.stamina = stamina;
     }
     public Player() {
-        this(0, 0, 100, 10, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
+        this(100, 500, 100, 10, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
     }
 
     @Override
     public void render(GraphicsContext gc) {
         Image playerImage = getImageForCurrentState();
-        gc.drawImage(playerImage, getX(), getY(), 200, 200);
+        gc.drawImage(playerImage, getX(), getY(), 160, 200);
     }
 
     private Image getImageForCurrentState() {
         String direction = currentDirection.name().toLowerCase();
         String state = currentState.name().toLowerCase();
 
-        String path = String.format("/images/player/%s_%s.png", direction, state);
+        String path = String.format("/images/player/player1.png", direction, state); //temp
         return new Image(getClass().getResourceAsStream(path));
     }
 
