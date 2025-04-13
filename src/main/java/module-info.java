@@ -9,5 +9,8 @@ module cz.cvut.fel.pjv.sokolant.roughlikegame {
     exports cz.cvut.fel.pjv.sokolant.roughlikegame.controller;
 
     opens cz.cvut.fel.pjv.sokolant.roughlikegame.controller to javafx.fxml;
+    opens images.bgs to javafx.graphics;
+
+
 
 }
