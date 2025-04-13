@@ -4,6 +4,8 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.Renderable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
+
 
 public class Player extends Entity implements Renderable {
 
@@ -14,6 +16,9 @@ public class Player extends Entity implements Renderable {
     private float radiation; // Radiation level — causes damage over time
     private float speed;//Affects movement speed, may vary depending on the player's state (e.g. 0 stamina - temporary inability to move).
     private final Inventory inventory;
+    private Direction currentDirection = Direction.DOWN;
+    private VisualState currentState = VisualState.IDLE;
+
 
 
     public Player(float x, float y, float health, float damage, Inventory inventory, float speed, float radiation, float armor, float hunger, float thirst, float stamina) {
@@ -32,13 +37,30 @@ public class Player extends Entity implements Renderable {
 
     @Override
     public void render(GraphicsContext gc) {
-        Image playerImage = new Image(getClass().getResourceAsStream("/images/player/player1.png"));
+        Image playerImage = getImageForCurrentState();
         gc.drawImage(playerImage, getX(), getY(), 200, 200);
+    }
+
+    private Image getImageForCurrentState() {
+        String direction = currentDirection.name().toLowerCase();
+        String state = currentState.name().toLowerCase();
+
+        String path = String.format("/images/player/%s_%s.png", direction, state);
+        return new Image(getClass().getResourceAsStream(path));
     }
 
     //move function
     public void move(Direction direction) {
         //TODO реализовать перемещение игрока
+        this.currentDirection = direction;
+        this.currentState = VisualState.MOVING;
+
+        switch (direction) {
+            case UP -> super.move(0, -speed);
+            case DOWN -> super.move(0, speed);
+            case LEFT -> super.move(-speed, 0);
+            case RIGHT -> super.move(speed, 0);
+        }
     }
     //sprint function
     public void sprint(Direction direction) {
