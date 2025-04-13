@@ -1,8 +1,12 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.view.Renderable;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
-public class Player extends Entity {
+public class Player extends Entity implements Renderable {
+
     private float stamina;// Energy for running and
     private float thirst;// Increases over time, affects
     private float hunger;// Like starvation, but grows faster, also harmful
@@ -10,6 +14,7 @@ public class Player extends Entity {
     private float radiation; // Radiation level — causes damage over time
     private float speed;//Affects movement speed, may vary depending on the player's state (e.g. 0 stamina - temporary inability to move).
     private final Inventory inventory;
+
 
     public Player(float x, float y, float health, float damage, Inventory inventory, float speed, float radiation, float armor, float hunger, float thirst, float stamina) {
         super(x, y, health, damage);
@@ -25,6 +30,11 @@ public class Player extends Entity {
         this(0, 0, 100, 10, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
     }
 
+    @Override
+    public void render(GraphicsContext gc) {
+        Image playerImage = new Image(getClass().getResourceAsStream("/images/player/player1.png"));
+        gc.drawImage(playerImage, getX(), getY(), 200, 200);
+    }
 
     //move function
     public void move(Direction direction) {
