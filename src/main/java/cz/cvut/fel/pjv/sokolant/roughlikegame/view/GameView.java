@@ -2,15 +2,12 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import javafx.application.Application;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.animation.AnimationTimer;
 
@@ -94,6 +91,11 @@ public class GameView extends Application {
             inputHandler.handleInput(event);
         });
     }
-
+    public int getWIDTH(){
+        return WIDTH;
+    }
+    public int getHEIGHT(){
+        return HEIGHT;
+    }
 }
 

@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.Renderable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -8,6 +9,12 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
 
 
 public class Player extends Entity implements Renderable {
+    GameView view = new GameView();
+
+    private float worldMinX = -60;
+    private float worldMinY = 480;
+    private float worldMaxX = view.getWIDTH()-100;
+    private float worldMaxY = view.getHEIGHT()-160;
 
     private float stamina;// Energy for running and
     private float thirst;// Increases over time, affects
@@ -64,6 +71,25 @@ public class Player extends Entity implements Renderable {
             case LEFT -> x -= STEP;
             case RIGHT -> x += STEP;
         }
+        float newX = getX();
+        float newY = getY();
+
+        if (newX < worldMinX) {
+            newX = worldMinX;
+        }
+        if (newY < worldMinY) {
+            newY = worldMinY;
+        }
+        if (newX > worldMaxX) {
+            newX = worldMaxX;
+        }
+        if (newY > worldMaxY) {
+            newY = worldMaxY;
+        }
+
+        setX(newX);
+        setY(newY);
+
     }
     //sprint function
     public void sprint(Direction direction) {
