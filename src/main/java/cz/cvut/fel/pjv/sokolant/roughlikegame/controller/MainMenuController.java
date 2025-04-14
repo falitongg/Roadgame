@@ -10,6 +10,8 @@ public class MainMenuController {
     @FXML
     private Button newGameButton;
     @FXML
+    private Button quitButton;
+    @FXML
     private void newGame() {
         GameView gameView = new GameView();
         try{
@@ -18,5 +20,10 @@ public class MainMenuController {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+    @FXML
+    private void quitGame() {
+        Stage stage = (Stage) quitButton.getScene().getWindow();
+        stage.close();
     }
 }

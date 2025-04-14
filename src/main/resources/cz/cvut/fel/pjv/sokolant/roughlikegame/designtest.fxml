@@ -50,7 +50,7 @@
             <Button fx:id="newGameButton" onAction="#newGame" layoutX="349.0" layoutY="257.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" text=" New Game" />
             <Button fx:id="loadGameButton" layoutX="349.0" layoutY="349.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" text="Load Game" />
             <Button fx:id="settingsButton" layoutX="349.0" layoutY="430.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" text="Settings" />
-            <Button fx:id="quitButton" layoutX="355.0" layoutY="514.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" text="Quit" />
+            <Button fx:id="quitButton" onAction="#quitGame" layoutX="355.0" layoutY="514.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" text="Quit" />
       </children>
     </AnchorPane>
   </children>
