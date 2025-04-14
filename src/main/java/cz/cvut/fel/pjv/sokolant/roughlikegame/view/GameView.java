@@ -67,9 +67,9 @@ public class GameView extends Application {
         game.getPlayer().render(gc);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
     public void setupCnvasAndGraphics(){
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
