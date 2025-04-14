@@ -2,7 +2,6 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
-import javafx.application.Application;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -13,7 +12,7 @@ import javafx.animation.AnimationTimer;
 
 
 
-public class GameView extends Application {
+public class GameView{
     private Canvas canvas;
     private GraphicsContext gc;
     private Game game;
@@ -24,11 +23,9 @@ public class GameView extends Application {
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
 
-
-    @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage stage) {
         initGame();
-        initUI(primaryStage);
+        initUI(stage);
         startGameLoop();
     }
 
@@ -38,11 +35,11 @@ public class GameView extends Application {
     }
 
 
-    private void initUI(Stage primaryStage) {
-        setupCnvasAndGraphics();
-        setupScene(primaryStage);
+    private void initUI(Stage stage) {
+        setupCanvasAndGraphics();
+        setupScene(stage);
         setupInputHandling();
-        primaryStage.show();
+        stage.show();
     }
 
     private void startGameLoop() {
@@ -70,19 +67,19 @@ public class GameView extends Application {
 //    public static void main(String[] args) {
 //        launch(args);
 //    }
-    public void setupCnvasAndGraphics(){
+    public void setupCanvasAndGraphics(){
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
     }
-    public void setupScene(Stage primaryStage) {
+    public void setupScene(Stage stage) {
         Pane root = new Pane();
         root.getChildren().add(canvas);
 
         scene = new Scene(root, WIDTH, HEIGHT);
 
-        primaryStage.setTitle("Roughlike");
-        primaryStage.setScene(scene);
+        stage.setTitle("ROAD");
+        stage.setScene(scene);
     }
     public void setupInputHandling(){
         InputHandler inputHandler = new InputHandler(game);
