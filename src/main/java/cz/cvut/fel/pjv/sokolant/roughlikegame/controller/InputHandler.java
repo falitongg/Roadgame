@@ -14,8 +14,14 @@ public class InputHandler {
         switch (keyEvent.getCode()) {
             case W -> game.getPlayer().move(Direction.UP);
             case S -> game.getPlayer().move(Direction.DOWN);
-            case A -> game.getPlayer().move(Direction.LEFT);
-            case D -> game.getPlayer().move(Direction.RIGHT);
+            case A ->{
+                game.getPlayer().setMovingLeft(true);
+                game.getPlayer().move(Direction.LEFT);
+            }
+            case D ->{
+                game.getPlayer().setMovingRight(true);
+                game.getPlayer().move(Direction.RIGHT);
+            }
             case SPACE -> game.getPlayer().jump();
         }
     }

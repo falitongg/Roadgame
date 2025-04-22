@@ -32,6 +32,10 @@ public class Player extends Entity implements Renderable {
     private final double gravity = 2; //jak rychle se hrac bude pochybovat dolu
     private final double jumpStrength = -18; //pocatecny vystrel vzhuru
     private boolean onGround = true; //zda je na zemi
+    private boolean movingLeft = false;
+    private boolean movingRight = false;
+    private double velocityX = 0; //horizontalni rychlost
+
 
     // Úroveň země
     private float lastGroundY = 530;
@@ -91,6 +95,23 @@ public class Player extends Entity implements Renderable {
         clampToBounds();
 
     }
+
+    public void setMovingLeft(boolean movingLeft) {
+        this.movingLeft = movingLeft;
+    }
+
+    public void setMovingRight(boolean movingRight) {
+        this.movingRight = movingRight;
+    }
+
+    public boolean isMovingLeft() {
+        return movingLeft;
+    }
+
+    public boolean isMovingRight() {
+        return movingRight;
+    }
+
     public void clampToBounds() {
         float newX = getX();
         float newY = getY();
@@ -112,7 +133,14 @@ public class Player extends Entity implements Renderable {
     public void jump() {
         if (onGround) {
             lastGroundY = y;
-            velocityY += jumpStrength;
+            velocityY = jumpStrength;
+            if(movingLeft){
+                velocityX = -speed*5;
+            }
+            else if(movingRight){
+                velocityX = speed*5;
+            }else velocityX = 0;
+
             onGround = false;
         }
 
@@ -129,10 +157,12 @@ public class Player extends Entity implements Renderable {
         if (!onGround) {
             velocityY += gravity;
             y += velocityY;
+            x += velocityX;
 
             if (y >= lastGroundY) {
                 y = lastGroundY;
                 velocityY = 0;
+                velocityX = 0;
                 onGround = true;
             }
         }

@@ -89,6 +89,12 @@ public class GameView{
         scene.setOnKeyPressed(event -> {
             inputHandler.handleInput(event);
         });
+        scene.setOnKeyReleased(event -> {
+            switch (event.getCode()){
+                case A -> game.getPlayer().setMovingLeft(false);
+                case D -> game.getPlayer().setMovingRight(false);
+            }
+        });
     }
     public int getWIDTH(){
         return WIDTH;
