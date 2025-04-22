@@ -2,7 +2,7 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 import java.util.ArrayList;
 import java.util.List;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
-
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
 
 public class Game {
     private Player player;
@@ -24,10 +24,13 @@ public class Game {
     }
 
     public void startGame(){
+        currentState = GameState.PLAYING;
         //TODO логика инициализации мира, врагов и т. п
     }
     public void update() {
         if (currentState != GameState.PLAYING) return;
+        player.update();
+
         if (!player.isAlive()) {
             endGame();
         }

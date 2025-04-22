@@ -26,6 +26,15 @@ public class Player extends Entity implements Renderable {
     private Direction currentDirection = Direction.DOWN;
     private VisualState currentState = VisualState.IDLE;
 
+    // Fyzika skákání
+    private double velocityY = 0; //vertikalni rychlost
+    private final double gravity = 5; //jak rychle se hrac bude pochybovat dolu
+    private final double jumpStrength = -30; //pocatecny vystrel vzhuru
+    private boolean onGround = true; //zda je na zemi
+
+    // Úroveň země
+    private final float groundY = 530;
+
 
 
     public Player(float x, float y, float health, float damage, Inventory inventory, float speed, float radiation, float armor, float hunger, float thirst, float stamina) {
@@ -66,29 +75,42 @@ public class Player extends Entity implements Renderable {
         this.currentState = VisualState.MOVING;
 
         switch (direction) {
-            case UP -> y -= STEP;
+            case UP ->{
+                if(y - STEP >= 0){
+                    y -= STEP;
+                }
+            }
             case DOWN -> y += STEP;
             case LEFT -> x -= STEP;
             case RIGHT -> x += STEP;
+            case SPACE -> jump();
         }
+        clampToBounds();
+
+    }
+    public void clampToBounds() {
         float newX = getX();
         float newY = getY();
 
-        if (newX < worldMinX) {
-            newX = worldMinX;
-        }
-        if (newY < worldMinY) {
-            newY = worldMinY;
-        }
-        if (newX > worldMaxX) {
-            newX = worldMaxX;
-        }
-        if (newY > worldMaxY) {
-            newY = worldMaxY;
-        }
+        if (newX < worldMinX) newX = worldMinX;
+        if (newX > worldMaxX) newX = worldMaxX;
+
+//        // Omezit pohyb nahoru jen když není ve skoku
+//        if (onGround && newY < worldMinY) {
+//            newY = worldMinY;
+//        }
+
+        if (newY > worldMaxY) newY = worldMaxY;
 
         setX(newX);
         setY(newY);
+    }
+
+    public void jump() {
+        if (onGround) {
+            velocityY += jumpStrength;
+            onGround = false;
+        }
 
     }
     //sprint function
@@ -99,6 +121,21 @@ public class Player extends Entity implements Renderable {
     public void die() {
         //TODO реализовать смерть игрока как конец игры
     }
+    public void update() {
+        if (!onGround) {
+            velocityY += gravity;
+            y += velocityY;
+
+            if (y >= groundY) {
+                y = groundY;
+                velocityY = 0;
+                onGround = true;
+            }
+        }
+
+        clampToBounds();
+    }
+
     public void useItemFromInventory(int index) {
         Item item = inventory.getItem(index);
         if (item != null) {

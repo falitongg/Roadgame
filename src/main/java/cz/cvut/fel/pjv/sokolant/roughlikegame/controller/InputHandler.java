@@ -16,6 +16,7 @@ public class InputHandler {
             case S -> game.getPlayer().move(Direction.DOWN);
             case A -> game.getPlayer().move(Direction.LEFT);
             case D -> game.getPlayer().move(Direction.RIGHT);
+            case SPACE -> game.getPlayer().jump();
         }
     }
 

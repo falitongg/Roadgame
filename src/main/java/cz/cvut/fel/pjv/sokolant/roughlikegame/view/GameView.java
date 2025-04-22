@@ -31,6 +31,7 @@ public class GameView{
 
     private void initGame() {
         game = new Game();
+        game.startGame();
         background = new Image(getClass().getResourceAsStream("/images/bgs/background_alpha.png"));
     }
 
@@ -46,6 +47,7 @@ public class GameView{
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                game.update();
                 render();
             }
         };
