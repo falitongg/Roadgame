@@ -19,9 +19,12 @@ public class GameView{
     private Image background;
     private Scene scene;
 
-
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
+
+    private double cameraX = 0;
+    private double screenCenter = WIDTH / 2.0;
+    private float playerX;
 
     public void start(Stage stage) {
         initGame();
@@ -48,6 +51,7 @@ public class GameView{
             @Override
             public void handle(long now) {
                 game.update();
+                updateCamera();
                 render();
             }
         };
@@ -59,11 +63,21 @@ public class GameView{
         renderBackground();
         renderEntities();
     }
+    //posun kamery s hracem
+    private void updateCamera() {
+        playerX = game.getPlayer().getX();
+        if(playerX > screenCenter) {
+            cameraX = playerX - screenCenter;
+        }
+        //DEBUG
+        System.out.println("cameraX: " + cameraX + " | playerX: " + playerX);
+
+    }
     private void renderBackground() {
-        gc.drawImage(background, 0, 0, WIDTH, HEIGHT);
+        gc.drawImage(background, -cameraX, 0, WIDTH + cameraX, HEIGHT);
     }
     private void renderEntities() {
-        game.getPlayer().render(gc);
+        game.getPlayer().render(gc, cameraX);
     }
 
 //    public static void main(String[] args) {

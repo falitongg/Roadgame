@@ -14,7 +14,6 @@ public class Player extends Entity implements Renderable {
 
     private float worldMinX = -60;
     private float worldMinY = 480;
-    private float worldMaxX = view.getWIDTH()-100;
     private float worldMaxY = view.getHEIGHT()-160;
 
     private float stamina;// Energy for running and
@@ -61,6 +60,10 @@ public class Player extends Entity implements Renderable {
     public void render(GraphicsContext gc) {
         gc.drawImage(playerImage, getX(), getY(), 160, 200);
     }
+    public void render(GraphicsContext gc, double cameraX) {
+        gc.drawImage(playerImage, getX() - cameraX, getY(), 160, 200);
+    }
+
     public void initImages(){
 
     }
@@ -117,7 +120,6 @@ public class Player extends Entity implements Renderable {
         float newY = getY();
 
         if (newX < worldMinX) newX = worldMinX;
-        if (newX > worldMaxX) newX = worldMaxX;
 
 //        // Omezit pohyb nahoru jen když není ve skoku
 //        if (onGround && newY < worldMinY) {
