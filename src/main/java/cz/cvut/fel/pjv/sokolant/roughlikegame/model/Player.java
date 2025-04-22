@@ -9,6 +9,7 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
 
 
 public class Player extends Entity implements Renderable {
+    private Image playerImage;
     GameView view = new GameView();
 
     private float worldMinX = -60;
@@ -28,12 +29,12 @@ public class Player extends Entity implements Renderable {
 
     // Fyzika skákání
     private double velocityY = 0; //vertikalni rychlost
-    private final double gravity = 5; //jak rychle se hrac bude pochybovat dolu
-    private final double jumpStrength = -30; //pocatecny vystrel vzhuru
+    private final double gravity = 2; //jak rychle se hrac bude pochybovat dolu
+    private final double jumpStrength = -18; //pocatecny vystrel vzhuru
     private boolean onGround = true; //zda je na zemi
 
     // Úroveň země
-    private final float groundY = 530;
+    private float lastGroundY = 530;
 
 
 
@@ -49,14 +50,16 @@ public class Player extends Entity implements Renderable {
     }
     public Player() {
         this(100, 500, 100, 10, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
+        this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player1.png"));
     }
 
     @Override
     public void render(GraphicsContext gc) {
-        Image playerImage = getImageForCurrentState();
         gc.drawImage(playerImage, getX(), getY(), 160, 200);
     }
+    public void initImages(){
 
+    }
     private Image getImageForCurrentState() {
         String direction = currentDirection.name().toLowerCase();
         String state = currentState.name().toLowerCase();
@@ -75,8 +78,8 @@ public class Player extends Entity implements Renderable {
         this.currentState = VisualState.MOVING;
 
         switch (direction) {
-            case UP ->{
-                if(y - STEP >= 0){
+            case UP -> {
+                if (onGround && y - STEP >= 450) {
                     y -= STEP;
                 }
             }
@@ -108,6 +111,7 @@ public class Player extends Entity implements Renderable {
 
     public void jump() {
         if (onGround) {
+            lastGroundY = y;
             velocityY += jumpStrength;
             onGround = false;
         }
@@ -126,8 +130,8 @@ public class Player extends Entity implements Renderable {
             velocityY += gravity;
             y += velocityY;
 
-            if (y >= groundY) {
-                y = groundY;
+            if (y >= lastGroundY) {
+                y = lastGroundY;
                 velocityY = 0;
                 onGround = true;
             }
