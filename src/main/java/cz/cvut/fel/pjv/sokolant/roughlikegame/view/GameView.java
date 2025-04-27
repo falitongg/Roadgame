@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
@@ -10,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.animation.AnimationTimer;
 
+import java.util.List;
 
 
 public class GameView{
@@ -19,10 +21,14 @@ public class GameView{
     private Image background;
     private Scene scene;
 
+    private Camera camera;
+    List<BackgroundLayer> backgroundLayers;
+
+
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
 
-    private double cameraX = 0;
+
     private double screenCenter = WIDTH / 2.0;
     private float playerX;
 
@@ -35,8 +41,11 @@ public class GameView{
     private void initGame() {
         game = new Game();
         game.startGame();
-        background = new Image(getClass().getResourceAsStream("/images/bgs/background_alpha.png"));
+        camera = new Camera(screenCenter);
+//        background = new Image(getClass().getResourceAsStream("/images/bgs/background_alpha.png"));
+        backgroundLayers = List.of(new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/background_alpha.png")), 1));
     }
+
 
 
     private void initUI(Stage stage) {
@@ -66,18 +75,16 @@ public class GameView{
     //posun kamery s hracem
     private void updateCamera() {
         playerX = game.getPlayer().getX();
-        if(playerX > screenCenter) {
-            cameraX = playerX - screenCenter;
-        }
-        //DEBUG
-        System.out.println("cameraX: " + cameraX + " | playerX: " + playerX);
-
+        camera.update(playerX);
     }
     private void renderBackground() {
-        gc.drawImage(background, -cameraX, 0, WIDTH + cameraX, HEIGHT);
+        for (BackgroundLayer layer : backgroundLayers) {
+            layer.render(gc, camera, WIDTH, HEIGHT);
+        }
     }
+
     private void renderEntities() {
-        game.getPlayer().render(gc, cameraX);
+        game.getPlayer().render(gc, camera.getX());
     }
 
 //    public static void main(String[] args) {
