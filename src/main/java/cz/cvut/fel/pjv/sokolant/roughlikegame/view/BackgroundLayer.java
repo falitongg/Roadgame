@@ -17,15 +17,14 @@ public class BackgroundLayer {
         double x = -camera.getX() * parallaxFactor;
         double imageWidth = image.getWidth();
 
-        // Сдвигаем, чтобы фон начинался слева корректно
         x = x % imageWidth;
         if (x > 0) {
             x -= imageWidth;
         }
 
-        // Рисуем фон, пока не закроем весь экран по ширине
         while (x < viewportWidth) {
             gc.drawImage(image, x, 0, imageWidth, viewportHeight);
+            gc.fillText(String.format("x: %.2f", x), x + 10, 20);
             x += imageWidth;
         }
     }

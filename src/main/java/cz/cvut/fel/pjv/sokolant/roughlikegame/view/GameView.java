@@ -74,6 +74,7 @@ public class GameView{
     }
     //posun kamery s hracem
     private void updateCamera() {
+        System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX);
         playerX = game.getPlayer().getX();
         camera.update(playerX);
     }
