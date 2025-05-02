@@ -30,7 +30,8 @@ public class GameView{
 
 
     private double screenCenter = WIDTH / 2.0;
-    private float playerX;
+    private double playerX;
+
 
     public void start(Stage stage) {
         initGame();
@@ -81,7 +82,7 @@ public class GameView{
     //posun kamery s hracem
     private void updateCamera() {
         System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX);
-        float newPlayerX = game.getPlayer().getX();
+        double newPlayerX = game.getPlayer().getX();
         if (newPlayerX > playerX) {
             camera.update(newPlayerX);
         }

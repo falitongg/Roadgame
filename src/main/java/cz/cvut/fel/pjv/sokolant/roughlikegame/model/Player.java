@@ -38,7 +38,7 @@ public class Player extends Entity implements Renderable {
 
 
     // Úroveň země
-    private float lastGroundY = 530;
+    private double lastGroundY = 530;
 
     public void setCamera(Camera camera) {
         this.camera = camera;
@@ -83,14 +83,14 @@ public class Player extends Entity implements Renderable {
     public void move(Direction direction) {
         //TODO реализовать перемещение игрока
 
-        final double STEP = 30;
+        final double STEP = 13;
 
         this.currentDirection = direction;
         this.currentState = VisualState.MOVING;
 
         switch (direction) {
             case UP -> {
-                if (onGround && y - STEP >= 450) {
+                if (onGround && y - STEP >= 470) {
                     y -= STEP;
                 }
             }
@@ -120,8 +120,8 @@ public class Player extends Entity implements Renderable {
     }
 
     public void clampToBounds() {
-        float newX = getX();
-        float newY = getY();
+        double newX = getX();
+        double newY = getY();
         if (camera != null && newX < camera.getX()) {
             newX = (float) camera.getX();
         }

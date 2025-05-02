@@ -1,8 +1,8 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 public abstract class Entity {
-    protected float x;
-    protected float y;
+    protected double x;
+    protected double y;
     protected float health;
     protected float damage;
 
@@ -21,11 +21,11 @@ public abstract class Entity {
         return health > 0;
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
@@ -37,11 +37,11 @@ public abstract class Entity {
         return damage;
     }
 
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
     }
 
