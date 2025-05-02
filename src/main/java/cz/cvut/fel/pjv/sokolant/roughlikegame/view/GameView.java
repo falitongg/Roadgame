@@ -42,6 +42,7 @@ public class GameView{
         game = new Game();
         game.startGame();
         camera = new Camera(screenCenter);
+        game.getPlayer().setCamera(camera);
 //        background = new Image(getClass().getResourceAsStream("/images/bgs/background_alpha.png"));
         backgroundLayers = List.of(
                 new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/far_bg_erased.png")), 0.1),
@@ -80,8 +81,11 @@ public class GameView{
     //posun kamery s hracem
     private void updateCamera() {
         System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX);
-        playerX = game.getPlayer().getX();
-        camera.update(playerX);
+        float newPlayerX = game.getPlayer().getX();
+        if (newPlayerX > playerX) {
+            camera.update(newPlayerX);
+        }
+        playerX = newPlayerX;
     }
     private void renderBackground() {
         for (BackgroundLayer layer : backgroundLayers) {

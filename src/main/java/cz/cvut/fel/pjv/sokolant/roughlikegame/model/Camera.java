@@ -9,13 +9,25 @@ public class Camera {
         this.cameraX = 0;
     }
 
-    public void update(double playerX) {
-        if (playerX > screenCenter) {
-            this.cameraX = playerX - screenCenter;
-        } else {
-            this.cameraX = 0;
-        }
+//    public void update(double playerX) {
+//        if (playerX > screenCenter) {
+//            this.cameraX = playerX - screenCenter;
+//        } else {
+//            this.cameraX = 0;
+//        }
+//    }
+public void update(double playerX) {
+    double targetCameraX = playerX - screenCenter;
+
+    if (targetCameraX > cameraX) {
+        cameraX = targetCameraX;
     }
+
+    if (cameraX < 0) {
+        cameraX = 0;
+    }
+}
+
 
     public double getX() {
         return cameraX;

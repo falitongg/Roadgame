@@ -9,6 +9,7 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
 
 
 public class Player extends Entity implements Renderable {
+    private Camera camera;
     private Image playerImage;
     GameView view = new GameView();
 
@@ -39,6 +40,9 @@ public class Player extends Entity implements Renderable {
     // Úroveň země
     private float lastGroundY = 530;
 
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
 
 
     public Player(float x, float y, float health, float damage, Inventory inventory, float speed, float radiation, float armor, float hunger, float thirst, float stamina) {
@@ -118,6 +122,10 @@ public class Player extends Entity implements Renderable {
     public void clampToBounds() {
         float newX = getX();
         float newY = getY();
+        if (camera != null && newX < camera.getX()) {
+            newX = (float) camera.getX();
+        }
+
 
         if (newX < worldMinX) newX = worldMinX;
 
@@ -186,3 +194,4 @@ public class Player extends Entity implements Renderable {
 
 
 }
+
