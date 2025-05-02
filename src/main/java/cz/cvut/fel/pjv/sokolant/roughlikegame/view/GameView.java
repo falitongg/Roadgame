@@ -43,7 +43,12 @@ public class GameView{
         game.startGame();
         camera = new Camera(screenCenter);
 //        background = new Image(getClass().getResourceAsStream("/images/bgs/background_alpha.png"));
-        backgroundLayers = List.of(new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/background_alpha.png")), 1));
+        backgroundLayers = List.of(
+                new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/far_bg_erased.png")), 0.1),
+                new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/mid_bg.png")), 0.5),
+                new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/near_background_alpha.png")), 1)
+
+        );
     }
 
 
