@@ -1,6 +1,9 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
 
@@ -51,5 +54,26 @@ public class Game {
     public void spawnEnemy(Enemy enemy) {
         enemies.add(enemy);
     }
+    public void generateChunk(float startX, float endX) {
+        generateEnemies(startX, endX);
+        generateObstacles(startX, endX);
+        generateEvents(startX, endX);
+    }
+    public void generateEnemies(float startX, float endX) {
+        Random rand = new Random();
+        for (float x = startX; x <= endX; x += 200) {
+            if (rand.nextFloat() < 0.3f) {
+                EnemyType type = EnemyType.values()[rand.nextInt(EnemyType.values().length)];
+                Enemy enemy = new Enemy(x, 500, 100, 10, type);
+                spawnEnemy(enemy);
+            }
+
+        }
+    }
+    public void generateObstacles(float startX, float endX) {
 
     }
+    public void generateEvents(float startX, float endX) {
+
+    }
+}
