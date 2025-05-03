@@ -25,6 +25,8 @@ public class Enemy extends Entity {
         }
     }
     public void render(GraphicsContext gc, double cameraX) {
+        gc.setImageSmoothing(false);
+
         if (sprite != null) {
             gc.drawImage(sprite, (float) x - cameraX, (float) y, 80, 100);
         } else {

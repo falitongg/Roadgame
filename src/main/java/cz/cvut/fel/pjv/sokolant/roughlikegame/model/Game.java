@@ -64,7 +64,7 @@ public class Game {
         for (float x = startX; x <= endX; x += 200) {
             if (rand.nextFloat() < 0.3f) {
                 EnemyType type = EnemyType.values()[rand.nextInt(EnemyType.values().length)];
-                Enemy enemy = new Enemy(x, 500, 100, 10, type);
+                Enemy enemy = new Enemy(x, 600, 100, 10, type);
                 spawnEnemy(enemy);
             }
 
