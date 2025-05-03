@@ -2,6 +2,7 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Enemy;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
@@ -32,6 +33,8 @@ public class GameView{
     private double screenCenter = WIDTH / 2.0;
     private double playerX;
 
+    private float chunkWidth = 1280;
+    private float lastChunkX = 0;
 
     public void start(Stage stage) {
         initGame();
@@ -68,6 +71,13 @@ public class GameView{
             public void handle(long now) {
                 game.update();
                 updateCamera();
+                if (playerX + WIDTH > lastChunkX) {
+                    float newChunkStart = lastChunkX;
+                    float newChunkEnd = newChunkStart + chunkWidth;
+                    game.generateChunk(newChunkStart, newChunkEnd);
+                    lastChunkX = newChunkEnd;
+                }
+
                 render();
             }
         };
@@ -96,6 +106,10 @@ public class GameView{
 
     private void renderEntities() {
         game.getPlayer().render(gc, camera.getX());
+        for (Enemy enemy : game.getEnemies()) {
+            gc.fillRect((float)enemy.getX() - camera.getX(), (float)enemy.getY(), 40, 40);
+        }
+
     }
 
 //    public static void main(String[] args) {
