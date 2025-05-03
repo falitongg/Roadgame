@@ -90,7 +90,7 @@ public class Player extends Entity implements Renderable {
 
         switch (direction) {
             case UP -> {
-                if (onGround && y - STEP >= 470) {
+                if (onGround && y - STEP >= 467) {
                     y -= STEP;
                 }
             }

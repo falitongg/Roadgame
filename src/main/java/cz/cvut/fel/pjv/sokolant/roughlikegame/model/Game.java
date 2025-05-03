@@ -62,9 +62,12 @@ public class Game {
     public void generateEnemies(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 200) {
-            if (rand.nextFloat() < 0.3f) {
+            if (rand.nextFloat() < 0.9f) {
                 EnemyType type = EnemyType.values()[rand.nextInt(EnemyType.values().length)];
-                Enemy enemy = new Enemy(x, 600, 100, 10, type);
+                float minY = 590;
+                float maxY = 500;
+                float y = minY + rand.nextFloat() * (maxY - minY);
+                Enemy enemy = new Enemy(x, y, 100, 10, type);
                 spawnEnemy(enemy);
             }
 
