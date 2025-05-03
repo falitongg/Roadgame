@@ -107,9 +107,8 @@ public class GameView{
     private void renderEntities() {
         game.getPlayer().render(gc, camera.getX());
         for (Enemy enemy : game.getEnemies()) {
-            gc.fillRect((float)enemy.getX() - camera.getX(), (float)enemy.getY(), 40, 40);
+            enemy.render(gc, camera.getX());
         }
-
     }
 
 //    public static void main(String[] args) {

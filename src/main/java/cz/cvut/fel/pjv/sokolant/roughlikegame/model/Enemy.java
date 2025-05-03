@@ -1,13 +1,35 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 public class Enemy extends Entity {
     private EnemyType type;
+    private Image sprite;
 
     public Enemy(float x, float y, float health, float damage, EnemyType type) {
         super(x, y, health, damage);
         this.type = type;
+        loadSprite();
+    }
+
+    private void loadSprite() {
+        switch (type) {
+            case ZOMBIE -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
+            case DOG -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
+            case BANDIT -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
+            case MUTANT -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
+            case BOSS -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
+            case ANIMAL -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
+        }
+    }
+    public void render(GraphicsContext gc, double cameraX) {
+        if (sprite != null) {
+            gc.drawImage(sprite, (float) x - cameraX, (float) y, 80, 100);
+        } else {
+            gc.fillRect((float) x - cameraX, (float) y, 40, 40);
+        }
     }
 
     public EnemyType getType() {
