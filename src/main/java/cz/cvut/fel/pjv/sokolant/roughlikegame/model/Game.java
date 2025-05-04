@@ -73,6 +73,8 @@ public class Game {
         }
     }
     public void generateObstacles(float startX, float endX) {
+        float minY = 520;
+        float maxY = 620;
 
     }
     public void generateEvents(float startX, float endX) {
