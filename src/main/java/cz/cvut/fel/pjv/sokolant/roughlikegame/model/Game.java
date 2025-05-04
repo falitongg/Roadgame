@@ -70,7 +70,6 @@ public class Game {
                 Enemy enemy = new Enemy(x, y, 100, 10, type);
                 spawnEnemy(enemy);
             }
-
         }
     }
     public void generateObstacles(float startX, float endX) {
