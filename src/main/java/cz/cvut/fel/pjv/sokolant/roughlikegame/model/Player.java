@@ -190,6 +190,13 @@ public class Player extends Entity implements EntityDrawable {
     public void useItem(Item item) {
         //TODO реализовать функцию использования предмета
     }
+    public void takeDamage(float amount) {
+        this.health -= amount;
+        if (this.health <= 0) {
+            this.health = 0;
+            die();
+        }
+    }
 
 
 }

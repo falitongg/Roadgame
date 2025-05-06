@@ -122,7 +122,7 @@ private void renderEntities() {
     drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
     for (EntityDrawable d : drawables) {
-        System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
+//        System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
         d.render(gc, camera.getX());
     }
 }
