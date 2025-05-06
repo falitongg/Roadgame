@@ -3,6 +3,7 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Enemy;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.EntityDrawable;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
@@ -12,6 +13,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.animation.AnimationTimer;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -105,14 +108,27 @@ public class GameView{
         }
     }
 
-    private void renderEntities() {
-        game.getPlayer().render(gc, camera.getX());
-        for (Enemy enemy : game.getEnemies()) {
-            enemy.render(gc, camera.getX());
-        }
-    }
+//    private void renderEntities() {
+//        game.getPlayer().render(gc, camera.getX());
+//        for (Enemy enemy : game.getEnemies()) {
+//            enemy.render(gc, camera.getX());
+//        }
+//    }
+private void renderEntities() {
+    List<EntityDrawable> drawables = new ArrayList<>();
+    drawables.addAll(game.getEnemies());
+    drawables.add(game.getPlayer());
 
-//    public static void main(String[] args) {
+    drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
+
+    for (EntityDrawable d : drawables) {
+        System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
+        d.render(gc, camera.getX());
+    }
+}
+
+
+    //    public static void main(String[] args) {
 //        launch(args);
 //    }
     public void setupCanvasAndGraphics(){

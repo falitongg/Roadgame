@@ -2,13 +2,12 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.view.Renderable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
 
 
-public class Player extends Entity implements Renderable {
+public class Player extends Entity implements EntityDrawable {
     private Camera camera;
     private Image playerImage;
     GameView view = new GameView();
@@ -60,10 +59,6 @@ public class Player extends Entity implements Renderable {
         this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player1.png"));
     }
 
-    @Override
-    public void render(GraphicsContext gc) {
-        gc.drawImage(playerImage, getX(), getY(), 160, 200);
-    }
     public void render(GraphicsContext gc, double cameraX) {
         gc.drawImage(playerImage, getX() - cameraX, getY(), 160, 200);
     }
@@ -78,7 +73,10 @@ public class Player extends Entity implements Renderable {
         String path = String.format("/images/player/player1.png", direction, state); //temp
         return new Image(getClass().getResourceAsStream(path));
     }
-
+    @Override
+    public double getRenderY() {
+        return getY() + 200;
+    }
     //move function
     public void move(Direction direction) {
         //TODO реализовать перемещение игрока
@@ -139,6 +137,7 @@ public class Player extends Entity implements Renderable {
         setX(newX);
         setY(newY);
     }
+
 
     public void jump() {
         if (onGround) {

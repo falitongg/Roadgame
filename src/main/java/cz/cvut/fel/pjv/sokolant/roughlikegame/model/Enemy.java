@@ -4,7 +4,7 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public class Enemy extends Entity {
+public class Enemy extends Entity implements EntityDrawable {
     private EnemyType type;
     private Image sprite;
 
@@ -32,6 +32,10 @@ public class Enemy extends Entity {
         } else {
             gc.fillRect((float) x - cameraX, (float) y, 40, 40);
         }
+    }
+    @Override
+    public double getRenderY() {
+        return getY() + 150;
     }
 
     public EnemyType getType() {
