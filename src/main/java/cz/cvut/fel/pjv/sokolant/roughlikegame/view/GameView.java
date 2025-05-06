@@ -157,6 +157,9 @@ private void renderEntities() {
                 case D -> game.getPlayer().setMovingRight(false);
             }
         });
+        scene.setOnMousePressed(event -> {
+            inputHandler.handleMousePressed(event);
+        });
     }
     public int getWIDTH(){
         return WIDTH;

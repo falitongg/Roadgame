@@ -36,6 +36,7 @@ public class Game {
         for (Enemy enemy : enemies) {
             enemy.update(player); // AI of enemies
         }
+        enemies.removeIf(enemy -> !enemy.isAlive());
         if (!player.isAlive()) {
 //            endGame();
         }

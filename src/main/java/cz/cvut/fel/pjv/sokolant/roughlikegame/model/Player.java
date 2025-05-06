@@ -6,6 +6,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
 
+import java.util.List;
+
 
 public class Player extends Entity implements EntityDrawable {
     private Camera camera;
@@ -38,6 +40,8 @@ public class Player extends Entity implements EntityDrawable {
 
     // Úroveň země
     private double lastGroundY = 530;
+    final double ATTACK_RANGE = 80;
+
 
     public void setCamera(Camera camera) {
         this.camera = camera;
@@ -79,8 +83,6 @@ public class Player extends Entity implements EntityDrawable {
     }
     //move function
     public void move(Direction direction) {
-        //TODO реализовать перемещение игрока
-
         final double STEP = 13;
 
         this.currentDirection = direction;
@@ -197,6 +199,19 @@ public class Player extends Entity implements EntityDrawable {
             die();
         }
     }
+    public void attack(List<Enemy> enemies) {
+        for (Enemy enemy : enemies) {
+            double dx = enemy.getX() - this.getX();
+            double dy = enemy.getY() - this.getY();
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance <= ATTACK_RANGE) {
+                enemy.takeDamage(this.getDamage());
+                break;
+            }
+        }
+    }
+
 
 
 }

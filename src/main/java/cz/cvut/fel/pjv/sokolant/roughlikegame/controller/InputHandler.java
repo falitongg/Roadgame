@@ -3,6 +3,8 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.controller;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 
 public class InputHandler {
@@ -25,5 +27,11 @@ public class InputHandler {
             case SPACE -> game.getPlayer().jump();
         }
     }
+    public void handleMousePressed(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            game.getPlayer().attack(game.getEnemies());
+        }
+    }
+
 
 }

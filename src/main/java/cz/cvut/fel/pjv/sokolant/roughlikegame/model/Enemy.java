@@ -52,7 +52,11 @@ public class Enemy extends Entity implements EntityDrawable {
         //TODO реализовать перемещение
     }
     public void takeDamage(float amount) {
-        //TODO реализовать получение урона врагом
+        this.health -= amount;
+        if (this.health <= 0) {
+            this.health = 0;
+            die();
+        }
     }
     public void attackPlayer(Player player) {
         player.takeDamage(this.damage);
