@@ -33,9 +33,11 @@ public class Game {
     public void update() {
         if (currentState != GameState.PLAYING) return;
         player.update();
-
+        for (Enemy enemy : enemies) {
+            enemy.update(player); // AI of enemies
+        }
         if (!player.isAlive()) {
-            endGame();
+//            endGame();
         }
         //TODO логика тиков, проверка столкновений и урона от врагов
     }

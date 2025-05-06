@@ -8,6 +8,8 @@ public class Enemy extends Entity implements EntityDrawable {
     private EnemyType type;
     private Image sprite;
 
+    private float speed = 1.2f;
+
     public Enemy(float x, float y, float health, float damage, EnemyType type) {
         super(x, y, health, damage);
         this.type = type;
@@ -53,10 +55,21 @@ public class Enemy extends Entity implements EntityDrawable {
         //TODO реализовать получение урона врагом
     }
     public void attackPlayer(Player player) {
-        // TODO уменьшить здоровье игрока на damage
+        player.takeDamage(this.damage);
     }
     public void die() {
         // TODO: логика смерти врага
     }
-
+    public void update(Player player) {
+        double dx = player.getX() - this.getX();
+        if (Math.abs(dx) > 10) {
+            if (dx > 0) {
+                this.x += speed;
+            } else {
+                this.x -= speed;
+            }
+        } else {
+            attackPlayer(player);
+        }
+    }
 }

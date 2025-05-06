@@ -39,9 +39,6 @@ public class GameView{
     private float chunkWidth = 1280;
     private float lastChunkX = 0;
 
-    private final List<EntityDrawable> drawables = new ArrayList<>();
-
-
     public void start(Stage stage) {
         initGame();
         initUI(stage);
@@ -118,15 +115,16 @@ public class GameView{
 //        }
 //    }
 private void renderEntities() {
-    drawables.clear();
+    List<EntityDrawable> drawables = new ArrayList<>();
     drawables.addAll(game.getEnemies());
     drawables.add(game.getPlayer());
+
     drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
-    for (EntityDrawable e : drawables) {
-        e.render(gc, camera.getX());
+    for (EntityDrawable d : drawables) {
+//        System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
+        d.render(gc, camera.getX());
     }
-
 }
 
 
