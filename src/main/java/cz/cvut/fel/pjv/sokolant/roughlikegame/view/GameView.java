@@ -39,6 +39,8 @@ public class GameView{
     private float chunkWidth = 1280;
     private float lastChunkX = 0;
 
+    List<EntityDrawable> drawables = new ArrayList<>();
+
     public void start(Stage stage) {
         initGame();
         initUI(stage);
@@ -115,7 +117,7 @@ public class GameView{
 //        }
 //    }
 private void renderEntities() {
-    List<EntityDrawable> drawables = new ArrayList<>();
+    drawables.clear();
     drawables.addAll(game.getEnemies());
     drawables.add(game.getPlayer());
 
