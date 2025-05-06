@@ -10,6 +10,13 @@ import java.util.List;
 
 
 public class Player extends Entity implements EntityDrawable {
+    private Image playerImageLeft;
+    private Image playerImageRight;
+
+    private Image playerAttackLeft;
+    private Image playerAttackRight;
+
+
     private Camera camera;
     private Image playerImage;
     GameView view = new GameView();
@@ -17,6 +24,8 @@ public class Player extends Entity implements EntityDrawable {
     private float worldMinX = -60;
     private float worldMinY = 480;
     private float worldMaxY = view.getHEIGHT()-160;
+
+    private boolean isAttacking = false;
 
     private float stamina;// Energy for running and
     private float thirst;// Increases over time, affects
@@ -59,13 +68,43 @@ public class Player extends Entity implements EntityDrawable {
         this.stamina = stamina;
     }
     public Player() {
-        this(100, 500, 100, 10, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
+        this(100, 500, 100, 100, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
         this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player1.png"));
+        this.playerImageLeft = new Image(getClass().getResourceAsStream("/images/player/player_left.png"));
+        this.playerImageRight = new Image(getClass().getResourceAsStream("/images/player/player_right.png"));
+        playerAttackLeft = new Image(getClass().getResourceAsStream("/images/player/player_attack_left.png"));
+        playerAttackRight = new Image(getClass().getResourceAsStream("/images/player/player_attack_right.png"));
+
     }
 
+//    public void render(GraphicsContext gc, double cameraX) {
+//        gc.drawImage(playerImage, getX() - cameraX, getY(), 160, 200);
+//    }
+//
+//    public void render(GraphicsContext gc, double cameraX, Player player) {
+//        render(gc, cameraX); // просто вызов обычного render()
+//    }
+
     public void render(GraphicsContext gc, double cameraX) {
-        gc.drawImage(playerImage, getX() - cameraX, getY(), 160, 200);
+        Image img;
+
+        if (isAttacking) {
+            img = switch (currentDirection) {
+                case LEFT -> playerAttackLeft;
+                case RIGHT -> playerAttackRight;
+                default -> playerImage;
+            };
+        } else {
+            img = switch (currentDirection) {
+                case LEFT -> playerImageLeft;
+                case RIGHT -> playerImageRight;
+                default -> playerImage;
+            };
+        }
+
+        gc.drawImage(img, getX() - cameraX, getY(), 160, 200);
     }
+
 
     public void initImages(){
 
@@ -200,6 +239,15 @@ public class Player extends Entity implements EntityDrawable {
         }
     }
     public void attack(List<Enemy> enemies) {
+        isAttacking = true;
+
+        new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(
+                        javafx.util.Duration.millis(200),
+                        e -> isAttacking = false
+                )
+        ).play();
+
         for (Enemy enemy : enemies) {
             double dx = enemy.getX() - this.getX();
             double dy = enemy.getY() - this.getY();

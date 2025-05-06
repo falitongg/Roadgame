@@ -19,6 +19,8 @@ import java.util.List;
 
 
 public class GameView{
+    List<EntityDrawable> drawables = new ArrayList<>();
+
     private Canvas canvas;
     private GraphicsContext gc;
     private Game game;
@@ -114,18 +116,22 @@ public class GameView{
 //            enemy.render(gc, camera.getX());
 //        }
 //    }
-private void renderEntities() {
-    List<EntityDrawable> drawables = new ArrayList<>();
-    drawables.addAll(game.getEnemies());
-    drawables.add(game.getPlayer());
+    private void renderEntities() {
+        drawables.clear();
+        drawables.addAll(game.getEnemies());
+        drawables.add(game.getPlayer());
 
-    drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
+        drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
-    for (EntityDrawable d : drawables) {
-//        System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
-        d.render(gc, camera.getX());
+        for (EntityDrawable d : drawables) {
+    //        System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
+            if (d instanceof Enemy enemy) {
+                enemy.render(gc, camera.getX(), game.getPlayer());
+            } else {
+                d.render(gc, camera.getX());
+            }
+        }
     }
-}
 
 
     //    public static void main(String[] args) {

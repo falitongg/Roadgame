@@ -5,6 +5,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Enemy extends Entity implements EntityDrawable {
+    private Image spriteLeft;
+    private Image spriteRight;
+
     private EnemyType type;
     private Image sprite;
 
@@ -18,19 +21,41 @@ public class Enemy extends Entity implements EntityDrawable {
 
     private void loadSprite() {
         switch (type) {
-            case ZOMBIE -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
-            case DOG -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
-            case BANDIT -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
-            case MUTANT -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
-            case BOSS -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
-            case ANIMAL -> sprite = new Image(getClass().getResourceAsStream("/images/enemies/zombie_calm.png"));
+            case ZOMBIE -> {
+                spriteLeft = new Image(getClass().getResourceAsStream("/images/enemies/zombie_left.png"));
+                spriteRight = new Image(getClass().getResourceAsStream("/images/enemies/zombie_right.png"));
+            }
+            case DOG ->{
+                spriteLeft = new Image(getClass().getResourceAsStream("/images/enemies/zombie_left.png"));
+                spriteRight = new Image(getClass().getResourceAsStream("/images/enemies/zombie_right.png"));
+            }case BANDIT ->{
+                spriteLeft = new Image(getClass().getResourceAsStream("/images/enemies/zombie_left.png"));
+                spriteRight = new Image(getClass().getResourceAsStream("/images/enemies/zombie_right.png"));
+            }case MUTANT -> {
+                spriteLeft = new Image(getClass().getResourceAsStream("/images/enemies/zombie_left.png"));
+                spriteRight = new Image(getClass().getResourceAsStream("/images/enemies/zombie_right.png"));
+            }case BOSS -> {
+                spriteLeft = new Image(getClass().getResourceAsStream("/images/enemies/zombie_left.png"));
+                spriteRight = new Image(getClass().getResourceAsStream("/images/enemies/zombie_right.png"));
+            }case ANIMAL -> {
+                spriteLeft = new Image(getClass().getResourceAsStream("/images/enemies/zombie_left.png"));
+                spriteRight = new Image(getClass().getResourceAsStream("/images/enemies/zombie_right.png"));
+            }
         }
     }
+    @Override
     public void render(GraphicsContext gc, double cameraX) {
+        // Заглушка или дефолтная отрисовка, если player неизвестен
+        gc.setImageSmoothing(false);
+        gc.drawImage(spriteRight, (float) x - cameraX, (float) y, 80, 100);
+    }
+    public void render(GraphicsContext gc, double cameraX, Player player) {
         gc.setImageSmoothing(false);
 
-        if (sprite != null) {
-            gc.drawImage(sprite, (float) x - cameraX, (float) y, 80, 100);
+        Image spriteToDraw = (player.getX() < this.x) ? spriteLeft : spriteRight;
+
+        if (spriteToDraw != null) {
+            gc.drawImage(spriteToDraw, (float) x - cameraX, (float) y, 80, 100);
         } else {
             gc.fillRect((float) x - cameraX, (float) y, 40, 40);
         }
