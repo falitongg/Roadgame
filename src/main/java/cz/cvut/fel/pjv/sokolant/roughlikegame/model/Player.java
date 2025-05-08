@@ -10,6 +10,20 @@ import java.util.List;
 
 
 public class Player extends Entity implements EntityDrawable {
+    private Image[] walkRightFrames;
+    private Image[] walkLeftFrames;
+
+    private double lastStepX = -1;
+    private final double stepDistance = 8;
+    private double lastStepY = -1;
+
+    private int walkFrameIndex = 0;
+
+    private Direction lastHorizontalDirection = Direction.RIGHT;
+
+    private boolean isWalking = false;
+
+
     private Image playerImageLeft;
     private Image playerImageRight;
     private Image playerImageJumpRight;
@@ -79,6 +93,23 @@ public class Player extends Entity implements EntityDrawable {
         playerAttackRight = new Image(getClass().getResourceAsStream("/images/player/player_attack_right.png"));
         playerImageJumpRight = new Image(getClass().getResourceAsStream("/images/player/player_jump_right.png"));
         playerImageJumpLeft = new Image(getClass().getResourceAsStream("/images/player/player_jump_left.png"));
+
+        walkRightFrames = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/player/player_step1_r.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_step2_r.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"))
+
+        };
+
+        walkLeftFrames = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/player/player_step1_l.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_step2_l.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png"))
+
+        };
+
     }
 
 //    public void render(GraphicsContext gc, double cameraX) {
@@ -92,24 +123,40 @@ public class Player extends Entity implements EntityDrawable {
     public void render(GraphicsContext gc, double cameraX) {
         Image img;
 
+        boolean isMoving = movingLeft || movingRight || currentDirection == Direction.UP || currentDirection == Direction.DOWN;
+
+
         if (isAttacking) {
-            img = switch (currentDirection) {
-                case LEFT -> playerAttackLeft;
-                case RIGHT -> playerAttackRight;
-                default -> playerImage;
-            };
-        }else if (!onGround) {
+            img = lastHorizontalDirection == Direction.LEFT ?
+                    playerAttackLeft : playerAttackRight;
+        } else if (!onGround) {
             //jump
             img = switch (currentDirection) {
                 case LEFT -> playerImageJumpLeft;
                 case RIGHT -> playerImageJumpRight;
                 default -> playerImageJumpRight;
             };
-        } else {
+        }  else if (isMoving) {
+            //x check
+            if (Math.abs(getX() - lastStepX) >= stepDistance || Math.abs(getY() - lastStepY) >= stepDistance) {
+                walkFrameIndex = (walkFrameIndex + 1) % 3;
+                lastStepX = getX();
+                lastStepY = getY();
+            }
+            if (currentDirection == Direction.LEFT) {
+                img = walkLeftFrames[walkFrameIndex];
+            } else if (currentDirection == Direction.RIGHT) {
+                img = walkRightFrames[walkFrameIndex];
+            } else {
+                img = lastHorizontalDirection == Direction.LEFT ?
+                        walkLeftFrames[walkFrameIndex] : walkRightFrames[walkFrameIndex];
+            }
+        }else {
             img = switch (currentDirection) {
                 case LEFT -> playerImageLeft;
                 case RIGHT -> playerImageRight;
-                default -> playerImage;
+                default -> lastHorizontalDirection == Direction.LEFT ?
+                        playerImageLeft : playerImageRight;
             };
         }
 
@@ -129,16 +176,19 @@ public class Player extends Entity implements EntityDrawable {
 //    }
     @Override
     public double getRenderY() {
-        return getY() + 200;
+        return getY();
     }
     //move function
     public void move(Direction direction) {
-        final double STEP = 13;
+        final double STEP = 7;
+
+        this.currentDirection = direction;
+
+        this.currentState = VisualState.MOVING;
 
         if (direction == Direction.LEFT || direction == Direction.RIGHT) {
-            this.currentDirection = direction;
+            lastHorizontalDirection = direction;
         }
-        this.currentState = VisualState.MOVING;
 
         switch (direction) {
             case UP -> {

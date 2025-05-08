@@ -124,7 +124,7 @@ public class GameView{
         drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
         for (EntityDrawable d : drawables) {
-    //        System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
+//            System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
             if (d instanceof Enemy enemy) {
                 enemy.render(gc, camera.getX(), game.getPlayer());
             } else {

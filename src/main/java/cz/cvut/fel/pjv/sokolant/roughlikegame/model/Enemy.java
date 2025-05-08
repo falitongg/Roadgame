@@ -47,7 +47,7 @@ public class Enemy extends Entity implements EntityDrawable {
     public void render(GraphicsContext gc, double cameraX) {
         // Заглушка или дефолтная отрисовка, если player неизвестен
         gc.setImageSmoothing(false);
-        gc.drawImage(spriteRight, (float) x - cameraX, (float) y, 80, 100);
+        gc.drawImage(spriteRight, (float) x - cameraX, (float) y);
     }
     public void render(GraphicsContext gc, double cameraX, Player player) {
         gc.setImageSmoothing(false);
@@ -55,14 +55,14 @@ public class Enemy extends Entity implements EntityDrawable {
         Image spriteToDraw = (player.getX() < this.x) ? spriteLeft : spriteRight;
 
         if (spriteToDraw != null) {
-            gc.drawImage(spriteToDraw, (float) x - cameraX, (float) y, 80, 100);
+            gc.drawImage(spriteToDraw, (float) x - cameraX, (float) y);
         } else {
             gc.fillRect((float) x - cameraX, (float) y, 40, 40);
         }
     }
     @Override
     public double getRenderY() {
-        return getY() + 150;
+        return getY();
     }
 
     public EnemyType getType() {
