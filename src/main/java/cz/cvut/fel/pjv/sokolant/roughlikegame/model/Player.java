@@ -12,6 +12,8 @@ import java.util.List;
 public class Player extends Entity implements EntityDrawable {
     private Image playerImageLeft;
     private Image playerImageRight;
+    private Image playerImageJumpRight;
+    private Image playerImageJumpLeft;
 
     private Image playerAttackLeft;
     private Image playerAttackRight;
@@ -69,12 +71,14 @@ public class Player extends Entity implements EntityDrawable {
     }
     public Player() {
         this(100, 500, 100, 100, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
-        this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player1.png"));
-        this.playerImageLeft = new Image(getClass().getResourceAsStream("/images/player/player_left.png"));
-        this.playerImageRight = new Image(getClass().getResourceAsStream("/images/player/player_right.png"));
+//        this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"));
+        this.currentDirection = Direction.RIGHT;
+        this.playerImageLeft = new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png"));
+        this.playerImageRight = new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"));
         playerAttackLeft = new Image(getClass().getResourceAsStream("/images/player/player_attack_left.png"));
         playerAttackRight = new Image(getClass().getResourceAsStream("/images/player/player_attack_right.png"));
-
+        playerImageJumpRight = new Image(getClass().getResourceAsStream("/images/player/player_jump_right.png"));
+        playerImageJumpLeft = new Image(getClass().getResourceAsStream("/images/player/player_jump_left.png"));
     }
 
 //    public void render(GraphicsContext gc, double cameraX) {
@@ -94,6 +98,13 @@ public class Player extends Entity implements EntityDrawable {
                 case RIGHT -> playerAttackRight;
                 default -> playerImage;
             };
+        }else if (!onGround) {
+            //jump
+            img = switch (currentDirection) {
+                case LEFT -> playerImageJumpLeft;
+                case RIGHT -> playerImageJumpRight;
+                default -> playerImageJumpRight;
+            };
         } else {
             img = switch (currentDirection) {
                 case LEFT -> playerImageLeft;
@@ -102,20 +113,20 @@ public class Player extends Entity implements EntityDrawable {
             };
         }
 
-        gc.drawImage(img, getX() - cameraX, getY(), 160, 200);
+        gc.drawImage(img, getX() - cameraX, getY());
     }
 
 
     public void initImages(){
 
     }
-    private Image getImageForCurrentState() {
-        String direction = currentDirection.name().toLowerCase();
-        String state = currentState.name().toLowerCase();
-
-        String path = String.format("/images/player/player1.png", direction, state); //temp
-        return new Image(getClass().getResourceAsStream(path));
-    }
+//    private Image getImageForCurrentState() {
+//        String direction = currentDirection.name().toLowerCase();
+//        String state = currentState.name().toLowerCase();
+//
+//        String path = String.format("/images/player/player1.png", direction, state); //temp
+//        return new Image(getClass().getResourceAsStream(path));
+//    }
     @Override
     public double getRenderY() {
         return getY() + 200;
@@ -124,7 +135,9 @@ public class Player extends Entity implements EntityDrawable {
     public void move(Direction direction) {
         final double STEP = 13;
 
-        this.currentDirection = direction;
+        if (direction == Direction.LEFT || direction == Direction.RIGHT) {
+            this.currentDirection = direction;
+        }
         this.currentState = VisualState.MOVING;
 
         switch (direction) {
