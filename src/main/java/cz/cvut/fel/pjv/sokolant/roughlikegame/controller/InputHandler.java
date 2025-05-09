@@ -31,7 +31,17 @@ public class InputHandler {
         if (event.getButton() == MouseButton.PRIMARY) {
             game.getPlayer().attack(game.getEnemies());
         }
+        if (event.getButton() == MouseButton.SECONDARY) { // ПКМ
+            game.getPlayer().setBlocking(true);
+        }
+
     }
+    public void handleMouseReleased(MouseEvent event) {
+        if (event.getButton() == MouseButton.SECONDARY) {
+            game.getPlayer().setBlocking(false);
+        }
+    }
+
 
 
 }

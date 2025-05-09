@@ -166,6 +166,10 @@ public class GameView{
         scene.setOnMousePressed(event -> {
             inputHandler.handleMousePressed(event);
         });
+        scene.setOnMouseReleased(event -> {
+            inputHandler.handleMouseReleased(event);
+        });
+
     }
     public int getWIDTH(){
         return WIDTH;

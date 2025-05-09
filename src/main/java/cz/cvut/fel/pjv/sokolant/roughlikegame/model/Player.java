@@ -12,6 +12,8 @@ import java.util.List;
 public class Player extends Entity implements EntityDrawable {
     private Image[] walkRightFrames;
     private Image[] walkLeftFrames;
+    private Image[] blockWalkRightFrames;
+    private Image[] blockWalkLeftFrames;
 
     private double lastStepX = -1;
     private final double stepDistance = 8;
@@ -22,12 +24,17 @@ public class Player extends Entity implements EntityDrawable {
     private Direction lastHorizontalDirection = Direction.RIGHT;
 
     private boolean isWalking = false;
+    private boolean isBlocking = false;
+
 
 
     private Image playerImageLeft;
     private Image playerImageRight;
     private Image playerImageJumpRight;
     private Image playerImageJumpLeft;
+    private Image playerImageBlockingRight;
+    private Image playerImageBlockingLeft;
+
 
     private Image playerAttackLeft;
     private Image playerAttackRight;
@@ -93,22 +100,38 @@ public class Player extends Entity implements EntityDrawable {
         playerAttackRight = new Image(getClass().getResourceAsStream("/images/player/player_attack_right.png"));
         playerImageJumpRight = new Image(getClass().getResourceAsStream("/images/player/player_jump_right.png"));
         playerImageJumpLeft = new Image(getClass().getResourceAsStream("/images/player/player_jump_left.png"));
+        playerImageBlockingRight = new Image(getClass().getResourceAsStream("/images/player/player_blocking_right.png"));
+        playerImageBlockingLeft = new Image(getClass().getResourceAsStream("/images/player/player_blocking_left.png"));
+
 
         walkRightFrames = new Image[]{
                 new Image(getClass().getResourceAsStream("/images/player/player_step1_r.png")),
-                new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png")),
+                playerImageRight,
                 new Image(getClass().getResourceAsStream("/images/player/player_step2_r.png")),
-                new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"))
-
+                playerImageRight
         };
 
         walkLeftFrames = new Image[]{
                 new Image(getClass().getResourceAsStream("/images/player/player_step1_l.png")),
-                new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png")),
+                playerImageLeft,
                 new Image(getClass().getResourceAsStream("/images/player/player_step2_l.png")),
-                new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png"))
+                playerImageLeft
 
         };
+        blockWalkRightFrames = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/player/player_block_right_step1.png")),
+                playerImageBlockingRight,
+                new Image(getClass().getResourceAsStream("/images/player/player_block_right_step2.png")),
+                playerImageBlockingRight
+        };
+
+        blockWalkLeftFrames = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/player/player_block_left_step1.png")),
+                playerImageBlockingLeft,
+                new Image(getClass().getResourceAsStream("/images/player/player_block_left_step2.png")),
+                playerImageBlockingLeft
+        };
+
 
     }
 
@@ -125,11 +148,33 @@ public class Player extends Entity implements EntityDrawable {
 
         boolean isMoving = movingLeft || movingRight || currentDirection == Direction.UP || currentDirection == Direction.DOWN;
 
+        if (isBlocking) {
+            if (isMoving) {
+                // player is moving while blocking
+                if (Math.abs(getX() - lastStepX) >= stepDistance || Math.abs(getY() - lastStepY) >= stepDistance) {
+                    walkFrameIndex = (walkFrameIndex + 1) % blockWalkRightFrames.length;
+                    lastStepX = getX();
+                    lastStepY = getY();
+                }
 
-        if (isAttacking) {
+                img = lastHorizontalDirection == Direction.LEFT
+                        ? blockWalkLeftFrames[walkFrameIndex]
+                        : blockWalkRightFrames[walkFrameIndex];
+
+            } else {
+                // player is blocking
+                img = lastHorizontalDirection == Direction.LEFT
+                        ? playerImageBlockingLeft
+                        : playerImageBlockingRight;
+            }
+
+        }
+
+        else if (isAttacking) {
             img = lastHorizontalDirection == Direction.LEFT ?
                     playerAttackLeft : playerAttackRight;
-        } else if (!onGround) {
+        }
+        else if (!onGround) {
             //jump
             img = switch (currentDirection) {
                 case LEFT -> playerImageJumpLeft;
@@ -151,7 +196,8 @@ public class Player extends Entity implements EntityDrawable {
                 img = lastHorizontalDirection == Direction.LEFT ?
                         walkLeftFrames[walkFrameIndex] : walkRightFrames[walkFrameIndex];
             }
-        }else {
+        }
+        else {
             img = switch (currentDirection) {
                 case LEFT -> playerImageLeft;
                 case RIGHT -> playerImageRight;
@@ -302,6 +348,11 @@ public class Player extends Entity implements EntityDrawable {
         }
     }
     public void attack(List<Enemy> enemies) {
+
+        if (isBlocking) {
+            isBlocking = false;
+        }
+
         isAttacking = true;
 
         new javafx.animation.Timeline(
@@ -323,7 +374,12 @@ public class Player extends Entity implements EntityDrawable {
         }
     }
 
+    public void setBlocking(boolean blocking) {
+        this.isBlocking = blocking;
+    }
 
-
+    public boolean isBlocking() {
+        return isBlocking;
+    }
 }
 
