@@ -66,12 +66,21 @@ public class Game {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 200) {
             if (rand.nextFloat() < 0.9f) {
-                EnemyType type = EnemyType.values()[rand.nextInt(EnemyType.values().length)];
+
                 float minY = 480;
                 float maxY = 580;
                 float y = minY + rand.nextFloat() * (maxY - minY);
-                Enemy enemy = new Enemy(x, y, 100, 10, type);
-                spawnEnemy(enemy);
+
+                int typeIndex = rand.nextInt(2);
+
+                Enemy enemy = switch (typeIndex) {
+                    case 0 -> new DogEnemy(x, y);
+//                    case 1 -> new ZombieEnemy(x, y); // (если добавишь ZombieEnemy позже)
+                    default -> null;
+                };
+                if (enemy != null) {
+                    spawnEnemy(enemy);
+                }
             }
         }
     }

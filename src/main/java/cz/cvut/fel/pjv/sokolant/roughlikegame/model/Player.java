@@ -142,6 +142,10 @@ public class Player extends Entity implements EntityDrawable {
 //    public void render(GraphicsContext gc, double cameraX, Player player) {
 //        render(gc, cameraX); // просто вызов обычного render()
 //    }
+    @Override
+    public void render(GraphicsContext gc, double cameraX, Player player) {
+        render(gc, cameraX);
+    }
 
     public void render(GraphicsContext gc, double cameraX) {
         Image img;

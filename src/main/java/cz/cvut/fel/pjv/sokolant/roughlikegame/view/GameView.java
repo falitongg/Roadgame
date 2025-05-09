@@ -2,7 +2,6 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Enemy;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.EntityDrawable;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import javafx.scene.canvas.Canvas;
@@ -124,12 +123,7 @@ public class GameView{
         drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
         for (EntityDrawable d : drawables) {
-//            System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
-            if (d instanceof Enemy enemy) {
-                enemy.render(gc, camera.getX(), game.getPlayer());
-            } else {
-                d.render(gc, camera.getX());
-            }
+            d.render(gc, camera.getX(), game.getPlayer());
         }
     }
 
