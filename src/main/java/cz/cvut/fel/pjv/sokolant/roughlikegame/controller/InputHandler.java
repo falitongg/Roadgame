@@ -25,6 +25,18 @@ public class InputHandler {
                 game.getPlayer().move(Direction.RIGHT);
             }
             case SPACE -> game.getPlayer().jump();
+            case SHIFT -> game.getPlayer().setSprinting(true);
+            case CONTROL -> game.getPlayer().setCrouching(true);
+
+        }
+    }
+    public void handleKeyReleased(KeyEvent event) {
+        switch (event.getCode()){
+            case A -> game.getPlayer().setMovingLeft(false);
+            case D -> game.getPlayer().setMovingRight(false);
+            case SHIFT -> game.getPlayer().setSprinting(false);
+            case CONTROL -> game.getPlayer().setCrouching(false);
+
         }
     }
     public void handleMousePressed(MouseEvent event) {

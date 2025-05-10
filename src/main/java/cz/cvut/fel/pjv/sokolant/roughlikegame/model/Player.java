@@ -12,11 +12,20 @@ import java.util.List;
 public class Player extends Entity implements EntityDrawable {
     private Image[] walkRightFrames;
     private Image[] walkLeftFrames;
+
     private Image[] blockWalkRightFrames;
     private Image[] blockWalkLeftFrames;
 
+    private Image[] sprintRightFrames;
+    private Image[] sprintLeftFrames;
+
+    private Image[] crouchRightFrames;
+    private Image[] crouchLeftFrames;
+
+
+
     private double lastStepX = -1;
-    private final double stepDistance = 8;
+    private final double stepDistance = 25;
     private double lastStepY = -1;
 
     private int walkFrameIndex = 0;
@@ -25,6 +34,8 @@ public class Player extends Entity implements EntityDrawable {
 
     private boolean isWalking = false;
     private boolean isBlocking = false;
+    private boolean isSprinting = false;
+    private boolean isCrouching = false;
 
 
 
@@ -34,6 +45,7 @@ public class Player extends Entity implements EntityDrawable {
     private Image playerImageJumpLeft;
     private Image playerImageBlockingRight;
     private Image playerImageBlockingLeft;
+
 
 
     private Image playerAttackLeft;
@@ -131,6 +143,17 @@ public class Player extends Entity implements EntityDrawable {
                 new Image(getClass().getResourceAsStream("/images/player/player_block_left_step2.png")),
                 playerImageBlockingLeft
         };
+        sprintRightFrames = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/player/player_run_2_r.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_run_1_r.png"))
+        };
+        sprintLeftFrames = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/player/player_run_2_l.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_run_1_l.png"))
+
+
+        };
+
 
 
     }
@@ -186,21 +209,29 @@ public class Player extends Entity implements EntityDrawable {
                 default -> playerImageJumpRight;
             };
         }  else if (isMoving) {
-            //x check
             if (Math.abs(getX() - lastStepX) >= stepDistance || Math.abs(getY() - lastStepY) >= stepDistance) {
-                walkFrameIndex = (walkFrameIndex + 1) % 3;
+                walkFrameIndex = (walkFrameIndex + 1) % 4;
                 lastStepX = getX();
                 lastStepY = getY();
             }
-            if (currentDirection == Direction.LEFT) {
-                img = walkLeftFrames[walkFrameIndex];
-            } else if (currentDirection == Direction.RIGHT) {
-                img = walkRightFrames[walkFrameIndex];
-            } else {
-                img = lastHorizontalDirection == Direction.LEFT ?
-                        walkLeftFrames[walkFrameIndex] : walkRightFrames[walkFrameIndex];
+
+            if (isCrouching) {
+                img = currentDirection == Direction.LEFT
+                        ? crouchLeftFrames[walkFrameIndex % crouchLeftFrames.length]
+                        : crouchRightFrames[walkFrameIndex % crouchRightFrames.length];
+            }
+            else if (isSprinting) {
+                img = currentDirection == Direction.LEFT
+                        ? sprintLeftFrames[walkFrameIndex % sprintLeftFrames.length]
+                        : sprintRightFrames[walkFrameIndex % sprintRightFrames.length];
+            }
+            else {
+                img = currentDirection == Direction.LEFT
+                        ? walkLeftFrames[walkFrameIndex]
+                        : walkRightFrames[walkFrameIndex];
             }
         }
+
         else {
             img = switch (currentDirection) {
                 case LEFT -> playerImageLeft;
@@ -230,7 +261,8 @@ public class Player extends Entity implements EntityDrawable {
     }
     //move function
     public void move(Direction direction) {
-        final double STEP = 7;
+
+        double step = isCrouching ? 3 : (isSprinting ? 12 : 7);
 
         this.currentDirection = direction;
 
@@ -242,13 +274,13 @@ public class Player extends Entity implements EntityDrawable {
 
         switch (direction) {
             case UP -> {
-                if (onGround && y - STEP >= 467) {
-                    y -= STEP;
+                if (onGround && y - step >= 467) {
+                    y -= step;
                 }
             }
-            case DOWN -> y += STEP;
-            case LEFT -> x -= STEP;
-            case RIGHT -> x += STEP;
+            case DOWN -> y += step;
+            case LEFT -> x -= step;
+            case RIGHT -> x += step;
             case SPACE -> jump();
         }
         clampToBounds();
@@ -294,19 +326,20 @@ public class Player extends Entity implements EntityDrawable {
 
 
     public void jump() {
-        if (onGround) {
-            lastGroundY = y;
-            velocityY = jumpStrength;
-            if(movingLeft){
-                velocityX = -speed*5;
-            }
-            else if(movingRight){
-                velocityX = speed*5;
-            }else velocityX = 0;
+        if (!onGround || isCrouching) return;
 
-            onGround = false;
+        lastGroundY = y;
+        velocityY = jumpStrength;
+
+        if (movingLeft) {
+            velocityX = -speed * 5;
+        } else if (movingRight) {
+            velocityX = speed * 5;
+        } else {
+            velocityX = 0;
         }
 
+        onGround = false;
     }
     //sprint function
     public void sprint(Direction direction) {
@@ -385,5 +418,16 @@ public class Player extends Entity implements EntityDrawable {
     public boolean isBlocking() {
         return isBlocking;
     }
+
+    public void setSprinting(boolean sprinting) {
+        this.isSprinting = sprinting;
+    }
+    public void setCrouching(boolean crouching) {
+        this.isCrouching = crouching;
+        if (crouching) {
+            this.isSprinting = false;
+        }
+    }
+
 }
 

@@ -148,21 +148,14 @@ public class GameView{
     public void setupInputHandling(){
         InputHandler inputHandler = new InputHandler(game);
 
-        scene.setOnKeyPressed(event -> {
-            inputHandler.handleInput(event);
-        });
-        scene.setOnKeyReleased(event -> {
-            switch (event.getCode()){
-                case A -> game.getPlayer().setMovingLeft(false);
-                case D -> game.getPlayer().setMovingRight(false);
-            }
-        });
-        scene.setOnMousePressed(event -> {
-            inputHandler.handleMousePressed(event);
-        });
-        scene.setOnMouseReleased(event -> {
-            inputHandler.handleMouseReleased(event);
-        });
+        scene.setOnKeyPressed(inputHandler::handleInput);
+
+        scene.setOnKeyReleased(inputHandler::handleKeyReleased);
+
+        scene.setOnMousePressed(inputHandler::handleMousePressed);
+
+        scene.setOnMouseReleased(inputHandler::handleMouseReleased);
+
 
     }
     public int getWIDTH(){
