@@ -156,6 +156,15 @@ public class Player extends Entity implements EntityDrawable {
 
 
         };
+        crouchRightFrames = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/player/player_ctrl_1_r.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_ctrl_2_r.png"))
+        };
+
+        crouchLeftFrames = new Image[]{
+                new Image(getClass().getResourceAsStream("/images/player/player_ctrl_1_l.png")),
+                new Image(getClass().getResourceAsStream("/images/player/player_ctrl_2_l.png"))
+        };
 
 
 
@@ -219,9 +228,8 @@ public class Player extends Entity implements EntityDrawable {
             }
 
             if (isCrouching) {
-                img = currentDirection == Direction.LEFT
-                        ? crouchLeftFrames[walkFrameIndex % crouchLeftFrames.length]
-                        : crouchRightFrames[walkFrameIndex % crouchRightFrames.length];
+                img = currentDirection == Direction.LEFT ?
+                        crouchLeftFrames[walkFrameIndex % crouchLeftFrames.length] : crouchRightFrames[walkFrameIndex % crouchRightFrames.length];
             }
             else if (isSprinting) {
                 img = currentDirection == Direction.LEFT
@@ -236,13 +244,21 @@ public class Player extends Entity implements EntityDrawable {
         }
 
         else {
-            img = switch (currentDirection) {
-                case LEFT -> playerImageLeft;
-                case RIGHT -> playerImageRight;
-                default -> lastHorizontalDirection == Direction.LEFT ?
-                        playerImageLeft : playerImageRight;
-            };
+            if (isCrouching) {
+                img = lastHorizontalDirection == Direction.LEFT
+                        ? crouchLeftFrames[0]
+                        : crouchRightFrames[0];
+            } else {
+                img = switch (currentDirection) {
+                    case LEFT -> playerImageLeft;
+                    case RIGHT -> playerImageRight;
+                    default -> lastHorizontalDirection == Direction.LEFT
+                            ? playerImageLeft
+                            : playerImageRight;
+                };
+            }
         }
+
 
         gc.drawImage(img, getX() - cameraX, getY());
     }
