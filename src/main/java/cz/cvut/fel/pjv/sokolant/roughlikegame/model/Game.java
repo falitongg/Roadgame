@@ -65,7 +65,7 @@ public class Game {
     public void generateEnemies(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 200) {
-            if (rand.nextFloat() < 0.9f) {
+            if (rand.nextFloat() < 0.3f) {
 
                 float minY = 480;
                 float maxY = 580;
@@ -75,7 +75,7 @@ public class Game {
 
                 Enemy enemy = switch (typeIndex) {
                     case 0 -> new DogEnemy(x, y);
-//                    case 1 -> new ZombieEnemy(x, y); // (если добавишь ZombieEnemy позже)
+                    case 1 -> new ZombieEnemy(x, y); // (если добавишь ZombieEnemy позже)
                     default -> null;
                 };
                 if (enemy != null) {
