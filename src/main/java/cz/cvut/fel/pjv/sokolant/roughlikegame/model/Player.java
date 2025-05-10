@@ -37,6 +37,11 @@ public class Player extends Entity implements EntityDrawable {
     private boolean isSprinting = false;
     private boolean isCrouching = false;
 
+    private boolean movingUp;
+    private boolean movingDown;
+    private boolean movingLeft;
+    private boolean movingRight;
+
 
 
     private Image playerImageLeft;
@@ -77,8 +82,6 @@ public class Player extends Entity implements EntityDrawable {
     private final double gravity = 2; //jak rychle se hrac bude pochybovat dolu
     private final double jumpStrength = -18; //pocatecny vystrel vzhuru
     private boolean onGround = true; //zda je na zemi
-    private boolean movingLeft = false;
-    private boolean movingRight = false;
     private double velocityX = 0; //horizontalni rychlost
 
 
@@ -350,6 +353,7 @@ public class Player extends Entity implements EntityDrawable {
         //TODO реализовать смерть игрока как конец игры
     }
     public void update() {
+
         if (!onGround) {
             velocityY += gravity;
             y += velocityY;
@@ -362,6 +366,38 @@ public class Player extends Entity implements EntityDrawable {
                 onGround = true;
             }
         }
+
+        double dx = 0;
+        double dy = 0;
+
+        double step = isCrouching ? 1.5 : (isSprinting ? 6 : 2.5);
+
+        if (movingUp && onGround && y - step >= 467) dy -= step;
+        if (movingDown) dy += step;
+        if (movingLeft) dx -= step;
+        if (movingRight) dx += step;
+
+// normalizace
+        if (dx != 0 && dy != 0) {
+            dx *= 0.7071;
+            dy *= 0.7071;
+        }
+
+        x += dx;
+        y += dy;
+
+        if (dx < 0) {
+            currentDirection = Direction.LEFT;
+            lastHorizontalDirection = Direction.LEFT;
+        } else if (dx > 0) {
+            currentDirection = Direction.RIGHT;
+            lastHorizontalDirection = Direction.RIGHT;
+        } else if (dy < 0) {
+            currentDirection = Direction.UP;
+        } else if (dy > 0) {
+            currentDirection = Direction.DOWN;
+        }
+
 
         clampToBounds();
     }
@@ -412,22 +448,31 @@ public class Player extends Entity implements EntityDrawable {
     }
 
     public void setBlocking(boolean blocking) {
+        if (isSprinting && blocking) {
+            return;
+        }
         this.isBlocking = blocking;
+        if (blocking) {
+            this.isSprinting = false;
+        }
     }
 
-    public boolean isBlocking() {
-        return isBlocking;
-    }
 
     public void setSprinting(boolean sprinting) {
-        this.isSprinting = sprinting;
+        if (sprinting) {
+            this.isBlocking = false;
+        }
+        this.isSprinting = sprinting && !isBlocking && !isCrouching;
     }
+
     public void setCrouching(boolean crouching) {
         this.isCrouching = crouching;
         if (crouching) {
             this.isSprinting = false;
         }
     }
+    public void setMovingUp(boolean movingUp) { this.movingUp = movingUp; }
+    public void setMovingDown(boolean movingDown) { this.movingDown = movingDown; }
 
 }
 
