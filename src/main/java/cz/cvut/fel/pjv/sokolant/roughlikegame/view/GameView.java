@@ -109,16 +109,20 @@ public class GameView{
         }
     }
 
-//    private void renderEntities() {
-//        game.getPlayer().render(gc, camera.getX());
-//        for (Enemy enemy : game.getEnemies()) {
-//            enemy.render(gc, camera.getX());
-//        }
-//    }
     private void renderEntities() {
         drawables.clear();
         drawables.addAll(game.getEnemies());
+        drawables.addAll(game.getObstacles());
         drawables.add(game.getPlayer());
+
+        for (EntityDrawable d : drawables) {
+            if (d instanceof cz.cvut.fel.pjv.sokolant.roughlikegame.model.Obstacle obstacle) {
+                if (obstacle.getImage() == null) {
+                    Image image = new Image(getClass().getResourceAsStream("/images/box tile 32x32 1.png"));
+                    obstacle.setImage(image);
+                }
+            }
+        }
 
         drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 

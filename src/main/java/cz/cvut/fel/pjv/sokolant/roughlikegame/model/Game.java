@@ -10,11 +10,13 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
 public class Game {
     private Player player;
     private List<Enemy> enemies;
+    private List<Obstacle> obstacles;
     private GameState currentState;
 
     public Game() {
         this.player = new Player();
         this.enemies = new ArrayList<>();
+        this.obstacles = new ArrayList<>();
         this.currentState = GameState.MENU;
     }
 
@@ -85,11 +87,26 @@ public class Game {
         }
     }
     public void generateObstacles(float startX, float endX) {
-        float minY = 520;
-        float maxY = 620;
+        Random rand = new Random();
+        float minY = 600;
+        float maxY = 700;
 
+        for (float x = startX; x <= endX; x += 150) {
+            if (rand.nextFloat() < 0.3f) {
+                float y = minY + rand.nextFloat() * (maxY - minY);
+                float width = 60;
+                float height = 60;
+
+                Obstacle obstacle = new Obstacle(x, y);
+                obstacles.add(obstacle);
+            }
+        }
     }
+
     public void generateEvents(float startX, float endX) {
 
+    }
+    public List<Obstacle> getObstacles() {
+        return obstacles;
     }
 }
