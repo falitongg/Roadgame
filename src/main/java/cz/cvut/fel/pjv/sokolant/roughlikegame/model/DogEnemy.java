@@ -113,6 +113,10 @@ public class DogEnemy extends Enemy {
 
         gc.drawImage(spriteToDraw, (float) x - cameraX, (float) y);
     }
+    @Override
+    public double getRenderY() {
+        return getY();
+    }
 
 
 }

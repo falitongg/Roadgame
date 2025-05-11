@@ -262,8 +262,9 @@ public class Player extends Entity implements EntityDrawable {
     }
     @Override
     public double getRenderY() {
-        return getY();
+        return getY() ;
     }
+
     //move function
     public void move(Direction direction) {
 

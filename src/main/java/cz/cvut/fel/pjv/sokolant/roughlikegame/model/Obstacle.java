@@ -85,15 +85,18 @@ public class Obstacle implements EntityDrawable {
 
     @Override
     public double getRenderY() {
-        return y + height;
+        return y - 120;
     }
+
+
+
+
 
     @Override
     public void render(GraphicsContext gc, double cameraX, Player player) {
-        float renderWidth = width;
-        float renderHeight = height;
+        gc.drawImage(image, x - cameraX, y, width, height);
 
-        gc.drawImage(image, x - cameraX, y, renderWidth, renderHeight);
+
     }
     public void setY(float y) {
         this.y = y;

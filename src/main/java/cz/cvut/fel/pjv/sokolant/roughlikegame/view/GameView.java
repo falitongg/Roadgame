@@ -115,6 +115,11 @@ public class GameView{
         drawables.addAll(game.getObstacles());
         drawables.add(game.getPlayer());
 
+        System.out.println("---- SORTED DRAWABLES ----");
+        for (EntityDrawable d : drawables) {
+            System.out.println(d.getClass().getSimpleName() + ": " + d.getRenderY());
+        }
+
         drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
         for (EntityDrawable d : drawables) {
@@ -122,10 +127,6 @@ public class GameView{
         }
     }
 
-
-    //    public static void main(String[] args) {
-//        launch(args);
-//    }
     public void setupCanvasAndGraphics(){
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();

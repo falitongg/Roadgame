@@ -90,7 +90,7 @@ public class Game {
         Random rand = new Random();
 
         for (float x = startX; x <= endX; x += 150) {
-            if (rand.nextFloat() < 0.4f) {
+            if (rand.nextFloat() < 0.1f) {
 
                 Obstacle obstacle = new Obstacle(x, 0); // временно y = 0
 
@@ -98,8 +98,8 @@ public class Game {
                 float minY, maxY;
 
                 switch (obstacle.getType()) {
-                    case GARBAGE_BAG, ALCOHOL -> {
-                        minY = 467+120;
+                    case GARBAGE_BAG, CRUMPLED_PAPER, ALCOHOL -> {
+                        minY = 467+125;
                         maxY = 500+130;
                     }
                     case BOX, BOX_SMALL -> {
