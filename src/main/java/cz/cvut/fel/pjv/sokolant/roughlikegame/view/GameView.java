@@ -115,10 +115,10 @@ public class GameView{
         drawables.addAll(game.getObstacles());
         drawables.add(game.getPlayer());
 
-        System.out.println("---- SORTED DRAWABLES ----");
-        for (EntityDrawable d : drawables) {
-            System.out.println(d.getClass().getSimpleName() + ": " + d.getRenderY());
-        }
+//        System.out.println("---- SORTED DRAWABLES ----");
+//        for (EntityDrawable d : drawables) {
+//            System.out.println(d.getClass().getSimpleName() + ": " + d.getRenderY());
+//        }
 
         drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
