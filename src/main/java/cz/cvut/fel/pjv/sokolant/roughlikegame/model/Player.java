@@ -25,7 +25,7 @@ public class Player extends Entity implements EntityDrawable {
 
 
     private double lastStepX = -1;
-    private final double stepDistance = 25;
+    private double stepDistance = 25;
     private double lastStepY = -1;
 
     private int walkFrameIndex = 0;
@@ -179,6 +179,13 @@ public class Player extends Entity implements EntityDrawable {
         Image img;
 
         boolean isMoving = movingLeft || movingRight || currentDirection == Direction.UP || currentDirection == Direction.DOWN;
+        if (isSprinting) {
+            stepDistance = 66;
+        } else if (isCrouching) {
+            stepDistance = 75;
+        } else {
+            stepDistance = 25;
+        }
 
         if (isBlocking) {
             if (isMoving) {
