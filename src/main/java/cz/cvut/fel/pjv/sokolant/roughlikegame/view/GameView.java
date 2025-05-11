@@ -2,7 +2,6 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Enemy;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.EntityDrawable;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import javafx.scene.canvas.Canvas;
@@ -19,6 +18,8 @@ import java.util.List;
 
 
 public class GameView{
+    List<EntityDrawable> drawables = new ArrayList<>();
+
     private Canvas canvas;
     private GraphicsContext gc;
     private Game game;
@@ -38,8 +39,6 @@ public class GameView{
 
     private float chunkWidth = 1280;
     private float lastChunkX = 0;
-
-    List<EntityDrawable> drawables = new ArrayList<>();
 
     public void start(Stage stage) {
         initGame();
@@ -97,7 +96,7 @@ public class GameView{
     //posun kamery s hracem
     private void updateCamera() {
 //        System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX);
-//        System.out.println("playerY" + game.getPlayer().getY());
+        System.out.println("playerY" + game.getPlayer().getY());
         double newPlayerX = game.getPlayer().getX();
         if (newPlayerX > playerX) {
             camera.update(newPlayerX);
@@ -110,29 +109,24 @@ public class GameView{
         }
     }
 
-//    private void renderEntities() {
-//        game.getPlayer().render(gc, camera.getX());
-//        for (Enemy enemy : game.getEnemies()) {
-//            enemy.render(gc, camera.getX());
+    private void renderEntities() {
+        drawables.clear();
+        drawables.addAll(game.getEnemies());
+        drawables.addAll(game.getObstacles());
+        drawables.add(game.getPlayer());
+
+//        System.out.println("---- SORTED DRAWABLES ----");
+//        for (EntityDrawable d : drawables) {
+//            System.out.println(d.getClass().getSimpleName() + ": " + d.getRenderY());
 //        }
-//    }
-private void renderEntities() {
-    drawables.clear();
-    drawables.addAll(game.getEnemies());
-    drawables.add(game.getPlayer());
 
-    drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
+        drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
-    for (EntityDrawable d : drawables) {
-//        System.out.println(d.getClass().getSimpleName() + " Y=" + d.getRenderY());
-        d.render(gc, camera.getX());
+        for (EntityDrawable d : drawables) {
+            d.render(gc, camera.getX(), game.getPlayer());
+        }
     }
-}
 
-
-    //    public static void main(String[] args) {
-//        launch(args);
-//    }
     public void setupCanvasAndGraphics(){
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -150,15 +144,15 @@ private void renderEntities() {
     public void setupInputHandling(){
         InputHandler inputHandler = new InputHandler(game);
 
-        scene.setOnKeyPressed(event -> {
-            inputHandler.handleInput(event);
-        });
-        scene.setOnKeyReleased(event -> {
-            switch (event.getCode()){
-                case A -> game.getPlayer().setMovingLeft(false);
-                case D -> game.getPlayer().setMovingRight(false);
-            }
-        });
+        scene.setOnKeyPressed(inputHandler::handleInput);
+
+        scene.setOnKeyReleased(inputHandler::handleKeyReleased);
+
+        scene.setOnMousePressed(inputHandler::handleMousePressed);
+
+        scene.setOnMouseReleased(inputHandler::handleMouseReleased);
+
+
     }
     public int getWIDTH(){
         return WIDTH;

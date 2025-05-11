@@ -10,11 +10,13 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
 public class Game {
     private Player player;
     private List<Enemy> enemies;
+    private List<Obstacle> obstacles;
     private GameState currentState;
 
     public Game() {
         this.player = new Player();
         this.enemies = new ArrayList<>();
+        this.obstacles = new ArrayList<>();
         this.currentState = GameState.MENU;
     }
 
@@ -36,6 +38,7 @@ public class Game {
         for (Enemy enemy : enemies) {
             enemy.update(player); // AI of enemies
         }
+        enemies.removeIf(enemy -> !enemy.isAlive());
         if (!player.isAlive()) {
 //            endGame();
         }
@@ -64,22 +67,64 @@ public class Game {
     public void generateEnemies(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 200) {
-            if (rand.nextFloat() < 0.9f) {
-                EnemyType type = EnemyType.values()[rand.nextInt(EnemyType.values().length)];
-                float minY = 520;
-                float maxY = 620;
+            if (rand.nextFloat() < 0.3f) {
+
+                float minY = 467;
+                float maxY = 560;
                 float y = minY + rand.nextFloat() * (maxY - minY);
-                Enemy enemy = new Enemy(x, y, 100, 10, type);
-                spawnEnemy(enemy);
+
+                int typeIndex = rand.nextInt(2);
+
+                Enemy enemy = switch (typeIndex) {
+                    case 0 -> new DogEnemy(x, y);
+                    case 1 -> new ZombieEnemy(x, y); // (если добавишь ZombieEnemy позже)
+                    default -> null;
+                };
+                if (enemy != null) {
+                    spawnEnemy(enemy);
+                }
             }
         }
     }
     public void generateObstacles(float startX, float endX) {
-        float minY = 520;
-        float maxY = 620;
+        Random rand = new Random();
 
+        for (float x = startX; x <= endX; x += 150) {
+            if (rand.nextFloat() < 0.1f) {
+
+                Obstacle obstacle = new Obstacle(x, 0); // временно y = 0
+
+                // диапазон по типу
+                float minY, maxY;
+
+                switch (obstacle.getType()) {
+                    case GARBAGE_BAG, CRUMPLED_PAPER, ALCOHOL -> {
+                        minY = 467+125;
+                        maxY = 500+130;
+                    }
+                    case BOX, BOX_SMALL -> {
+                        minY = 600;
+                        maxY = 690;
+                    }
+                    default -> {
+                        minY = 580;
+                        maxY = 640;
+                    }
+                }
+
+                float y = minY + rand.nextFloat() * (maxY - minY);
+                obstacle.setY(y);
+
+                obstacles.add(obstacle);
+            }
+        }
     }
+
+
     public void generateEvents(float startX, float endX) {
 
+    }
+    public List<Obstacle> getObstacles() {
+        return obstacles;
     }
 }

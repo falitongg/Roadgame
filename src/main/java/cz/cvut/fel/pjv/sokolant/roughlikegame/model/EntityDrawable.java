@@ -4,6 +4,5 @@ import javafx.scene.canvas.GraphicsContext;
 
 public interface EntityDrawable {
     double getRenderY();
-    double getY();
-    void render(GraphicsContext gc, double cameraX);
+    void render(GraphicsContext gc, double cameraX, Player player);
 }
