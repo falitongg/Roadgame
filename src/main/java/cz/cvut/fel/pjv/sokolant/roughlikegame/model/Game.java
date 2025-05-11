@@ -69,8 +69,8 @@ public class Game {
         for (float x = startX; x <= endX; x += 200) {
             if (rand.nextFloat() < 0.3f) {
 
-                float minY = 480;
-                float maxY = 580;
+                float minY = 467;
+                float maxY = 560;
                 float y = minY + rand.nextFloat() * (maxY - minY);
 
                 int typeIndex = rand.nextInt(2);
@@ -88,20 +88,38 @@ public class Game {
     }
     public void generateObstacles(float startX, float endX) {
         Random rand = new Random();
-        float minY = 600;
-        float maxY = 700;
 
         for (float x = startX; x <= endX; x += 150) {
-            if (rand.nextFloat() < 0.3f) {
-                float y = minY + rand.nextFloat() * (maxY - minY);
-                float width = 60;
-                float height = 60;
+            if (rand.nextFloat() < 0.4f) {
 
-                Obstacle obstacle = new Obstacle(x, y);
+                Obstacle obstacle = new Obstacle(x, 0); // временно y = 0
+
+                // диапазон по типу
+                float minY, maxY;
+
+                switch (obstacle.getType()) {
+                    case GARBAGE_BAG, ALCOHOL -> {
+                        minY = 467+120;
+                        maxY = 500+130;
+                    }
+                    case BOX, BOX_SMALL -> {
+                        minY = 600;
+                        maxY = 690;
+                    }
+                    default -> {
+                        minY = 580;
+                        maxY = 640;
+                    }
+                }
+
+                float y = minY + rand.nextFloat() * (maxY - minY);
+                obstacle.setY(y);
+
                 obstacles.add(obstacle);
             }
         }
     }
+
 
     public void generateEvents(float startX, float endX) {
 

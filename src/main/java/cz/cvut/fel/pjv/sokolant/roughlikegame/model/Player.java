@@ -170,13 +170,6 @@ public class Player extends Entity implements EntityDrawable {
 
     }
 
-//    public void render(GraphicsContext gc, double cameraX) {
-//        gc.drawImage(playerImage, getX() - cameraX, getY(), 160, 200);
-//    }
-//
-//    public void render(GraphicsContext gc, double cameraX, Player player) {
-//        render(gc, cameraX); // просто вызов обычного render()
-//    }
     @Override
     public void render(GraphicsContext gc, double cameraX, Player player) {
         render(gc, cameraX);
@@ -267,13 +260,6 @@ public class Player extends Entity implements EntityDrawable {
     public void initImages(){
 
     }
-//    private Image getImageForCurrentState() {
-//        String direction = currentDirection.name().toLowerCase();
-//        String state = currentState.name().toLowerCase();
-//
-//        String path = String.format("/images/player/player1.png", direction, state); //temp
-//        return new Image(getClass().getResourceAsStream(path));
-//    }
     @Override
     public double getRenderY() {
         return getY();
@@ -329,13 +315,7 @@ public class Player extends Entity implements EntityDrawable {
             newX = (float) camera.getX();
         }
 
-
         if (newX < worldMinX) newX = worldMinX;
-
-//        // Omezit pohyb nahoru jen když není ve skoku
-//        if (onGround && newY < worldMinY) {
-//            newY = worldMinY;
-//        }
 
         if (newY > worldMaxY) newY = worldMaxY;
 

@@ -96,7 +96,7 @@ public class GameView{
     //posun kamery s hracem
     private void updateCamera() {
 //        System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX);
-//        System.out.println("playerY" + game.getPlayer().getY());
+        System.out.println("playerY" + game.getPlayer().getY());
         double newPlayerX = game.getPlayer().getX();
         if (newPlayerX > playerX) {
             camera.update(newPlayerX);
@@ -114,15 +114,6 @@ public class GameView{
         drawables.addAll(game.getEnemies());
         drawables.addAll(game.getObstacles());
         drawables.add(game.getPlayer());
-
-        for (EntityDrawable d : drawables) {
-            if (d instanceof cz.cvut.fel.pjv.sokolant.roughlikegame.model.Obstacle obstacle) {
-                if (obstacle.getImage() == null) {
-                    Image image = new Image(getClass().getResourceAsStream("/images/box tile 32x32 1.png"));
-                    obstacle.setImage(image);
-                }
-            }
-        }
 
         drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 
