@@ -37,24 +37,36 @@ public class Obstacle implements EntityDrawable {
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_16x16_3.png")),
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_16x16_4.png")),
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_16x16_5.png")),
-                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_16x16_6.png")),
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_16x16_7.png")),
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_16x16_8.png")),
-                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_16x16_9.png"))});
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_16x16_9.png"))}
+            );
 
-            imageMap.put(ObstacleType.ALCOHOL, new Image[] {
+            imageMap.put(ObstacleType.BOTTLE, new Image[] {
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/alcohol_1.png")),
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/alcohol_2.png")),
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/alcohol_3.png")),
-                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/alcohol_4.png"))
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/alcohol_4.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/water_bottle_clean.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/water_bottle_clean_small.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/water_bottle_crumpled.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/water_bottle_crumpled_small.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/water_bottle_dirty.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/water_bottle_dirty_small.png"))
+
             });
 
-            imageMap.put(ObstacleType.CRUMPLED_PAPER, new Image[] {
-                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/crumpled_paper_1.png"))
+            imageMap.put(ObstacleType.JUNK, new Image[] {
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/crumpled_paper_1.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/rotting_food.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/rotting_food_2.png"))
+
             });
             imageMap.put(ObstacleType.GARBAGE_BAG, new Image[] {
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/garbage_bag_1.png")),
-                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/garbage_bag_2.png"))
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/garbage_bag_1_i.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/garbage_bag_2.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/trash_assets/garbage_bag_2_i.png"))
             });
         }
 
@@ -85,7 +97,10 @@ public class Obstacle implements EntityDrawable {
 
     @Override
     public double getRenderY() {
-        return y - 120;
+        return switch (type) {
+            case BOX, GARBAGE_BAG -> y - 117;
+            default -> y - 140;
+        };
     }
 
 
