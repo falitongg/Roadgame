@@ -334,8 +334,9 @@ public class Player extends Entity implements EntityDrawable {
 
 
     public void jump() {
-        if (!onGround || isCrouching) return;
+        if (!onGround || isCrouching || stamina < 30f) return;
 
+        spendStamina(25f);
         lastGroundY = y;
         velocityY = jumpStrength;
 
