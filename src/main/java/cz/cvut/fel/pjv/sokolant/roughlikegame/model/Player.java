@@ -428,13 +428,21 @@ public class Player extends Entity implements EntityDrawable {
         if(armor != 0) {
             damageReductionFactor = 0.5f;
         }else {
-            damageReductionFactor = 1;
+            damageReductionFactor = 1f;
         }
         float effectiveDamage = amount * damageReductionFactor;
-        if(isBlocking) this.health -= 0;
-        else this.health -= effectiveDamage;
+        if(isBlocking){
+            this.health -= amount * 0.3f;
+            armor -= amount * 0.3f;
 
-        armor -= amount * 0.8f;
+        }
+        else{
+            this.health -= effectiveDamage;
+            armor -= amount * 0.8f;
+
+        }
+
+
         if (armor < 0) armor = 0;
 
         if (this.health <= 0) {
