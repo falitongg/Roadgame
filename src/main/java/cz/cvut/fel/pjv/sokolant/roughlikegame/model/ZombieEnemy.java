@@ -54,6 +54,7 @@ public class ZombieEnemy extends Enemy {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastAttackTime > 1000) {
                 player.takeDamage(this.damage);
+                attackAnimation(player);
                 lastAttackTime = currentTime;
             }
         }
@@ -68,6 +69,6 @@ public class ZombieEnemy extends Enemy {
         Image sprite = playerOnLeft ?
                 walkLeftFrames[walkFrameIndex] : walkRightFrames[walkFrameIndex];
 
-        gc.drawImage(sprite, (float) x - cameraX, (float) y);
+        gc.drawImage(sprite, (float) x + offsetX - cameraX, (float) y);
     }
 }

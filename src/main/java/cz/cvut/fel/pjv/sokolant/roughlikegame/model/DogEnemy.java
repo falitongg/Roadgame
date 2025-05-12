@@ -84,14 +84,11 @@ public class DogEnemy extends Enemy {
                     speed : -speed;
         }
 
-//        if (dy < -40) {
-//            this.y -= 10;
-//        }
-
         if (distance < 50) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastAttackTime > 1000) {
                 player.takeDamage(this.damage);
+                attackAnimation(player);
                 lastAttackTime = currentTime;
             }
         }
@@ -117,7 +114,7 @@ public class DogEnemy extends Enemy {
                     walkLeftFrames[walkFrameIndex % walkLeftFrames.length] : walkRightFrames[walkFrameIndex % walkRightFrames.length];
         }
 
-        gc.drawImage(spriteToDraw, (float) x - cameraX, (float) y);
+        gc.drawImage(spriteToDraw, (float) x + offsetX - cameraX, (float) y);
     }
     @Override
     public double getRenderY() {
