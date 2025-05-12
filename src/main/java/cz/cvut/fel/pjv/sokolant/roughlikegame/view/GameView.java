@@ -1,10 +1,8 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.model.EntityDrawable;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -17,6 +15,8 @@ import javafx.animation.AnimationTimer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType.DOG;
 
 
 public class GameView{
@@ -128,16 +128,18 @@ public class GameView{
         for (EntityDrawable d : drawables) {
             d.render(gc, camera.getX(), game.getPlayer());
         }
+        for (EntityDrawable d : drawables) {
+            if (d instanceof Enemy enemy && enemy.getHealth() > 0) {
+                drawEnemyHealthBar(gc, enemy, camera.getX());
+            }
+        }
+
     }
     private void drawPlayerHud(GraphicsContext gc, Player player, double cameraX) {
         double barWidth = 50;
         double barHeight = 6;
         double xOffset = player.getX() - cameraX + 80 - barWidth / 2;
         double yOffset = player.getY() + 40;
-
-        //Background
-//        gc.setFill(Color.DARKGRAY);
-//        gc.fillRect(xOffset + 47, yOffset, barWidth, barHeight);
 
         //Health
         double healthRatio = player.getHealth() / player.getMaxHealth();
@@ -159,6 +161,30 @@ public class GameView{
         gc.fillRect(xOffset, yOffset, barWidth, barHeight);
         gc.setFill(Color.CYAN);
         gc.fillRect(xOffset, yOffset, barWidth * staminaRatio, barHeight);
+    }
+    private void drawEnemyHealthBar(GraphicsContext gc, Enemy enemy, double cameraX) {
+        double barWidth;
+        double barHeight = 5;
+        double spacingAbove = 40;
+
+
+        if (enemy.getType() == EnemyType.DOG) {
+            spacingAbove += 50;
+            barWidth = 20;
+        }else barWidth = 40;
+
+        double xOffset = enemy.getX() - cameraX + 80 - barWidth / 2;
+        double yOffset = enemy.getY() + spacingAbove;
+
+        double healthRatio = enemy.getHealth() / enemy.getMaxHealth();
+
+        // Фон
+        gc.setFill(Color.DARKGRAY);
+        gc.fillRect(xOffset, yOffset, barWidth, barHeight);
+
+        // Полоса HP
+        gc.setFill(Color.RED);
+        gc.fillRect(xOffset, yOffset, barWidth * healthRatio, barHeight);
     }
 
     public void setupCanvasAndGraphics(){

@@ -1,5 +1,6 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -19,7 +20,8 @@ public class DogEnemy extends Enemy {
     private boolean isSprinting = false;
 
     public DogEnemy(float x, float y) {
-        super(x, y, 50, 10, 2.5f);
+        super(x, y, 50, 10, 2.5f, 50);
+        this.type = EnemyType.DOG;
         spriteRight= new Image(getClass().getResourceAsStream("/images/enemies/dog/dog_s1_r.png"));
         spriteLeft = new Image(getClass().getResourceAsStream("/images/enemies/dog/dog_s1_l.png"));
         walkRightFrames = new Image[] {
