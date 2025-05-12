@@ -132,22 +132,33 @@ public class GameView{
     private void drawPlayerHud(GraphicsContext gc, Player player, double cameraX) {
         double barWidth = 50;
         double barHeight = 6;
-        double xOffset = player.getX() - cameraX + 32 - barWidth / 2; // 32 — если ширина спрайта игрока = 64
+        double xOffset = player.getX() - cameraX + 80 - barWidth / 2;
         double yOffset = player.getY() + 40;
 
-        // Фон
-        gc.setFill(Color.DARKGRAY);
-        gc.fillRect(xOffset + 47, yOffset, barWidth, barHeight);
+        //Background
+//        gc.setFill(Color.DARKGRAY);
+//        gc.fillRect(xOffset + 47, yOffset, barWidth, barHeight);
 
-        // Здоровье
+        //Health
         double healthRatio = player.getHealth() / player.getMaxHealth();
+        gc.setFill(Color.DARKGRAY);
+        gc.fillRect(xOffset, yOffset-10, barWidth, barHeight);
         gc.setFill(Color.RED);
-        gc.fillRect(xOffset + 47, yOffset, barWidth * healthRatio, barHeight);
+        gc.fillRect(xOffset, yOffset - 10, barWidth * healthRatio, barHeight);
 
-        // Броня
-        double armorRatio = Math.min(1.0, player.getArmor() / 100.0);
+        //Armor
+        double armorRatio = player.getArmor() / 100.0;
+        gc.setFill(Color.DARKGRAY);
+        gc.fillRect(xOffset, yOffset - 20, barWidth, barHeight);
         gc.setFill(Color.BLUE);
-        gc.fillRect(xOffset + 47, yOffset - 2, barWidth * armorRatio, barHeight);
+        gc.fillRect(xOffset, yOffset - 20, barWidth * armorRatio, barHeight);
+
+        //Stamina
+        double staminaRatio = player.getStamina() / 100.0;
+        gc.setFill(Color.DARKGRAY);
+        gc.fillRect(xOffset, yOffset, barWidth, barHeight);
+        gc.setFill(Color.CYAN);
+        gc.fillRect(xOffset, yOffset, barWidth * staminaRatio, barHeight);
     }
 
     public void setupCanvasAndGraphics(){
