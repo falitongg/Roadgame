@@ -49,7 +49,11 @@ public class ZombieEnemy extends Enemy {
         }
 
         if (distance < 50) {
-            player.takeDamage(this.damage);
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastAttackTime > 1000) {
+                player.takeDamage(this.damage);
+                lastAttackTime = currentTime;
+            }
         }
     }
 

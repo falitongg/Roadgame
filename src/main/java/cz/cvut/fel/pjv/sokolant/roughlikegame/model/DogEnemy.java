@@ -86,8 +86,12 @@ public class DogEnemy extends Enemy {
 //            this.y -= 10;
 //        }
 
-        if (Math.sqrt(dx * dx + dy * dy) < 50) {
-            player.takeDamage(this.damage);
+        if (distance < 50) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastAttackTime > 1000) {
+                player.takeDamage(this.damage);
+                lastAttackTime = currentTime;
+            }
         }
 
         if (Math.abs(x - lastStepX) > stepDistance) {

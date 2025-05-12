@@ -7,6 +7,7 @@ public abstract class Enemy extends Entity implements EntityDrawable {
     protected float speed;
     protected Image spriteLeft;
     protected Image spriteRight;
+    protected long lastAttackTime = 0;
 
     public Enemy(float x, float y, float health, float damage, float speed) {
         super(x, y, health, damage);
