@@ -377,6 +377,15 @@ public class Player extends Entity implements EntityDrawable {
 
         double step = isCrouching ? 1.5 : (isSprinting ? 6 : 2.5);
 
+        if (isSprinting) {
+            spendStamina(0.8f);
+            if (stamina <= 0) {
+                setSprinting(false);
+            }
+        } else if (onGround && !isAttacking && !isBlocking) {
+            restoreStamina(0.4f);
+        }
+
         if (movingUp && onGround && y - step >= 467) dy -= step;
         if (movingDown) dy += step;
         if (movingLeft) dx -= step;
