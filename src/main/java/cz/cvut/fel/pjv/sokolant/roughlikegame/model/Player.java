@@ -83,6 +83,7 @@ public class Player extends Entity implements EntityDrawable {
     private final double jumpStrength = -18; //pocatecny vystrel vzhuru
     private boolean onGround = true; //zda je na zemi
     private double velocityX = 0; //horizontalni rychlost
+    private float maxHealth = 100f;
 
 
     // Úroveň země
@@ -458,6 +459,12 @@ public class Player extends Entity implements EntityDrawable {
             }
         }
     }
+    public void restoreHealth(float amount) {
+        this.health += amount;
+        if (this.health > maxHealth) {
+            this.health = maxHealth;
+        }
+    }
 
     public void setBlocking(boolean blocking) {
         if (isSprinting && blocking) {
@@ -486,5 +493,8 @@ public class Player extends Entity implements EntityDrawable {
     public void setMovingUp(boolean movingUp) { this.movingUp = movingUp; }
     public void setMovingDown(boolean movingDown) { this.movingDown = movingDown; }
 
+    public void setMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
+    }
 }
 
