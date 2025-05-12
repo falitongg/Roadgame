@@ -84,7 +84,7 @@ public class Player extends Entity implements EntityDrawable {
     private boolean onGround = true; //zda je na zemi
     private double velocityX = 0; //horizontalni rychlost
     private float maxHealth = 100f;
-
+    float damageReductionFactor;
 
     // Úroveň země
     private double lastGroundY = 530;
@@ -107,7 +107,7 @@ public class Player extends Entity implements EntityDrawable {
         this.stamina = stamina;
     }
     public Player() {
-        this(100, 500, 100, 100, new Inventory(), 1.0f, 0, 10, 0, 0, 100);
+        this(100, 500, 100, 100, new Inventory(), 1.0f, 0, 100, 0, 0, 100);
 //        this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"));
         this.currentDirection = Direction.RIGHT;
         this.playerImageLeft = new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png"));
@@ -419,13 +419,16 @@ public class Player extends Entity implements EntityDrawable {
         //TODO реализовать функцию использования предмета
     }
     public void takeDamage(float amount) {
-        float damageReductionFactor = 0.3f; // броня снижает 30% урона
-        float effectiveDamage = amount * (1 - damageReductionFactor);
+        if(armor != 0) {
+            damageReductionFactor = 0.5f;
+        }else {
+            damageReductionFactor = 1;
+        }
+        float effectiveDamage = amount * damageReductionFactor;
 
         this.health -= effectiveDamage;
 
-        // Износ брони: уменьшается на 10% от исходного урона
-        armor -= amount * 0.1f;
+        armor -= amount * 0.8f;
         if (armor < 0) armor = 0;
 
         if (this.health <= 0) {
