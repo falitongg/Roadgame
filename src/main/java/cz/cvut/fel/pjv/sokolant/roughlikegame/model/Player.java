@@ -2,11 +2,15 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
 
 import java.util.List;
+
+import static javafx.util.Duration.millis;
 
 
 public class Player extends Entity implements EntityDrawable {
@@ -50,7 +54,8 @@ public class Player extends Entity implements EntityDrawable {
     private Image playerImageJumpLeft;
     private Image playerImageBlockingRight;
     private Image playerImageBlockingLeft;
-
+    private Image damageEffect;
+    private Image lightingDecrEffect;
 
 
     private Image playerAttackLeft;
@@ -107,7 +112,7 @@ public class Player extends Entity implements EntityDrawable {
         this.stamina = stamina;
     }
     public Player() {
-        this(100, 500, 100, 100, new Inventory(), 1.0f, 0, 100, 0, 0, 100);
+        this(100, 500, 100, 33, new Inventory(), 1.0f, 0, 100, 0, 0, 100);
 //        this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"));
         this.currentDirection = Direction.RIGHT;
         this.playerImageLeft = new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png"));
@@ -119,6 +124,8 @@ public class Player extends Entity implements EntityDrawable {
         playerImageBlockingRight = new Image(getClass().getResourceAsStream("/images/player/player_blocking_right.png"));
         playerImageBlockingLeft = new Image(getClass().getResourceAsStream("/images/player/player_blocking_left.png"));
 
+        damageEffect = new Image(getClass().getResourceAsStream("/images/effects/heart_decr.png"));
+        lightingDecrEffect = new Image(getClass().getResourceAsStream("/images/effects/red_lighting.png"));
 
         walkRightFrames = new Image[]{
                 new Image(getClass().getResourceAsStream("/images/player/player_step1_r.png")),
@@ -179,6 +186,16 @@ public class Player extends Entity implements EntityDrawable {
     public void render(GraphicsContext gc, double cameraX) {
         Image img;
 
+        if (isFlashing) {
+            gc.setGlobalAlpha(0.6);
+            gc.drawImage(damageEffect, getX() - cameraX + 5, getY() + 10, 50, 50); // подгони под спрайт
+            gc.setGlobalAlpha(1.0);
+        }
+        else if (stamina < 20f) {
+            gc.setGlobalAlpha(0.5);
+            gc.drawImage(lightingDecrEffect, getX() - cameraX + 5, getY() + 5, 48, 48);
+            gc.setGlobalAlpha(1.0);
+        }
         boolean isMoving = movingLeft || movingRight || currentDirection == Direction.UP || currentDirection == Direction.DOWN;
         if (isSprinting) {
             stepDistance = 100;
@@ -430,6 +447,8 @@ public class Player extends Entity implements EntityDrawable {
         //TODO реализовать функцию использования предмета
     }
     public void takeDamage(float amount) {
+        flash();
+
         if(armor != 0) {
             damageReductionFactor = 0.5f;
         }else {
@@ -466,9 +485,9 @@ public class Player extends Entity implements EntityDrawable {
         spendStamina(10f);
         isAttacking = true;
 
-        new javafx.animation.Timeline(
-                new javafx.animation.KeyFrame(
-                        javafx.util.Duration.millis(200),
+        new Timeline(
+                new KeyFrame(
+                        millis(200),
                         e -> isAttacking = false
                 )
         ).play();
@@ -479,6 +498,7 @@ public class Player extends Entity implements EntityDrawable {
             double distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance <= ATTACK_RANGE) {
+                flash();
                 enemy.takeDamage(this.getDamage());
                 break;
             }

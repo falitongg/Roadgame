@@ -1,10 +1,19 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.image.Image;
+import javafx.util.Duration;
+
+import java.sql.Time;
+
 public abstract class Entity {
     protected double x;
     protected double y;
     protected float health;
     protected float damage;
+
+    protected boolean isFlashing = false;
 
     public Entity(float x, float y, float health, float damage) {
         this.x = x;
@@ -59,5 +68,13 @@ public abstract class Entity {
     public void move(float dx, float dy) {
         this.x += dx;
         this.y += dy;
+    }
+    public void flash(){
+        isFlashing = true;
+        new Timeline(
+                new KeyFrame(
+                        Duration.millis(200), e -> isFlashing = false
+                )
+        ).play();
     }
 }
