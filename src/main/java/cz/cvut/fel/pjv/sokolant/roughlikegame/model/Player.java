@@ -350,10 +350,6 @@ public class Player extends Entity implements EntityDrawable {
 
         onGround = false;
     }
-    //sprint function
-    public void sprint(Direction direction) {
-        //TODO реализовать бег игрока
-    }
     //permadeath function
     public void die() {
         //TODO реализовать смерть игрока как конец игры
@@ -448,10 +444,13 @@ public class Player extends Entity implements EntityDrawable {
     }
     public void attack(List<Enemy> enemies) {
 
+        if (stamina < 20f) return;
+
         if (isBlocking) {
             isBlocking = false;
         }
 
+        spendStamina(10f);
         isAttacking = true;
 
         new javafx.animation.Timeline(
