@@ -180,7 +180,7 @@ public class Player extends Entity implements EntityDrawable {
 
         boolean isMoving = movingLeft || movingRight || currentDirection == Direction.UP || currentDirection == Direction.DOWN;
         if (isSprinting) {
-            stepDistance = 66;
+            stepDistance = 100;
         } else if (isCrouching) {
             stepDistance = 75;
         } else {
@@ -418,7 +418,15 @@ public class Player extends Entity implements EntityDrawable {
         //TODO реализовать функцию использования предмета
     }
     public void takeDamage(float amount) {
-        this.health -= amount;
+        float damageReductionFactor = 0.3f; // броня снижает 30% урона
+        float effectiveDamage = amount * (1 - damageReductionFactor);
+
+        this.health -= effectiveDamage;
+
+        // Износ брони: уменьшается на 10% от исходного урона
+        armor -= amount * 0.1f;
+        if (armor < 0) armor = 0;
+
         if (this.health <= 0) {
             this.health = 0;
             die();
