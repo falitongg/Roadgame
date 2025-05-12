@@ -4,7 +4,9 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.EntityDrawable;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -92,6 +94,7 @@ public class GameView{
         gc.clearRect(0, 0, WIDTH, HEIGHT);
         renderBackground();
         renderEntities();
+        drawPlayerHud(gc, game.getPlayer(), camera.getX());
     }
     //posun kamery s hracem
     private void updateCamera() {
@@ -125,6 +128,26 @@ public class GameView{
         for (EntityDrawable d : drawables) {
             d.render(gc, camera.getX(), game.getPlayer());
         }
+    }
+    private void drawPlayerHud(GraphicsContext gc, Player player, double cameraX) {
+        double barWidth = 50;
+        double barHeight = 6;
+        double xOffset = player.getX() - cameraX + 32 - barWidth / 2; // 32 — если ширина спрайта игрока = 64
+        double yOffset = player.getY() + 40;
+
+        // Фон
+        gc.setFill(Color.DARKGRAY);
+        gc.fillRect(xOffset + 47, yOffset, barWidth, barHeight);
+
+        // Здоровье
+        double healthRatio = player.getHealth() / player.getMaxHealth();
+        gc.setFill(Color.RED);
+        gc.fillRect(xOffset + 47, yOffset, barWidth * healthRatio, barHeight);
+
+        // Броня
+        double armorRatio = Math.min(1.0, player.getArmor() / 100.0);
+        gc.setFill(Color.BLUE);
+        gc.fillRect(xOffset + 47, yOffset - 2, barWidth * armorRatio, barHeight);
     }
 
     public void setupCanvasAndGraphics(){

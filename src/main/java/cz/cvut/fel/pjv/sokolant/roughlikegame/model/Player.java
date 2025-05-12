@@ -496,5 +496,18 @@ public class Player extends Entity implements EntityDrawable {
     public void setMaxHealth(float maxHealth) {
         this.maxHealth = maxHealth;
     }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+
+    public float getArmor() {
+        return armor;
+    }
+
 }
 
