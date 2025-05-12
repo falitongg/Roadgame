@@ -1,5 +1,6 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -15,7 +16,8 @@ public class ZombieEnemy extends Enemy {
     private final double stepDistance = 30;
 
     public ZombieEnemy(float x, float y) {
-        super(x, y, 100, 15, 1.0f); // медленный, но живучий
+        super(x, y, 100, 15, 1.0f, 100);
+        this.type = EnemyType.ZOMBIE;
         this.zombieRight = new Image(getClass().getResourceAsStream("/images/enemies/zombie/zombie_right.png"));
         this.zombieLeft = new Image(getClass().getResourceAsStream("/images/enemies/zombie/zombie_left.png"));
 
