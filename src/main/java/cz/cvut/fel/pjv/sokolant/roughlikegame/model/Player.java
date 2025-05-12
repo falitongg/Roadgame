@@ -469,6 +469,19 @@ public class Player extends Entity implements EntityDrawable {
         }
     }
 
+    public void restoreStamina(float amount) {
+        this.stamina += amount;
+        if (this.stamina > 100f) {
+            this.stamina = 100f;
+        }
+    }
+
+    public void spendStamina(float amount) {
+        this.stamina -= amount;
+        if (this.stamina < 0f) {
+            this.stamina = 0f;
+        }
+    }
     public void setBlocking(boolean blocking) {
         if (isSprinting && blocking) {
             return;
@@ -511,6 +524,8 @@ public class Player extends Entity implements EntityDrawable {
     public float getArmor() {
         return armor;
     }
-
+    public float getStamina() {
+        return stamina;
+    }
 }
 
