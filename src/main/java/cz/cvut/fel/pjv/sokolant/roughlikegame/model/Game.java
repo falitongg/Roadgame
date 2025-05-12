@@ -30,7 +30,6 @@ public class Game {
 
     public void startGame(){
         currentState = GameState.PLAYING;
-        //TODO логика инициализации мира, врагов и т. п
     }
     public void update() {
         if (currentState != GameState.PLAYING) return;
@@ -40,9 +39,8 @@ public class Game {
         }
         enemies.removeIf(enemy -> !enemy.isAlive());
         if (!player.isAlive()) {
-//            endGame();
+            endGame();
         }
-        //TODO логика тиков, проверка столкновений и урона от врагов
     }
     public GameState getState() {
         return currentState;

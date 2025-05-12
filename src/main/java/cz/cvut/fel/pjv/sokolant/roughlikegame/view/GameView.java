@@ -3,8 +3,12 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -42,6 +46,11 @@ public class GameView{
     private float chunkWidth = 1280;
     private float lastChunkX = 0;
 
+    private long gameOverStartTime = 0;
+    private boolean transitionScheduled = false;
+    private Runnable returnToMenuCallback;
+    private AnimationTimer gameLoop;
+
     public void start(Stage stage) {
         initGame();
         initUI(stage);
@@ -71,12 +80,14 @@ public class GameView{
         stage.show();
     }
 
+
     private void startGameLoop() {
-        AnimationTimer timer = new AnimationTimer() {
+        gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 game.update();
                 updateCamera();
+
                 if (playerX + WIDTH > lastChunkX) {
                     float newChunkStart = lastChunkX;
                     float newChunkEnd = newChunkStart + chunkWidth;
@@ -84,21 +95,58 @@ public class GameView{
                     lastChunkX = newChunkEnd;
                 }
 
+                if (game.getState() == GameState.GAME_OVER && !transitionScheduled) {
+                    gameOverStartTime = System.currentTimeMillis();
+                    transitionScheduled = true;
+                }
+
                 render();
+
+                if (transitionScheduled) {
+                    long nowMillis = System.currentTimeMillis();
+                    if (nowMillis - gameOverStartTime >= 5000) {
+                        transitionScheduled = false;
+                        gameLoop.stop();
+                        if (returnToMenuCallback != null) {
+                            returnToMenuCallback.run();
+                        }
+                    }
+                }
             }
         };
-        timer.start();
+        gameLoop.start();
     }
+
+
 
     private void render() {
         gc.clearRect(0, 0, WIDTH, HEIGHT);
         renderBackground();
         renderEntities();
         drawPlayerHud(gc, game.getPlayer(), camera.getX());
+
+        if (game.getState() == GameState.GAME_OVER) {
+            gc.setGlobalAlpha(0.9);
+            gc.setFill(Color.BLACK);
+            gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            gc.setGlobalAlpha(1.0);
+
+            String text = "DEAD";
+            gc.setFill(Color.RED);
+            gc.setFont(Font.font("Impact", FontWeight.BOLD, 96));
+
+            Text tempText = new Text(text);
+            tempText.setFont(gc.getFont());
+            double textWidth = tempText.getLayoutBounds().getWidth();
+
+            gc.fillText(text, (canvas.getWidth() - textWidth) / 2, canvas.getHeight() / 2);
+        }
     }
+
     //posun kamery s hracem
     private void updateCamera() {
-//        System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX);
+//        System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX)
+        System.out.println(getHEIGHT());
         System.out.println("playerY" + game.getPlayer().getY());
         double newPlayerX = game.getPlayer().getX();
         if (newPlayerX > playerX) {
@@ -214,11 +262,18 @@ public class GameView{
 
 
     }
+
     public int getWIDTH(){
         return WIDTH;
     }
+
     public int getHEIGHT(){
         return HEIGHT;
     }
+
+    public void setReturnToMenuCallback(Runnable callback) {
+        this.returnToMenuCallback = callback;
+    }
+
 }
 

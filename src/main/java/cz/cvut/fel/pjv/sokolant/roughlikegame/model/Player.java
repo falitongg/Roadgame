@@ -64,11 +64,10 @@ public class Player extends Entity implements EntityDrawable {
 
     private Camera camera;
     private Image playerImage;
-    GameView view = new GameView();
 
     private float worldMinX = -60;
     private float worldMinY = 480;
-    private float worldMaxY = view.getHEIGHT()-160;
+    private float worldMaxY = 720-160;
 
     private boolean isAttacking = false;
 
