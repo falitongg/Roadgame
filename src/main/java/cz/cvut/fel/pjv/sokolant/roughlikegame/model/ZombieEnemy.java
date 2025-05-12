@@ -68,7 +68,12 @@ public class ZombieEnemy extends Enemy {
 
         Image sprite = playerOnLeft ?
                 walkLeftFrames[walkFrameIndex] : walkRightFrames[walkFrameIndex];
-
+        if (isFlashing) {
+            gc.setGlobalBlendMode(javafx.scene.effect.BlendMode.GREEN);
+        }
         gc.drawImage(sprite, (float) x + offsetX - cameraX, (float) y);
+        if (isFlashing) {
+            gc.setGlobalBlendMode(javafx.scene.effect.BlendMode.SRC_OVER); // вернуть обычный режим
+        }
     }
 }

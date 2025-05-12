@@ -2,6 +2,7 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 
 public class DogEnemy extends Enemy {
@@ -113,8 +114,13 @@ public class DogEnemy extends Enemy {
             spriteToDraw = playerOnLeft ?
                     walkLeftFrames[walkFrameIndex % walkLeftFrames.length] : walkRightFrames[walkFrameIndex % walkRightFrames.length];
         }
-
+        if (isFlashing) {
+            gc.setGlobalBlendMode(BlendMode.RED);
+        }
         gc.drawImage(spriteToDraw, (float) x + offsetX - cameraX, (float) y);
+        if (isFlashing) {
+            gc.setGlobalBlendMode(BlendMode.SRC_OVER);
+        }
     }
     @Override
     public double getRenderY() {

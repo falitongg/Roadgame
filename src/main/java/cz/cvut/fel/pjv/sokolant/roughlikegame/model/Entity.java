@@ -23,7 +23,11 @@ public abstract class Entity {
     }//decreases  the entity's health
     public void takeDamage(float amount) {
         health -= amount;
-        if (health < 0) health = 0;
+        flash();
+        if (this.health < 0) {
+            this.health = 0;
+            // TODO: die();
+        }
     }
 
     public boolean isAlive() {
