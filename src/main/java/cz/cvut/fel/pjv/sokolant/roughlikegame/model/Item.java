@@ -3,31 +3,25 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 
 public class Item {
-    private String itemName;
-    private String itemDescription;
-    private ItemType itemType;  //Category from ItemType
-    private float effectValue;
+    private String name;
+    private ItemType type;  //Category from ItemType
+    public int price;
+    public Item(String name, ItemType type, int price) {
+        this.name = name;
+        this.type = type;
 
-    public Item(String itemName, String itemDescription, ItemType itemType, float effectValue) {
-        this.itemName = itemName;
-        this.itemDescription = itemDescription;
-        this.itemType = itemType;
-        this.effectValue = effectValue;
     }
 
     public String getItemName() {
-        return itemName;
-    }
-
-    public String getItemDescription() {
-        return itemDescription;
+        return name;
     }
 
     public ItemType getItemType() {
-        return itemType;
+        return type;
     }
 
-    public float getEffectValue() {
-        return effectValue;
+    public int getPrice() {
+        return price;
     }
+
 }
