@@ -22,6 +22,54 @@ public class Obstacle implements EntityDrawable {
         this.x = x;
         this.y = y;
 
+        initImages();
+
+        ObstacleType[] types = ObstacleType.values();
+        this.type = types[random.nextInt(types.length)];
+
+        imageAppearance();
+    }
+    public Obstacle(float x, float y, ObstacleType type) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        initImages();
+        imageAppearance();
+
+    }
+
+    public ObstacleType getType() {
+        return type;
+    }
+
+    public float getX() { return x; }
+    public float getY() { return y; }
+    public float getWidth() { return width; }
+    public float getHeight() { return height; }
+
+    @Override
+    public double getRenderY() {
+        return switch (type) {
+            case BOX, GARBAGE_BAG -> y - 117;
+            default -> y - 140;
+        };
+    }
+
+
+
+
+
+    @Override
+    public void render(GraphicsContext gc, double cameraX, Player player) {
+        gc.drawImage(image, x - cameraX, y, width, height);
+
+
+    }
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void initImages(){
         if (imageMap.isEmpty()) {
             imageMap.put(ObstacleType.BOX, new Image[] {
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/box_tile_32x32_1.png")),
@@ -69,9 +117,8 @@ public class Obstacle implements EntityDrawable {
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/garbage_bag_2_i.png"))
             });
         }
-
-        ObstacleType[] types = ObstacleType.values();
-        this.type = types[random.nextInt(types.length)];
+    }
+    public void imageAppearance(){
 
         Image[] options = imageMap.get(type);
         this.image = options[random.nextInt(options.length)];
@@ -85,37 +132,4 @@ public class Obstacle implements EntityDrawable {
             this.height += 20;
         }
     }
-
-    public ObstacleType getType() {
-        return type;
-    }
-
-    public float getX() { return x; }
-    public float getY() { return y; }
-    public float getWidth() { return width; }
-    public float getHeight() { return height; }
-
-    @Override
-    public double getRenderY() {
-        return switch (type) {
-            case BOX, GARBAGE_BAG -> y - 117;
-            default -> y - 140;
-        };
-    }
-
-
-
-
-
-    @Override
-    public void render(GraphicsContext gc, double cameraX, Player player) {
-        gc.drawImage(image, x - cameraX, y, width, height);
-
-
-    }
-    public void setY(float y) {
-        this.y = y;
-    }
-
-
 }

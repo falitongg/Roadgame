@@ -36,8 +36,7 @@ public class GameStateLoader {
             // loads obstacles
             game.getObstacles().clear();
             for (ObstacleData od : snapshot.obstacles) {
-                Obstacle obstacle = new Obstacle((float) od.x, (float) od.y);
-                // Переопределение типа напрямую пока не реализуем (Obstacle сам рандомит)
+                Obstacle obstacle = new Obstacle((float) od.x, (float) od.y, ObstacleType.valueOf(od.type));
                 game.getObstacles().add(obstacle);
             }
 
