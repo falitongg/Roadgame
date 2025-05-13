@@ -1,0 +1,48 @@
+package cz.cvut.fel.pjv.sokolant.roughlikegame.data;
+
+import com.google.gson.Gson;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ObstacleType;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+public class GameStateLoader {
+
+    public static void loadGame(Game game, String filename) {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(filename)) {
+            GameSnapshot snapshot = gson.fromJson(reader, GameSnapshot.class);
+
+            // loads player
+            Player player = game.getPlayer();
+            player.setX(snapshot.player.x);
+            player.setY(snapshot.player.y);
+            player.setHealth(snapshot.player.health);
+            // inventory пока не трогаем
+
+            // loads enemies
+            game.getEnemies().clear();
+            for (EnemyData ed : snapshot.enemies) {
+                Enemy enemy = switch (EnemyType.valueOf(ed.type)) {
+                    case DOG -> new DogEnemy((float) ed.x, (float) ed.y);
+                    case ZOMBIE -> new ZombieEnemy((float) ed.x, (float) ed.y);
+                };
+                enemy.setHealth(ed.health);
+                game.spawnEnemy(enemy);
+            }
+
+            // loads obstacles
+            game.getObstacles().clear();
+            for (ObstacleData od : snapshot.obstacles) {
+                Obstacle obstacle = new Obstacle((float) od.x, (float) od.y);
+                // Переопределение типа напрямую пока не реализуем (Obstacle сам рандомит)
+                game.getObstacles().add(obstacle);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

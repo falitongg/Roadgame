@@ -2,10 +2,8 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-import java.sql.Time;
 
 public abstract class Entity {
     protected double x;

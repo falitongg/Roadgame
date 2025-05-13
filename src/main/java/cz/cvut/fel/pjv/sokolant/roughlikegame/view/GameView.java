@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.view;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.controller.InputHandler;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateSaver;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
@@ -226,11 +227,11 @@ public class GameView{
 
         double healthRatio = enemy.getHealth() / enemy.getMaxHealth();
 
-        // Фон
+        // bg
         gc.setFill(Color.DARKGRAY);
         gc.fillRect(xOffset, yOffset, barWidth, barHeight);
 
-        // Полоса HP
+        // hp
         gc.setFill(Color.RED);
         gc.fillRect(xOffset, yOffset, barWidth * healthRatio, barHeight);
     }
