@@ -22,6 +22,8 @@ public abstract class Enemy extends Entity implements EntityDrawable {
         super(x, y, health, damage);
         this.speed = speed;
         this.maxHealth = maxHealth;
+        this.width = 160;
+
     }
 
     public abstract void update(Player player);
@@ -44,6 +46,7 @@ public abstract class Enemy extends Entity implements EntityDrawable {
     public void setMaxHealth(float maxHealth) {
         this.maxHealth = maxHealth;
     }
+
     public void attackAnimation(Player player) {
         this.offsetX = (player.getX() < this.x) ? -15 : 15;
 

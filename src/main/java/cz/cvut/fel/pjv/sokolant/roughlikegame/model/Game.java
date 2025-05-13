@@ -31,13 +31,18 @@ public class Game {
     public void startGame(){
         currentState = GameState.PLAYING;
     }
-    public void update() {
+    public void update(double cameraX) {
         if (currentState != GameState.PLAYING) return;
         player.update();
         for (Enemy enemy : enemies) {
             enemy.update(player); // AI of enemies
         }
-        enemies.removeIf(enemy -> !enemy.isAlive());
+        enemies.removeIf(enemy ->
+                !enemy.isAlive() || enemy.getX() + enemy.getWidth() < cameraX - 500
+        );
+        obstacles.removeIf(obstacle ->
+                obstacle.getX() + obstacle.getWidth() < cameraX - 200
+        );
         if (!player.isAlive()) {
             endGame();
         }

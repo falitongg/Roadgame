@@ -85,7 +85,7 @@ public class GameView{
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                game.update();
+                game.update(camera.getX());
                 updateCamera();
 
                 if (playerX + WIDTH > lastChunkX) {

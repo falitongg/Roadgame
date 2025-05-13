@@ -12,6 +12,8 @@ public abstract class Entity {
     protected double y;
     protected float health;
     protected float damage;
+    protected float width;
+
 
     protected boolean isFlashing = false;
 
@@ -81,4 +83,8 @@ public abstract class Entity {
                 )
         ).play();
     }
+    public float getWidth() {
+        return width;
+    }
+
 }
