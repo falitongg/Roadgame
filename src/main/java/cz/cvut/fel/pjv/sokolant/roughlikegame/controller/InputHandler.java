@@ -2,8 +2,10 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.controller;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateLoader;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateSaver;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -11,8 +13,13 @@ import javafx.scene.input.MouseEvent;
 
 public class InputHandler {
     private final Game game;
-    public InputHandler(Game game) {
+    private final Camera camera;
+    private final GameView gameView;
+
+    public InputHandler(Game game, Camera camera, GameView gameView) {
         this.game = game;
+        this.camera = camera;
+        this.gameView = gameView;
     }
     public void handleInput(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
@@ -23,8 +30,11 @@ public class InputHandler {
             case SPACE -> game.getPlayer().jump();
             case SHIFT -> game.getPlayer().setSprinting(true);
             case CONTROL -> game.getPlayer().setCrouching(true);
-            case F5 -> GameStateSaver.saveGame(game, "save.json");
-            case F9 -> GameStateLoader.loadGame(game, "save.json");
+            case F5 -> GameStateSaver.saveGame(game, "save.json", camera.getX());
+            case F9 ->{
+                GameStateLoader.loadGame(game, "save.json", camera);
+                gameView.resetAfterLoad();
+            }
 
         }
     }

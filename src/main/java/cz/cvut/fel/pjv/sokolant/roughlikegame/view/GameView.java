@@ -44,8 +44,6 @@ public class GameView{
     private double screenCenter = WIDTH / 2.0;
     private double playerX;
 
-    private float chunkWidth = 1280;
-    private float lastChunkX = 0;
 
     private long gameOverStartTime = 0;
     private boolean transitionScheduled = false;
@@ -89,12 +87,13 @@ public class GameView{
                 game.update(camera.getX());
                 updateCamera();
 
-                if (playerX + WIDTH > lastChunkX) {
-                    float newChunkStart = lastChunkX;
-                    float newChunkEnd = newChunkStart + chunkWidth;
+                if (playerX + WIDTH > game.getLastChunkX()) {
+                    float newChunkStart = game.getLastChunkX();
+                    float newChunkEnd = newChunkStart + WIDTH;
                     game.generateChunk(newChunkStart, newChunkEnd);
-                    lastChunkX = newChunkEnd;
+                    game.setLastChunkX(newChunkEnd);
                 }
+
 
                 if (game.getState() == GameState.GAME_OVER && !transitionScheduled) {
                     gameOverStartTime = System.currentTimeMillis();
@@ -251,7 +250,7 @@ public class GameView{
         stage.setScene(scene);
     }
     public void setupInputHandling(){
-        InputHandler inputHandler = new InputHandler(game);
+        InputHandler inputHandler = new InputHandler(game, camera, this);
 
         scene.setOnKeyPressed(inputHandler::handleInput);
 
@@ -275,6 +274,9 @@ public class GameView{
     public void setReturnToMenuCallback(Runnable callback) {
         this.returnToMenuCallback = callback;
     }
-
+    public void resetAfterLoad() {
+        this.playerX = game.getPlayer().getX();
+        camera.update(playerX);
+    }
 }
 

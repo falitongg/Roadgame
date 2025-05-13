@@ -7,11 +7,10 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GameStateSaver {
 
-    public static void saveGame(Game game, String filename) {
+    public static void saveGame(Game game, String filename, double cameraX) {
         GameSnapshot snapshot = new GameSnapshot();
 
         // saves player
@@ -32,6 +31,7 @@ public class GameStateSaver {
             ed.y = enemy.getY();
             ed.health = enemy.getHealth();
             snapshot.enemies.add(ed);
+            snapshot.cameraX = cameraX;
         }
 
         // saves obstacles
@@ -42,6 +42,7 @@ public class GameStateSaver {
             od.x = o.getX();
             od.y = o.getY();
             snapshot.obstacles.add(od);
+            snapshot.lastChunkX = game.getLastChunkX();
         }
 
         // writes to the file

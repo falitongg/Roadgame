@@ -127,7 +127,7 @@ public class Obstacle implements EntityDrawable {
         this.height = (float) image.getHeight() + 5;
 
         if (type == ObstacleType.GARBAGE_BAG) {
-            this.y -= 10;
+//            this.y -= 10;
             this.width += 20;
             this.height += 20;
         }

@@ -6,5 +6,7 @@ public class GameSnapshot {
     public PlayerData player;
     public List<EnemyData> enemies;
     public List<ObstacleData> obstacles;
+    public float lastChunkX;
+    public double cameraX;
 }
 

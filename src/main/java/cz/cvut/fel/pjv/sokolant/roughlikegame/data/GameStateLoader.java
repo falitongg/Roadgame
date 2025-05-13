@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class GameStateLoader {
 
-    public static void loadGame(Game game, String filename) {
+    public static void loadGame(Game game, String filename, Camera camera) {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader(filename)) {
             GameSnapshot snapshot = gson.fromJson(reader, GameSnapshot.class);
@@ -39,6 +39,10 @@ public class GameStateLoader {
                 Obstacle obstacle = new Obstacle((float) od.x, (float) od.y, ObstacleType.valueOf(od.type));
                 game.getObstacles().add(obstacle);
             }
+
+            game.setLastChunkX(snapshot.lastChunkX);
+            camera.setX(snapshot.cameraX);
+
 
         } catch (IOException e) {
             e.printStackTrace();

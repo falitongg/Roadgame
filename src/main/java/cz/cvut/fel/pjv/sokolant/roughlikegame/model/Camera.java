@@ -32,4 +32,8 @@ public void update(double playerX) {
     public double getX() {
         return cameraX;
     }
+
+    public void setX(double cameraX) {
+        this.cameraX = cameraX;
+    }
 }
