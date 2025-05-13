@@ -78,6 +78,7 @@ public class Player extends Entity implements EntityDrawable {
     private float radiation; // Radiation level — causes damage over time
     private float speed;//Affects movement speed, may vary depending on the player's state (e.g. 0 stamina - temporary inability to move).
     private final Inventory inventory;
+    private int money;
     private Direction currentDirection = Direction.DOWN;
     private VisualState currentState = VisualState.IDLE;
 
@@ -100,18 +101,19 @@ public class Player extends Entity implements EntityDrawable {
     }
 
 
-    public Player(float x, float y, float health, float damage, Inventory inventory, float speed, float radiation, float armor, float hunger, float thirst, float stamina) {
+    public Player(float x, float y, float health, float damage, Inventory inventory, float speed,  float armor, float stamina, int money) {
         super(x, y, health, damage);
         this.inventory = inventory;
         this.speed = speed;
-        this.radiation = radiation;
+//        this.radiation = radiation;
         this.armor = armor;
-        this.hunger = hunger;
-        this.thirst = thirst;
+//        this.hunger = hunger;
+//        this.thirst = thirst;
         this.stamina = stamina;
+        this.money = money;
     }
     public Player() {
-        this(100, 500, 100, 33, new Inventory(), 1.0f, 0, 100, 0, 0, 100);
+        this(100, 500, 100, 33, new Inventory(), 1.0f, 100, 100, 0);
 //        this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"));
         this.currentDirection = Direction.RIGHT;
         this.playerImageLeft = new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png"));
@@ -576,5 +578,22 @@ public class Player extends Entity implements EntityDrawable {
     public void setStamina(float stamina) {
         this.stamina = stamina;
     }
+    public int getMoney() {
+        return money;
+    }
+    public void addMoney(int amount) {
+        money += amount;
+    }
+    public boolean spendMoney(int amount) {
+        if (money >= amount) {
+            money -= amount;
+            return true;
+        }
+        return false;
+    }
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
 }
 

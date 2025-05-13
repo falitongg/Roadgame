@@ -22,7 +22,7 @@ public class GameStateLoader {
             player.setHealth(snapshot.player.health);
             player.setArmor(snapshot.player.armor);
             player.setStamina(snapshot.player.stamina);
-
+            player.setMoney(snapshot.player.money);
             // inventory пока не трогаем
 
             // loads enemies

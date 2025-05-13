@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -35,16 +36,35 @@ public class Game {
 
     public void update(double cameraX) {
         if (currentState != GameState.PLAYING) return;
+
         player.update();
+
         for (Enemy enemy : enemies) {
             enemy.update(player); // AI of enemies
         }
-        enemies.removeIf(enemy ->
-                !enemy.isAlive() || enemy.getX() + enemy.getWidth() < cameraX - 500
-        );
+
+        Iterator<Enemy> it = enemies.iterator();
+        while (it.hasNext()) {
+            Enemy e = it.next();
+
+            boolean dead      = !e.isAlive();
+            boolean offScreen = e.getX() + e.getWidth() < cameraX - 500;  // запас 500 px
+
+            if (dead && e.getType() == EnemyType.ZOMBIE) {
+                player.addMoney(15);
+                System.out.println(player.getMoney());
+            }
+
+            if (dead || offScreen) {
+                it.remove();
+            }
+        }
+
+
         obstacles.removeIf(obstacle ->
                 obstacle.getX() + obstacle.getWidth() < cameraX - 200
         );
+
         if (!player.isAlive()) {
             endGame();
         }

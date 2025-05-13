@@ -7,5 +7,6 @@ public class PlayerData {
     public float health;
     public float armor;
     public float stamina;
+    public int money;
     public List<String> inventory;
 }

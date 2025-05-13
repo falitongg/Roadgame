@@ -146,8 +146,8 @@ public class GameView{
     //posun kamery s hracem
     private void updateCamera() {
 //        System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX)
-        System.out.println(getHEIGHT());
-        System.out.println("playerY" + game.getPlayer().getY());
+//        System.out.println(getHEIGHT());
+//        System.out.println("playerY" + game.getPlayer().getY());
         double newPlayerX = game.getPlayer().getX();
         if (newPlayerX > playerX) {
             camera.update(newPlayerX);
