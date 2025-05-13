@@ -4,6 +4,7 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
@@ -595,5 +596,18 @@ public class Player extends Entity implements EntityDrawable {
         this.money = money;
     }
 
+    public Inventory getInventory() {
+        return inventory;
+    }
+    public void setInventory(Inventory inventory) {
+
+    }
+    public void addItemToInventory(Item item) {
+        inventory.add(item);
+    }
+
+    public Rectangle2D getBounds() {                     // для коллизии
+        return new Rectangle2D(getX(), getY() +  80, getWidth(), 200);
+    }
 }
 

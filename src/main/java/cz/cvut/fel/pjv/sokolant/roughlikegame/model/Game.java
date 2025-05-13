@@ -12,6 +12,8 @@ public class Game {
     private Player player;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
+    private final List<Trader> traders = new ArrayList<>();
+    private Trader currentTrader = null;
     private GameState currentState;
     private float lastChunkX = 0; // ← перенесено сюда
 
@@ -65,6 +67,10 @@ public class Game {
                 obstacle.getX() + obstacle.getWidth() < cameraX - 200
         );
 
+        traders.removeIf(t ->
+                t.getX() + t.getWidth() < cameraX - 500
+        );
+
         if (!player.isAlive()) {
             endGame();
         }
@@ -115,7 +121,10 @@ public class Game {
     public void generateObstacles(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 150) {
-            if (rand.nextFloat() < 1.0f) {
+            if (rand.nextFloat() < 0.1f) {
+                spawnTrader(x);
+
+            }
                 Obstacle obstacle = new Obstacle(x, 0); // временно y = 0
                 float minY, maxY;
                 switch (obstacle.getType()) {
@@ -136,7 +145,6 @@ public class Game {
                 obstacle.setY(y);
                 obstacles.add(obstacle);
             }
-        }
     }
 
     public void generateEvents(float startX, float endX) {
@@ -154,4 +162,12 @@ public class Game {
     public void setLastChunkX(float lastChunkX) {
         this.lastChunkX = lastChunkX;
     }
+    public List<Trader> getTraders() { return traders; }
+
+    private void spawnTrader(float spawnX) {
+        float groundY = 620;
+        traders.add(new Trader(spawnX, groundY));
+    }
+    public Trader getCurrentTrader() { return currentTrader; }
+    public void setCurrentTrader(Trader t) { currentTrader = t; }
 }

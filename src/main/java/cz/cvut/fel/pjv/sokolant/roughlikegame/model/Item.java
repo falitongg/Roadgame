@@ -12,11 +12,11 @@ public class Item {
 
     }
 
-    public String getItemName() {
+    public String getName() {
         return name;
     }
 
-    public ItemType getItemType() {
+    public ItemType getType() {
         return type;
     }
 

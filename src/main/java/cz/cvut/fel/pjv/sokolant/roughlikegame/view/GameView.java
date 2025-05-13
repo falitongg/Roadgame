@@ -181,6 +181,9 @@ public class GameView{
                 drawEnemyHealthBar(gc, enemy, camera.getX());
             }
         }
+        for (Trader t : game.getTraders()) {
+            t.render(gc, camera.getX(), game.getPlayer());
+        }
 
     }
     private void drawPlayerHud(GraphicsContext gc, Player player, double cameraX) {
@@ -209,6 +212,23 @@ public class GameView{
         gc.fillRect(xOffset, yOffset, barWidth, barHeight);
         gc.setFill(Color.CYAN);
         gc.fillRect(xOffset, yOffset, barWidth * staminaRatio, barHeight);
+
+        if (game.getState() == GameState.TRADE) {
+            Trader tr = game.getCurrentTrader();
+            gc.setFill(Color.rgb(0,0,0,0.7));
+            gc.fillRect(100, 100, 300, 150);
+
+            gc.setFill(Color.WHITE);
+            gc.setFont(Font.font("Consolas", 20));
+            int y = 140;
+            for (int i = 0; i < tr.getItems().size(); i++) {
+                Item it = tr.getItems().get(i);
+                gc.fillText("[" + i + "] " + it.getName() + "  ...  " + it.getPrice() + "$", 120, y);
+                y += 30;
+            }
+            gc.fillText("Esc – exit", 120, y + 10);
+        }
+
     }
     private void drawEnemyHealthBar(GraphicsContext gc, Enemy enemy, double cameraX) {
         double barWidth;

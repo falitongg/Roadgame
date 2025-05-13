@@ -11,6 +11,7 @@ public abstract class Entity {
     protected float health;
     protected float damage;
     protected float width;
+    protected float height;
 
 
     protected boolean isFlashing = false;

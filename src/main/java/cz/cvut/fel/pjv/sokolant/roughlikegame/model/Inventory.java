@@ -31,4 +31,8 @@ public class Inventory {
     public boolean isEmpty() {
         return items.isEmpty();
     }
+
+    public void add(Item item) {
+        items.add(item);
+    }
 }
