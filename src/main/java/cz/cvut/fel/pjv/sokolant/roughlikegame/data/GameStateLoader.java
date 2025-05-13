@@ -20,6 +20,9 @@ public class GameStateLoader {
             player.setX(snapshot.player.x);
             player.setY(snapshot.player.y);
             player.setHealth(snapshot.player.health);
+            player.setArmor(snapshot.player.armor);
+            player.setStamina(snapshot.player.stamina);
+
             // inventory пока не трогаем
 
             // loads enemies

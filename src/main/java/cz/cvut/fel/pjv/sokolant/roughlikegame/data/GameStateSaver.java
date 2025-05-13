@@ -19,6 +19,8 @@ public class GameStateSaver {
         pd.x = player.getX();
         pd.y = player.getY();
         pd.health = player.getHealth();
+        pd.armor = player.getArmor();
+        pd.stamina = player.getStamina();
         pd.inventory = new ArrayList<>(); // пока без логики инвентаря
         snapshot.player = pd;
 

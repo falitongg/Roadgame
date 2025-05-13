@@ -568,5 +568,13 @@ public class Player extends Entity implements EntityDrawable {
     public float getStamina() {
         return stamina;
     }
+
+    public void setArmor(float armor) {
+        this.armor = armor;
+    }
+
+    public void setStamina(float stamina) {
+        this.stamina = stamina;
+    }
 }
 
