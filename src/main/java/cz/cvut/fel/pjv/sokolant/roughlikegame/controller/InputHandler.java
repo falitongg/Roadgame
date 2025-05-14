@@ -69,6 +69,11 @@ public class InputHandler {
             case D -> game.getPlayer().setMovingRight(false);
             case SHIFT -> game.getPlayer().setSprinting(false);
             case CONTROL -> game.getPlayer().setCrouching(false);
+            case DIGIT1 -> game.getPlayer().useItemFromInventory(0);
+            case DIGIT2 -> game.getPlayer().useItemFromInventory(1);
+            case DIGIT3 -> game.getPlayer().useItemFromInventory(2);
+            case DIGIT4 -> game.getPlayer().useItemFromInventory(3);
+            case DIGIT5 -> game.getPlayer().useItemFromInventory(4);
         }
     }
 

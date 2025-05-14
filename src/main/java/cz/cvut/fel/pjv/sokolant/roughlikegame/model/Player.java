@@ -452,9 +452,6 @@ public class Player extends Entity implements EntityDrawable {
     }
 
     //use item function
-    public void useItem(Item item) {
-        //TODO реализовать функцию использования предмета
-    }
     public void takeDamage(float amount) {
         flash();
 
@@ -623,5 +620,28 @@ public class Player extends Entity implements EntityDrawable {
         this.game = game;
     }
 
+    public void useItem(Item item){
+        switch (item.getType()){
+            case BANDAGE -> {
+                restoreHealth(50);
+                System.out.println("-BANDAGE, +50HP");
+            }
+            case WATER -> {
+                restoreStamina(50);
+                System.out.println("-WATER, +50HP");
+            }
+            case ARMOR -> {
+                setArmor(getArmor()+ 50);
+                System.out.println("-ARMOR, +50ARMOR");
+            }
+            case BOXER -> {
+                System.out.println("nothing to use");
+            }
+            case KEYCARD -> {
+                System.out.println("nothing to use");
+            }
+        }
+        inventory.removeItem(item);
+    }
 }
 
