@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -444,12 +445,6 @@ public class Player extends Entity implements EntityDrawable {
         clampToBounds();
     }
 
-    public void useItemFromInventory(int index) {
-        Item item = inventory.getItem(index);
-        if (item != null) {
-            useItem(item);
-        }
-    }
 
     //use item function
     public void takeDamage(float amount) {
@@ -620,28 +615,32 @@ public class Player extends Entity implements EntityDrawable {
         this.game = game;
     }
 
-    public void useItem(Item item){
-        switch (item.getType()){
+    public void useItem(ItemType type) {
+        if (!inventory.hasItem(type)) return;
+
+        switch (type) {
             case BANDAGE -> {
                 restoreHealth(50);
-                System.out.println("-BANDAGE, +50HP");
+                System.out.println("Использован бинт. +50 HP");
             }
             case WATER -> {
                 restoreStamina(50);
-                System.out.println("-WATER, +50HP");
+                System.out.println("Выпита вода. +50 стамины");
             }
             case ARMOR -> {
-                setArmor(getArmor()+ 50);
-                System.out.println("-ARMOR, +50ARMOR");
+                setArmor(getArmor() + 50);
+                System.out.println("Надета броня. +50 брони");
             }
             case BOXER -> {
-                System.out.println("nothing to use");
+                System.out.println("Кастет пока не используется");
             }
             case KEYCARD -> {
-                System.out.println("nothing to use");
+                System.out.println("Ключ-карта будет использована позже");
             }
         }
-        inventory.removeItem(item);
+
+        inventory.remove(type);
     }
+
 }
 

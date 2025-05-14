@@ -7,6 +7,7 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Trader;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -69,11 +70,12 @@ public class InputHandler {
             case D -> game.getPlayer().setMovingRight(false);
             case SHIFT -> game.getPlayer().setSprinting(false);
             case CONTROL -> game.getPlayer().setCrouching(false);
-            case DIGIT1 -> game.getPlayer().useItemFromInventory(0);
-            case DIGIT2 -> game.getPlayer().useItemFromInventory(1);
-            case DIGIT3 -> game.getPlayer().useItemFromInventory(2);
-            case DIGIT4 -> game.getPlayer().useItemFromInventory(3);
-            case DIGIT5 -> game.getPlayer().useItemFromInventory(4);
+            case DIGIT1 -> game.getPlayer().useItem(ItemType.BANDAGE);
+            case DIGIT2 -> game.getPlayer().useItem(ItemType.WATER);
+            case DIGIT3 -> game.getPlayer().useItem(ItemType.ARMOR);
+            case DIGIT4 -> game.getPlayer().useItem(ItemType.BOXER);
+            case DIGIT5 -> game.getPlayer().useItem(ItemType.KEYCARD);
+
         }
     }
 

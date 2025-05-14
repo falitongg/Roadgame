@@ -1,38 +1,42 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
-import java.util.ArrayList;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Inventory {
-    private final ArrayList<Item> items;
+    private final Map<ItemType, Integer> items;
 
     public Inventory() {
-        items = new ArrayList<>();
-    }
-    public void addItem(Item item) {
-        items.add(item);
-    }
-    public void removeItem(Item item) {
-        items.remove(item);
-    }
-
-    public Item getItem(int index) {
-        if (index >= 0 && index < items.size()) {
-            return items.get(index);
-        }
-        return null;
-    }
-
-    public ArrayList<Item> getItems() {
-        return items;
-    }
-    public int getSize() {
-        return items.size();
-    }
-    public boolean isEmpty() {
-        return items.isEmpty();
+        this.items = new HashMap<>();
     }
 
     public void add(Item item) {
-        items.add(item);
+        ItemType type = item.getType();
+        items.put(type, items.getOrDefault(type, 0) + 1);
+    }
+
+    public void remove(ItemType type) {
+        if (items.containsKey(type)) {
+            int count = items.get(type);
+            if (count > 1) {
+                items.put(type, count - 1);
+            } else {
+                items.remove(type);
+            }
+        }
+    }
+
+    public int getCount(ItemType type) {
+        return items.getOrDefault(type, 0);
+    }
+
+    public boolean hasItem(ItemType type) {
+        return items.getOrDefault(type, 0) > 0;
+    }
+
+    public Map<ItemType, Integer> getItems() {
+        return items;
     }
 }
