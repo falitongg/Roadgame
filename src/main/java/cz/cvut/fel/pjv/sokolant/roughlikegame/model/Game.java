@@ -165,7 +165,7 @@ public class Game {
     public List<Trader> getTraders() { return traders; }
 
     private void spawnTrader(float spawnX) {
-        float groundY = 620;
+        float groundY = 420;
         traders.add(new Trader(spawnX, groundY));
     }
     public Trader getCurrentTrader() { return currentTrader; }

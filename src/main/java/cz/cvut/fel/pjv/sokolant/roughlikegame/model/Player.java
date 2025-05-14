@@ -95,7 +95,8 @@ public class Player extends Entity implements EntityDrawable {
     // Úroveň země
     private double lastGroundY = 530;
     final double ATTACK_RANGE = 80;
-
+    private static final float PLAYER_WIDTH  = 48;
+    private static final float PLAYER_HEIGHT = 96;
 
     public void setCamera(Camera camera) {
         this.camera = camera;
@@ -112,10 +113,14 @@ public class Player extends Entity implements EntityDrawable {
 //        this.thirst = thirst;
         this.stamina = stamina;
         this.money = money;
+        this.width  = PLAYER_WIDTH;
+        this.height = PLAYER_HEIGHT;
     }
     public Player() {
         this(100, 500, 100, 33, new Inventory(), 1.0f, 100, 100, 0);
 //        this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"));
+        this.width  = PLAYER_WIDTH;
+        this.height = PLAYER_HEIGHT;
         this.currentDirection = Direction.RIGHT;
         this.playerImageLeft = new Image(getClass().getResourceAsStream("/images/player/player_idle_left.png"));
         this.playerImageRight = new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"));
@@ -607,7 +612,7 @@ public class Player extends Entity implements EntityDrawable {
     }
 
     public Rectangle2D getBounds() {                     // для коллизии
-        return new Rectangle2D(getX(), getY() +  80, getWidth(), 200);
+        return new Rectangle2D(getX(), getY()-PLAYER_HEIGHT,  width, height);
     }
 }
 

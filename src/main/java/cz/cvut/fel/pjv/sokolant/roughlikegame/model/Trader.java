@@ -52,15 +52,12 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
     /* ----------- EntityDrawable ----------- */
     @Override
     public double getRenderY() {
-        return getY();
+        return getY()+TRADER_HEIGHT;
     }
 
     @Override
     public void render(GraphicsContext gc, double cameraX, Player player) {
-        gc.drawImage(sprite,
-                getX() - cameraX,
-                getY() - TRADER_HEIGHT
-        );
+        gc.drawImage(sprite, getX() - cameraX, getRenderY());
     }
 
     /* ----------- Interactable ----------- */
@@ -78,7 +75,7 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
     }
 
     public Rectangle2D getBounds() {                     // для коллизии
-        return new Rectangle2D(getX(), getY() + TRADER_WIDTH, getWidth(), TRADER_HEIGHT);
+        return new Rectangle2D(getX(), getY() - TRADER_HEIGHT, TRADER_WIDTH, TRADER_HEIGHT);
     }
 
 }
