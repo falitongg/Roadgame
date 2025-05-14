@@ -5,10 +5,26 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ObstacleType;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class GameStateLoader {
+
+    public static String findLatestSaveFile(String folderPath) {
+        File folder = new File(folderPath);
+        File[] files = folder.listFiles((dir, name) -> name.startsWith("save_") && name.endsWith(".json"));
+
+        if (files == null || files.length == 0) return null;
+
+        File latest = files[0];
+        for (File f : files) {
+            if (f.getName().compareTo(latest.getName()) > 0) {
+                latest = f;
+            }
+        }
+        return latest.getAbsolutePath();
+    }
 
     public static void loadGame(Game game, String filename, Camera camera) {
         Gson gson = new Gson();

@@ -36,9 +36,14 @@ public class InputHandler {
                 case SPACE -> game.getPlayer().jump();
                 case SHIFT -> game.getPlayer().setSprinting(true);
                 case CONTROL -> game.getPlayer().setCrouching(true);
-                case F5 -> GameStateSaver.saveGame(game, "save.json", camera.getX());
+                case F5 -> GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
                 case F9 -> {
-                    GameStateLoader.loadGame(game, "save.json", camera);
+                    String latest = GameStateLoader.findLatestSaveFile("saves/");
+                    if (latest != null) {
+                        GameStateLoader.loadGame(game, latest, camera);
+                    } else {
+                        System.out.println("ERROR");
+                    }
                     gameView.resetAfterLoad();
                 }
                 case E -> {
@@ -58,7 +63,12 @@ public class InputHandler {
                 case DIGIT3 -> game.getCurrentTrader().buy(game.getPlayer(), 2);
                 case DIGIT4 -> game.getCurrentTrader().buy(game.getPlayer(), 3);
                 case DIGIT5 -> game.getCurrentTrader().buy(game.getPlayer(), 4);
-                case ESCAPE          -> exitTrade();
+                case ESCAPE ->{
+                    exitTrade();
+                    game.getPlayer().resetMovement();
+                    GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
+
+                }
             }
         }
     }

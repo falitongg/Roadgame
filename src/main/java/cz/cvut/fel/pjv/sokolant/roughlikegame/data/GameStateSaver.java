@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,6 +59,13 @@ public class GameStateSaver {
 
         // writes to the file
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        File file = new File(filename);
+        File dir = file.getParentFile();
+        if (dir != null && !dir.exists()) {
+            dir.mkdirs();  // создаёт все необходимые папки (например, saves/)
+        }
+
         try (FileWriter writer = new FileWriter(filename)) {
             gson.toJson(snapshot, writer);
         } catch (IOException e) {

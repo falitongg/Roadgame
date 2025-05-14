@@ -641,6 +641,12 @@ public class Player extends Entity implements EntityDrawable {
 
         inventory.remove(type);
     }
+    public void resetMovement() {
+        movingUp = false;
+        movingDown = false;
+        movingLeft = false;
+        movingRight = false;
+    }
 
 }
 

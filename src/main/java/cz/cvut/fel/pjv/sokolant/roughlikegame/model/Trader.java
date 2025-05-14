@@ -81,7 +81,6 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
     /* ----------- Interactable ----------- */
     @Override
     public void interact(Player player) {
-        // пока консольный вывод; позже заменишь на JavaFX окно
         System.out.println("-- Trader --");
         for (int i = 0; i < items.size(); i++) {
             Item it = items.get(i);
