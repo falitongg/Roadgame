@@ -234,6 +234,10 @@ public class GameView{
         //inventory bar
         drawInventoryBar(gc, game.getPlayer());
 
+        //money
+        drawMoneyHud(gc, game.getPlayer(), canvas.getWidth());
+
+
     }
     private void drawInventoryBar(GraphicsContext gc, Player player) {
         double startX = 20;
@@ -261,6 +265,18 @@ public class GameView{
             gc.setFont(Font.font("Consolas", FontWeight.BOLD, 14));
             gc.fillText("[" + (i + 1) + "] (" + count + ")", startX + i * spacing, y + 48);
         }
+    }
+    private void drawMoneyHud(GraphicsContext gc, Player player, double canvasWidth) {
+        int money = player.getMoney();
+        String moneyText = "💵 " + money + " $";
+
+        gc.setFill(Color.DARKGREEN);
+        gc.setFont(Font.font("Consolas", FontWeight.BOLD, 24));
+
+        double x = canvasWidth - 100;
+        double y = 30;
+
+        gc.fillText(moneyText, x, y);
     }
 
     private void drawEnemyHealthBar(GraphicsContext gc, Enemy enemy, double cameraX) {
