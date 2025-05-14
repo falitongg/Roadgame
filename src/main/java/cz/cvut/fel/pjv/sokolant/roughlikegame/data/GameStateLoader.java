@@ -42,6 +42,12 @@ public class GameStateLoader {
                 Obstacle obstacle = new Obstacle((float) od.x, (float) od.y, ObstacleType.valueOf(od.type));
                 game.getObstacles().add(obstacle);
             }
+            // loads traders
+            game.getTraders().clear();
+            for (TraderData td : snapshot.traderList) {
+                Trader trader = new Trader((float) td.x, (float) td.y);
+                game.getTraders().add(trader);
+            }
 
             game.setLastChunkX(snapshot.lastChunkX);
             camera.setX(snapshot.cameraX);

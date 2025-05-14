@@ -123,7 +123,12 @@ public class Game {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 150) {
             if (rand.nextFloat() < 0.1f) {
-                spawnTrader(x);
+                boolean traderAlreadyExists = traders.stream()
+                        .anyMatch(t -> t.getX() >= startX && t.getX() <= endX);
+
+                if (!traderAlreadyExists) {
+                    spawnTrader(x);
+                }
 
             }
                 Obstacle obstacle = new Obstacle(x, 0); // временно y = 0

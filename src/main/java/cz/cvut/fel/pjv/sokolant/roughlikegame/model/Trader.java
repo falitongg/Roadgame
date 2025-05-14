@@ -6,12 +6,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Trader extends Entity implements EntityDrawable, Interactable {
-
     private static final float TRADER_WIDTH  = 48;
     private static final float TRADER_HEIGHT = 96;
     private static final double INTERACT_DIST = 60;

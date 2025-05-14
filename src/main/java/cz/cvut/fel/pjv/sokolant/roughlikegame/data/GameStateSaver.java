@@ -48,6 +48,14 @@ public class GameStateSaver {
             snapshot.lastChunkX = game.getLastChunkX();
         }
 
+        snapshot.traderList = new ArrayList<>();
+        for (Trader trader : game.getTraders()) {
+            TraderData td = new TraderData();
+            td.x = trader.getX();
+            td.y = trader.getY();
+            snapshot.traderList.add(td);
+        }
+
         // writes to the file
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter(filename)) {

@@ -8,5 +8,7 @@ public class GameSnapshot {
     public List<ObstacleData> obstacles;
     public float lastChunkX;
     public double cameraX;
+    public List<TraderData> traderList;
 }
+
 
