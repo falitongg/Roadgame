@@ -98,6 +98,8 @@ public class Player extends Entity implements EntityDrawable {
     private static final float PLAYER_WIDTH  = 48;
     private static final float PLAYER_HEIGHT = 96;
 
+    private Game game;
+
     public void setCamera(Camera camera) {
         this.camera = camera;
     }
@@ -614,5 +616,12 @@ public class Player extends Entity implements EntityDrawable {
     public Rectangle2D getBounds() {                     // для коллизии
         return new Rectangle2D(getX(), getY()-PLAYER_HEIGHT,  width, height);
     }
+    public Game getGame() {
+        return game;
+    }
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
 }
 

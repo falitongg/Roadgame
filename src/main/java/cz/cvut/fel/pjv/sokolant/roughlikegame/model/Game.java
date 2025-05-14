@@ -19,6 +19,7 @@ public class Game {
 
     public Game() {
         this.player = new Player();
+        this.player.setGame(this);
         this.enemies = new ArrayList<>();
         this.obstacles = new ArrayList<>();
         this.currentState = GameState.MENU;

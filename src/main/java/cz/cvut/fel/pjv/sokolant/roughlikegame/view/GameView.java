@@ -164,6 +164,7 @@ public class GameView{
         drawables.clear();
         drawables.addAll(game.getEnemies());
         drawables.addAll(game.getObstacles());
+        drawables.addAll(game.getTraders());
         drawables.add(game.getPlayer());
 
 //        System.out.println("---- SORTED DRAWABLES ----");
@@ -175,15 +176,12 @@ public class GameView{
 
         for (EntityDrawable d : drawables) {
             d.render(gc, camera.getX(), game.getPlayer());
-        }
-        for (EntityDrawable d : drawables) {
-            if (d instanceof Enemy enemy && enemy.getHealth() > 0) {
+            if (d instanceof Enemy enemy) {
                 drawEnemyHealthBar(gc, enemy, camera.getX());
             }
         }
-        for (Trader t : game.getTraders()) {
-            t.render(gc, camera.getX(), game.getPlayer());
-        }
+
+
 
     }
     private void drawPlayerHud(GraphicsContext gc, Player player, double cameraX) {

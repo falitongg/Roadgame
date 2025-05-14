@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -8,14 +9,16 @@ import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Trader extends Entity implements EntityDrawable, Interactable {
 
     private static final float TRADER_WIDTH  = 48;
     private static final float TRADER_HEIGHT = 96;
+    private static final double INTERACT_DIST = 60;
 
-    private final Image sprite = new Image(
-            getClass().getResourceAsStream("/images/npcs/trader_idle_r.png")
-    );
+
+    private final Image idleSprite = new Image(getClass().getResourceAsStream("/images/npcs/trader_idle_r.png"));
+    private final Image tradeSprite = new Image(getClass().getResourceAsStream("/images/npcs/trader_trade_r.png"));
 
     // товары (можно сделать new ArrayList, если нужно удалять покупку)
     private final List<Item> items = List.of(
@@ -52,12 +55,24 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
     /* ----------- EntityDrawable ----------- */
     @Override
     public double getRenderY() {
-        return getY()+TRADER_HEIGHT;
+        return getY();
     }
 
     @Override
     public void render(GraphicsContext gc, double cameraX, Player player) {
-        gc.drawImage(sprite, getX() - cameraX, getRenderY());
+        Image toDraw = idleSprite;
+
+        boolean near = Math.abs(player.getX() - getX()) < INTERACT_DIST
+                && Math.abs(player.getY() - getY()) < INTERACT_DIST;
+
+        boolean trading = player.getGame().getState() == GameState.TRADE
+                && player.getGame().getCurrentTrader() == this;
+
+        if (near || trading) {
+            toDraw = tradeSprite;
+        }
+
+        gc.drawImage(toDraw, getX() - cameraX, getRenderY()+TRADER_HEIGHT);
     }
 
     /* ----------- Interactable ----------- */
