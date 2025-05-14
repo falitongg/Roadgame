@@ -1,12 +1,27 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
+import javafx.scene.image.Image;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Inventory {
     private final Map<ItemType, Integer> items;
+    
+    private static final Map<ItemType, Image> itemsIcons = Map.of(
+            ItemType.BANDAGE, new Image(Inventory.class.getResourceAsStream("/images/items/bandage.png")),
+            ItemType.WATER, new Image(Inventory.class.getResourceAsStream("/images/items/water.png")),
+            ItemType.ARMOR, new Image(Inventory.class.getResourceAsStream("/images/items/armor.png")),
+            ItemType.BOXER, new Image(Inventory.class.getResourceAsStream("/images/items/boxer.png")),
+            ItemType.KEYCARD, new Image(Inventory.class.getResourceAsStream("/images/items/keycard.png"))
+    );
+
+    public static Image getIcon(ItemType type) {
+        if (type == null) return null;
+        return itemsIcons.get(type);
+    }
+
 
     public Inventory() {
         this.items = new HashMap<>();

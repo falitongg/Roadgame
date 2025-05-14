@@ -5,6 +5,7 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateSaver;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -35,6 +36,9 @@ public class GameView{
 
     private Camera camera;
     List<BackgroundLayer> backgroundLayers;
+
+    private ItemType type;
+    Image icon = Inventory.getIcon(type);
 
 
     private static final int WIDTH = 1280;
