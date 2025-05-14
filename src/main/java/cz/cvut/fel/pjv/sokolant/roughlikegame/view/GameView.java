@@ -218,14 +218,14 @@ public class GameView{
         if (game.getState() == GameState.TRADE) {
             Trader tr = game.getCurrentTrader();
             gc.setFill(Color.rgb(0,0,0,0.7));
-            gc.fillRect(100, 100, 300, 150);
+            gc.fillRect(100, 100, 300, 300);
 
             gc.setFill(Color.WHITE);
             gc.setFont(Font.font("Consolas", 20));
             int y = 140;
             for (int i = 0; i < tr.getItems().size(); i++) {
                 Item it = tr.getItems().get(i);
-                gc.fillText("[" + i + "] " + it.getName() + "  ...  " + it.getPrice() + "$", 120, y);
+                gc.fillText("[" + (i + 1) + "] " + it.getName() + "  ...  " + it.getPrice() + "$", 120, y);
                 y += 30;
             }
             gc.fillText("Esc – exit", 120, y + 10);

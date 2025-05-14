@@ -2,6 +2,7 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -20,7 +21,11 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
 
     // товары (можно сделать new ArrayList, если нужно удалять покупку)
     private final List<Item> items = List.of(
-            new Bandage(), new WaterBottle()
+            new Item("Bandage", ItemType.BANDAGE, 50),
+            new Item("Water", ItemType.WATER, 30),
+            new Item("Armor", ItemType.ARMOR, 120),
+            new Item("Boxer", ItemType.BOXER, 300),
+            new Item("Key-card", ItemType.KEYCARD, 600)
     );
 
     /* ----------- КОНСТРУКТОР ----------- */
@@ -82,7 +87,7 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
             Item it = items.get(i);
             System.out.printf("[%d] %s ..... %d $\n", i, it.getName(), it.getPrice());
         }
-        System.out.println("Press 0/1 to buy, Esc to leave");
+        System.out.println("Press 0–5 to buy, Esc to leave");
 
         // можно выставить флаг GameState.TRADE и обрабатывать ввод в InputHandler
     }

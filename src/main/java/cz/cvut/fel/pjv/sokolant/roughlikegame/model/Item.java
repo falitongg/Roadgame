@@ -9,7 +9,7 @@ public class Item {
     public Item(String name, ItemType type, int price) {
         this.name = name;
         this.type = type;
-
+        this.price = price;
     }
 
     public String getName() {

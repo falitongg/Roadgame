@@ -53,8 +53,11 @@ public class InputHandler {
 
         else if (state == GameState.TRADE) {
             switch (keyEvent.getCode()) {
-                case DIGIT0, NUMPAD0 -> game.getCurrentTrader().buy(game.getPlayer(), 0);
-                case DIGIT1, NUMPAD1 -> game.getCurrentTrader().buy(game.getPlayer(), 1);
+                case DIGIT1 -> game.getCurrentTrader().buy(game.getPlayer(), 0);
+                case DIGIT2 -> game.getCurrentTrader().buy(game.getPlayer(), 1);
+                case DIGIT3 -> game.getCurrentTrader().buy(game.getPlayer(), 2);
+                case DIGIT4 -> game.getCurrentTrader().buy(game.getPlayer(), 3);
+                case DIGIT5 -> game.getCurrentTrader().buy(game.getPlayer(), 4);
                 case ESCAPE          -> exitTrade();
             }
         }
