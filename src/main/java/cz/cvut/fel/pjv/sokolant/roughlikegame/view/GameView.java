@@ -231,7 +231,38 @@ public class GameView{
             gc.fillText("Esc – exit", 120, y + 10);
         }
 
+        //inventory bar
+        drawInventoryBar(gc, game.getPlayer());
+
     }
+    private void drawInventoryBar(GraphicsContext gc, Player player) {
+        double startX = 20;
+        double y = 20;
+        double spacing = 80;
+
+        ItemType[] types = {
+                ItemType.BANDAGE,
+                ItemType.WATER,
+                ItemType.ARMOR,
+                ItemType.BOXER,
+                ItemType.KEYCARD
+        };
+
+        for (int i = 0; i < types.length; i++) {
+            ItemType type = types[i];
+            int count = player.getInventory().getCount(type);
+            Image icon = Inventory.getIcon(type);
+
+            if (icon != null) {
+                gc.drawImage(icon, startX + i * spacing, y, 32, 32);
+            }
+
+            gc.setFill(Color.WHITE);
+            gc.setFont(Font.font("Consolas", FontWeight.BOLD, 14));
+            gc.fillText("[" + (i + 1) + "] (" + count + ")", startX + i * spacing, y + 48);
+        }
+    }
+
     private void drawEnemyHealthBar(GraphicsContext gc, Enemy enemy, double cameraX) {
         double barWidth;
         double barHeight = 5;
