@@ -14,7 +14,7 @@ public class Inventory {
             ItemType.WATER, new Image(Inventory.class.getResourceAsStream("/images/items/water.png")),
             ItemType.ARMOR, new Image(Inventory.class.getResourceAsStream("/images/items/armor.png")),
             ItemType.BOXER, new Image(Inventory.class.getResourceAsStream("/images/items/boxer.png")),
-            ItemType.KEYCARD, new Image(Inventory.class.getResourceAsStream("/images/items/keycard.png"))
+            ItemType.BUCKET, new Image(Inventory.class.getResourceAsStream("/images/items/water_bucket.png"))
     );
 
     public static Image getIcon(ItemType type) {
@@ -53,5 +53,16 @@ public class Inventory {
 
     public Map<ItemType, Integer> getItems() {
         return items;
+    }
+
+    public boolean craftBucket(){
+        if(getCount(ItemType.BUCKET) >= 3){
+            for(int i = 0; i < 3; i++){
+                remove(ItemType.BUCKET);
+            }
+            items.put(ItemType.BUCKET, items.getOrDefault(ItemType.BUCKET, 0) + 1);
+            return true;
+        }
+        return false;
     }
 }

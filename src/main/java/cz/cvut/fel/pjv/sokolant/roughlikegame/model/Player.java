@@ -670,8 +670,8 @@ public class Player extends Entity implements EntityDrawable {
                 System.out.println("HERE WE GO");
                 equipKnuckle();
             }
-            case KEYCARD -> {
-                System.out.println("Ключ-карта будет использована позже");
+            case BUCKET -> {
+                System.out.println("water");
             }
         }
 

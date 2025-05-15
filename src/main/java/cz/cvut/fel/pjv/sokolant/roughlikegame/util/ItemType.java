@@ -7,8 +7,9 @@ public enum ItemType {
     BANDAGE,
     WATER,
     ARMOR,
-    KEYCARD,
-    BOXER;
+//    KEYCARD,
+    BOXER,
+    BUCKET;
 
     private static final ItemType[] spawnable = {
             BANDAGE, WATER, ARMOR

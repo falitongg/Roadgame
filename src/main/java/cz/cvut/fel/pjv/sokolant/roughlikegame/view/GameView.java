@@ -219,7 +219,7 @@ public class GameView{
         if (game.getState() == GameState.TRADE) {
             Trader tr = game.getCurrentTrader();
             gc.setFill(Color.rgb(0,0,0,0.7));
-            gc.fillRect(100, 100, 300, 300);
+            gc.fillRect(100, 100, 300, 200);
 
             gc.setFill(Color.WHITE);
             gc.setFont(Font.font("Consolas", 20));
@@ -250,7 +250,7 @@ public class GameView{
                 ItemType.WATER,
                 ItemType.ARMOR,
                 ItemType.BOXER,
-                ItemType.KEYCARD
+                ItemType.BUCKET
         };
 
         for (int i = 0; i < types.length; i++) {

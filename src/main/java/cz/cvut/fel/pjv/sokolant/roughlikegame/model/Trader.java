@@ -24,8 +24,7 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
             new Item("Bandage", ItemType.BANDAGE, 50),
             new Item("Water", ItemType.WATER, 30),
             new Item("Armor", ItemType.ARMOR, 120),
-            new Item("Boxer", ItemType.BOXER, 300),
-            new Item("Key-card", ItemType.KEYCARD, 600)
+            new Item("Boxer", ItemType.BOXER, 300)
     );
 
     /* ----------- КОНСТРУКТОР ----------- */
@@ -86,9 +85,8 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
             Item it = items.get(i);
             System.out.printf("[%d] %s ..... %d $\n", i, it.getName(), it.getPrice());
         }
-        System.out.println("Press 0–5 to buy, Esc to leave");
+        System.out.println("Press 0–4 to buy, Esc to leave");
 
-        // можно выставить флаг GameState.TRADE и обрабатывать ввод в InputHandler
     }
 
     public Rectangle2D getBounds() {                     // для коллизии

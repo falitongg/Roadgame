@@ -45,7 +45,14 @@ public class InputHandler {
                         game.getPlayer().equipKnuckle();
                     }
                 }
-                case DIGIT5 -> game.getPlayer().useItem(ItemType.KEYCARD);
+                case DIGIT5 -> game.getPlayer().useItem(ItemType.BUCKET);
+
+                case C -> {
+                    if (game.getPlayer().getInventory().craftBucket()) {
+                        System.out.println("a Bucket have been crafted");
+                    }
+                    System.out.println("Not enough water");
+                }
                 case F5 -> GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
                 case F9 -> {
                     String latest = GameStateLoader.findLatestSaveFile("saves/");
@@ -74,7 +81,6 @@ public class InputHandler {
                 case DIGIT2 -> game.getCurrentTrader().buy(game.getPlayer(), 1);
                 case DIGIT3 -> game.getCurrentTrader().buy(game.getPlayer(), 2);
                 case DIGIT4 -> game.getCurrentTrader().buy(game.getPlayer(), 3);
-                case DIGIT5 -> game.getCurrentTrader().buy(game.getPlayer(), 4);
                 case ESCAPE ->{
                     exitTrade();
                     game.getPlayer().resetMovement();
