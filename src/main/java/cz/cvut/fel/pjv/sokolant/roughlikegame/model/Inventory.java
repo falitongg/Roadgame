@@ -56,9 +56,9 @@ public class Inventory {
     }
 
     public boolean craftBucket(){
-        if(getCount(ItemType.BUCKET) >= 3){
+        if(getCount(ItemType.WATER) >= 3){
             for(int i = 0; i < 3; i++){
-                remove(ItemType.BUCKET);
+                remove(ItemType.WATER);
             }
             items.put(ItemType.BUCKET, items.getOrDefault(ItemType.BUCKET, 0) + 1);
             return true;

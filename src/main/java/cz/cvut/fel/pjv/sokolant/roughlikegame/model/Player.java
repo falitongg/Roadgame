@@ -10,9 +10,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
+import javafx.util.Duration;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimerTask;
 
 import static javafx.util.Duration.millis;
 
@@ -74,8 +76,6 @@ public class Player extends Entity implements EntityDrawable {
     private float worldMinY = 480;
     private float worldMaxY = 720-160;
 
-    private boolean isAttacking = false;
-
     private float stamina;// Energy for running and
     private float thirst;// Increases over time, affects
     private float hunger;// Like starvation, but grows faster, also harmful
@@ -95,8 +95,10 @@ public class Player extends Entity implements EntityDrawable {
     private double velocityX = 0; //horizontalni rychlost
     private float maxHealth = 100f;
 
+    private boolean isAttacking = false;
     float damageReductionFactor;
     private boolean hasKnuckle = false;
+    private boolean staminaBoostActive = false;
 
     // Úroveň země
     private double lastGroundY = 530;
@@ -413,7 +415,10 @@ public class Player extends Entity implements EntityDrawable {
                 setSprinting(false);
             }
         } else if (onGround && !isAttacking) {
-            if (isBlocking) {
+            if (staminaBoostActive) {
+                restoreStamina(1f);
+            }
+            else if (isBlocking) {
                 restoreStamina(0.1f);
             } else {
                 restoreStamina(0.4f);
@@ -671,6 +676,14 @@ public class Player extends Entity implements EntityDrawable {
                 equipKnuckle();
             }
             case BUCKET -> {
+                staminaBoostActive = true;
+                restoreHealth(25);
+                restoreStamina(100);
+                new Timeline(
+                        new KeyFrame(Duration.seconds(5), event -> {
+                            staminaBoostActive = false;
+                        })
+                ).play();
                 System.out.println("water");
             }
         }
