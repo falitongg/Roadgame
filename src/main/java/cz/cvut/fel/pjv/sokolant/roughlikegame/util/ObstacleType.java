@@ -5,5 +5,6 @@ public enum ObstacleType {
     BOX_SMALL,
     BOTTLE,
     JUNK,
-    GARBAGE_BAG
+    GARBAGE_BAG,
+    FIRE
 }

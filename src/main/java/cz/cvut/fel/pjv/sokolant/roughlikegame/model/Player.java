@@ -38,6 +38,7 @@ public class Player extends Entity implements EntityDrawable {
     private double lastStepX = -1;
     private double stepDistance = 25;
     private double lastStepY = -1;
+    private long lastFireDamageTime = 0;
 
     private int walkFrameIndex = 0;
 
@@ -454,6 +455,23 @@ public class Player extends Entity implements EntityDrawable {
 
 
         clampToBounds();
+
+        long now = System.currentTimeMillis();
+
+        for (Obstacle o : game.getObstacles()) {
+            if (o.getType() != ObstacleType.FIRE) continue;
+
+            float fireDx = (float) (this.getX() - o.getX());
+            float fireDy = (float) (this.getY() - o.getY());
+            double dist = Math.sqrt(fireDx * fireDx + fireDy * fireDy);
+
+            if (dist <= 100 && now - lastFireDamageTime >= 1000) {
+                takeDamage(25f);
+                lastFireDamageTime = now;
+                System.out.println("🔥 Урон от огня!");
+            }
+        }
+
     }
 
 

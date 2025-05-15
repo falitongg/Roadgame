@@ -1,8 +1,11 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ObstacleType;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +23,9 @@ public class Obstacle implements EntityDrawable {
     private static final Map<ObstacleType, Image[]> imageMap = new HashMap<>();
     private static final Random random = new Random();
 
+    private Timeline animationTimeline;
+    private int frameIndex = 0;
+
     public Obstacle(float x, float y) {
         this.x = x;
         this.y = y;
@@ -30,6 +36,11 @@ public class Obstacle implements EntityDrawable {
         this.type = types[random.nextInt(types.length)];
 
         imageAppearance();
+
+        if (type == ObstacleType.FIRE) {
+            startAnimation();
+        }
+
     }
     public Obstacle(float x, float y, ObstacleType type) {
         this.x = x;
@@ -38,6 +49,9 @@ public class Obstacle implements EntityDrawable {
         initImages();
         imageAppearance();
 
+        if (type == ObstacleType.FIRE) {
+            startAnimation();
+        }
     }
 
     public ObstacleType getType() {
@@ -53,6 +67,7 @@ public class Obstacle implements EntityDrawable {
     public double getRenderY() {
         return switch (type) {
             case BOX, GARBAGE_BAG -> y - 117;
+            case FIRE -> y - 50;
             default -> y - 140;
         };
     }
@@ -118,6 +133,10 @@ public class Obstacle implements EntityDrawable {
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/garbage_bag_2.png")),
                     new Image(getClass().getResourceAsStream("/images/items/trash_assets/garbage_bag_2_i.png"))
             });
+            imageMap.put(ObstacleType.FIRE, new Image[] {
+                    new Image(getClass().getResourceAsStream("/images/items/fire_r.png")),
+                    new Image(getClass().getResourceAsStream("/images/items/fire_l.png"))
+            });
         }
     }
     public void imageAppearance(){
@@ -154,6 +173,17 @@ public class Obstacle implements EntityDrawable {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+    private void startAnimation() {
+        animationTimeline = new Timeline(
+                new KeyFrame
+                        (Duration.seconds(0.5), e -> {
+                            Image[] frames = imageMap.get(ObstacleType.FIRE);
+                            frameIndex = (frameIndex + 1) % frames.length;
+                            image = frames[frameIndex];
+                        }));
+        animationTimeline.setCycleCount(Timeline.INDEFINITE);
+        animationTimeline.play();
     }
 
 }

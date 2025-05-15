@@ -124,7 +124,7 @@ public class Game {
     public void generateObstacles(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 150) {
-            if (rand.nextFloat() < 0.1f) {
+            if (rand.nextFloat() < 0.01f) {
                 boolean traderAlreadyExists = traders.stream()
                         .anyMatch(t -> t.getX() >= startX && t.getX() <= endX);
 
