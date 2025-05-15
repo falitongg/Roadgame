@@ -2,6 +2,7 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ObstacleType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -16,6 +17,7 @@ import static javafx.util.Duration.millis;
 
 
 public class Player extends Entity implements EntityDrawable {
+
     private Image[] walkRightFrames;
     private Image[] walkLeftFrames;
 
@@ -91,7 +93,9 @@ public class Player extends Entity implements EntityDrawable {
     private boolean onGround = true; //zda je na zemi
     private double velocityX = 0; //horizontalni rychlost
     private float maxHealth = 100f;
+
     float damageReductionFactor;
+    private boolean hasKnuckle = false;
 
     // Úroveň země
     private double lastGroundY = 530;
@@ -504,6 +508,18 @@ public class Player extends Entity implements EntityDrawable {
                 break;
             }
         }
+        for (Obstacle o : game.getObstacles()) {
+            double dx = o.getX() - this.getX();
+            double dy = o.getY() - this.getY();
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance <= ATTACK_RANGE && hasKnuckleEquipped()
+                    && (o.getType() == ObstacleType.BOX || o.getType() == ObstacleType.BOX_SMALL)) {
+                o.takeDamage(this.getDamage()); // ← 50 урона
+                break;
+            }
+        }
+
     }
     public void restoreHealth(float amount) {
         this.health += amount;
@@ -606,7 +622,7 @@ public class Player extends Entity implements EntityDrawable {
     }
 
     public Rectangle2D getBounds() {                     // для коллизии
-        return new Rectangle2D(getX(), getY()-PLAYER_HEIGHT,  width, height);
+        return new Rectangle2D(getX() , getY() - PLAYER_HEIGHT,  width, height);
     }
     public Game getGame() {
         return game;
@@ -632,7 +648,8 @@ public class Player extends Entity implements EntityDrawable {
                 System.out.println("Надета броня. +50 брони");
             }
             case BOXER -> {
-                System.out.println("Кастет пока не используется");
+                System.out.println("HERE WE GO");
+                equipKnuckle();
             }
             case KEYCARD -> {
                 System.out.println("Ключ-карта будет использована позже");
@@ -646,6 +663,14 @@ public class Player extends Entity implements EntityDrawable {
         movingDown = false;
         movingLeft = false;
         movingRight = false;
+    }
+    public void equipKnuckle() {
+        hasKnuckle = true;
+        this.damage = 50;
+    }
+
+    public boolean hasKnuckleEquipped() {
+        return hasKnuckle;
     }
 
 }

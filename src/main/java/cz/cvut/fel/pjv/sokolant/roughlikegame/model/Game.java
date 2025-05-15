@@ -131,8 +131,11 @@ public class Game {
                 }
 
             }
-                Obstacle obstacle = new Obstacle(x, 0); // временно y = 0
-                float minY, maxY;
+                Obstacle obstacle = new Obstacle(x, 0);
+                obstacle.setGame(this);
+
+
+            float minY, maxY;
                 switch (obstacle.getType()) {
                     case GARBAGE_BAG, JUNK, BOTTLE -> {
                         minY = 467 + 125 + 10;

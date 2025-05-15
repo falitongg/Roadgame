@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class Obstacle implements EntityDrawable {
+    private int health = 50;
+    private Game game;
 
     private float x, y;
     private float width, height;
@@ -132,4 +134,27 @@ public class Obstacle implements EntityDrawable {
             this.height += 20;
         }
     }
+    public void takeDamage(float amount) {
+        if (type != ObstacleType.BOX && type != ObstacleType.BOX_SMALL) return;
+
+        health -= amount;
+        if (health <= 0) {
+            destroy();
+        }
+    }
+
+    private void destroy() {
+        if (type == ObstacleType.BOX || type == ObstacleType.BOX_SMALL) {
+            System.out.println("Коробка разрушена!");
+            if (game != null) {
+                game.getObstacles().remove(this); // удаляем из списка
+                // game.spawnLoot(new LootItem(x, y, "water")); // если будет лут
+            }else System.out.println("jija");
+        }
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
 }

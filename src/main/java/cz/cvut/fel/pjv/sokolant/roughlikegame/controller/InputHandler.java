@@ -36,6 +36,14 @@ public class InputHandler {
                 case SPACE -> game.getPlayer().jump();
                 case SHIFT -> game.getPlayer().setSprinting(true);
                 case CONTROL -> game.getPlayer().setCrouching(true);
+
+                case DIGIT1 -> game.getPlayer().useItem(ItemType.BANDAGE);
+                case DIGIT2 -> game.getPlayer().useItem(ItemType.WATER);
+                case DIGIT3 -> game.getPlayer().useItem(ItemType.ARMOR);
+                case DIGIT4 ->{
+                    game.getPlayer().equipKnuckle();
+                }
+                case DIGIT5 -> game.getPlayer().useItem(ItemType.KEYCARD);
                 case F5 -> GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
                 case F9 -> {
                     String latest = GameStateLoader.findLatestSaveFile("saves/");
@@ -83,11 +91,7 @@ public class InputHandler {
             case D -> game.getPlayer().setMovingRight(false);
             case SHIFT -> game.getPlayer().setSprinting(false);
             case CONTROL -> game.getPlayer().setCrouching(false);
-            case DIGIT1 -> game.getPlayer().useItem(ItemType.BANDAGE);
-            case DIGIT2 -> game.getPlayer().useItem(ItemType.WATER);
-            case DIGIT3 -> game.getPlayer().useItem(ItemType.ARMOR);
-            case DIGIT4 -> game.getPlayer().useItem(ItemType.BOXER);
-            case DIGIT5 -> game.getPlayer().useItem(ItemType.KEYCARD);
+
 
         }
     }
