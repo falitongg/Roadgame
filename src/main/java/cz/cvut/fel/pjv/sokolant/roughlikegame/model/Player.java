@@ -509,29 +509,23 @@ public class Player extends Entity implements EntityDrawable {
                 break;
             }
         }
-        // смещения (в пикселях)
-        double offsetX = 0;  // вперед
-        double offsetY = 60;  // вниз
 
         for (Obstacle o : game.getObstacles()) {
             if (!hasKnuckleEquipped()) break;
             if (o.getType()!=ObstacleType.BOX && o.getType()!=ObstacleType.BOX_SMALL) continue;
 
             // точка удара игрока
-            double attackOriginX = getX() + (lastHorizontalDirection==Direction.RIGHT
-                    ? getWidth() + offsetX
-                    : -offsetX);
-            double attackOriginY = getY() + getHeight()*0.6 + offsetY;
+            double attackOriginX = getX() + getWidth();
+            double attackOriginY = getY() + getHeight()*0.6;
 
             // смещения от этой точки до коробки
             double dx = o.getX() - attackOriginX;
             double dy = o.getY() - attackOriginY;
 
             // зона в 80px по X и 80px по Y
-            boolean inFront = lastHorizontalDirection==Direction.RIGHT
-                    ? (dx>=0 && dx<=80)
-                    : (dx<=0 && dx>=-80);
-            boolean inHeight = Math.abs(dy) <= 40;
+            boolean inFront = lastHorizontalDirection==Direction.RIGHT ?
+                    (dx>=0 && dx<=80) : (dx<=0 && dx>=-80);
+            boolean inHeight = Math.abs(dy) <= 70;
 
             if (inFront && inHeight) {
                 o.takeDamage(getDamage());
