@@ -41,7 +41,9 @@ public class InputHandler {
                 case DIGIT2 -> game.getPlayer().useItem(ItemType.WATER);
                 case DIGIT3 -> game.getPlayer().useItem(ItemType.ARMOR);
                 case DIGIT4 ->{
-                    game.getPlayer().equipKnuckle();
+                    if (game.getPlayer().getInventory().hasItem(ItemType.BOXER)) {
+                        game.getPlayer().equipKnuckle();
+                    }
                 }
                 case DIGIT5 -> game.getPlayer().useItem(ItemType.KEYCARD);
                 case F5 -> GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
