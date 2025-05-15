@@ -694,15 +694,7 @@ public class Player extends Entity implements EntityDrawable {
                 equipKnuckle();
             }
             case BUCKET -> {
-                staminaBoostActive = true;
-                restoreHealth(25);
-                restoreStamina(100);
-                new Timeline(
-                        new KeyFrame(Duration.seconds(5), event -> {
-                            staminaBoostActive = false;
-                        })
-                ).play();
-                System.out.println("water");
+                useWaterBucket();
             }
         }
 
@@ -738,6 +730,42 @@ public class Player extends Entity implements EntityDrawable {
             }
         }
     }
+    public void useWaterBucket() {
+        staminaBoostActive = true;
+        restoreHealth(25);
+        restoreStamina(100);
+        new Timeline(
+                new KeyFrame(Duration.seconds(5), event -> {
+                    staminaBoostActive = false;
+                })
+        ).play();
+        System.out.println("water");
+        for (Obstacle o : game.getObstacles()) {
+            if (o.getType() != ObstacleType.FIRE) continue;
+
+            // точка действия — как будто "плеснул вперёд"
+            double attackOriginX = getX() + getWidth();
+            double attackOriginY = getY() + getHeight()*0.7;
+
+            // смещения от этой точки до костра
+            double dx = o.getX() - attackOriginX;
+            double dy = o.getY() - attackOriginY;
+
+            boolean inFront = lastHorizontalDirection==Direction.RIGHT ?
+                    (dx>=0 && dx<=80) : (dx<=0 && dx>=-80);
+
+            boolean inHeight = Math.abs(dy) <= 70;
+
+            if (inFront && inHeight) {
+                game.getObstacles().remove(o);
+                System.out.println("🔥 Костёр потушен!");
+                return;
+            }
+        }
+
+        System.out.println("Нет костра перед вами.");
+    }
+
 
 }
 

@@ -163,8 +163,9 @@ public class Obstacle implements EntityDrawable {
     }
 
     private void destroy() {
-        if (type == ObstacleType.BOX || type == ObstacleType.BOX_SMALL) {
-            System.out.println("Коробка разрушена!");
+        if (type == ObstacleType.BOX || type == ObstacleType.BOX_SMALL || type == ObstacleType.FIRE) {
+            if (type == ObstacleType.BOX || type == ObstacleType.BOX_SMALL)System.out.println("Коробка разрушена!");
+            else if (type == ObstacleType.FIRE) System.out.println("огонь потушен");
             if (game != null) {
                 game.getObstacles().remove(this); // удаляем из списка
             }else System.out.println("error");
