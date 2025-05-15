@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
 
+import java.util.Iterator;
 import java.util.List;
 
 import static javafx.util.Duration.millis;
@@ -605,7 +606,8 @@ public class Player extends Entity implements EntityDrawable {
     }
 
     public void setArmor(float armor) {
-        this.armor = armor;
+        if (this.armor + armor > 100) this.armor = 100;
+        else this.armor = armor;
     }
 
     public void setStamina(float stamina) {
@@ -688,6 +690,22 @@ public class Player extends Entity implements EntityDrawable {
 
     public boolean hasKnuckleEquipped() {
         return hasKnuckle;
+    }
+
+    public void pickUpItem(){
+        float distance = 80f;
+        Iterator<Item> iterator = game.getItems().iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+
+            float dx = (float) (getX() - item.getX());
+
+            if(Math.abs(dx) < distance) {
+                inventory.add(item);
+                iterator.remove();
+                break;
+            }
+        }
     }
 
 }

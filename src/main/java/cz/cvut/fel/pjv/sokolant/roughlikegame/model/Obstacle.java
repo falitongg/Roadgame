@@ -148,8 +148,7 @@ public class Obstacle implements EntityDrawable {
             System.out.println("Коробка разрушена!");
             if (game != null) {
                 game.getObstacles().remove(this); // удаляем из списка
-                // game.spawnLoot(new LootItem(x, y, "water")); // если будет лут
-            }else System.out.println("jija");
+            }else System.out.println("error");
         }
     }
 

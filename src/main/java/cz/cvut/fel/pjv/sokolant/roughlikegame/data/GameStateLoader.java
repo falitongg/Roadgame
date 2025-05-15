@@ -56,6 +56,7 @@ public class GameStateLoader {
             game.getObstacles().clear();
             for (ObstacleData od : snapshot.obstacles) {
                 Obstacle obstacle = new Obstacle((float) od.x, (float) od.y, ObstacleType.valueOf(od.type));
+                obstacle.setGame(game);
                 game.getObstacles().add(obstacle);
             }
             // loads traders

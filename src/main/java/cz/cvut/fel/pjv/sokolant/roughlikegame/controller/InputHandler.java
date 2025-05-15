@@ -59,6 +59,8 @@ public class InputHandler {
                     if (tr != null) {
                         game.setCurrentTrader(tr);
                         game.setState(GameState.TRADE);
+                    }else{
+                        game.getPlayer().pickUpItem();
                     }
                 }
             }
