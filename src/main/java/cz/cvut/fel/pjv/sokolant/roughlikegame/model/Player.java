@@ -516,7 +516,7 @@ public class Player extends Entity implements EntityDrawable {
 
             // точка удара игрока
             double attackOriginX = getX() + getWidth();
-            double attackOriginY = getY() + getHeight()*0.6;
+            double attackOriginY = getY() + getHeight()*0.7;
 
             // смещения от этой точки до коробки
             double dx = o.getX() - attackOriginX;
@@ -529,6 +529,7 @@ public class Player extends Entity implements EntityDrawable {
 
             if (inFront && inHeight) {
                 o.takeDamage(getDamage());
+                game.spawnItem(o.getX(), o.getY());
                 break;
             }
         }

@@ -7,11 +7,13 @@ import java.util.Random;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 
 public class Game {
     private Player player;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
+    List<Item> items = new ArrayList<>();
     private final List<Trader> traders = new ArrayList<>();
     private Trader currentTrader = null;
     private GameState currentState;
@@ -179,4 +181,14 @@ public class Game {
     }
     public Trader getCurrentTrader() { return currentTrader; }
     public void setCurrentTrader(Trader t) { currentTrader = t; }
+
+    public void spawnItem(float x, float y) {
+        ItemType randomType = ItemType.getRandom();
+        Item item = new Item("?", randomType, 0);
+        item.setPosition(x, y);
+        items.add(item);
+    }
+    public List<Item> getItems() {
+        return items;
+    }
 }

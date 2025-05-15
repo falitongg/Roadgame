@@ -168,6 +168,7 @@ public class GameView{
         drawables.clear();
         drawables.addAll(game.getEnemies());
         drawables.addAll(game.getObstacles());
+        drawables.addAll(game.getItems());
         drawables.addAll(game.getTraders());
         drawables.add(game.getPlayer());
 
