@@ -10,9 +10,12 @@ public enum ItemType {
     KEYCARD,
     BOXER;
 
+    private static final ItemType[] spawnable = {
+            BANDAGE, WATER, ARMOR
+    };
+
     public static ItemType getRandom(){
-        ItemType[] values = ItemType.values();
-        return values[(int)(Math.random()*values.length)];
+        return spawnable[(int)(Math.random() * spawnable.length)];
     }
 
     public static Image getImage(ItemType type) {
