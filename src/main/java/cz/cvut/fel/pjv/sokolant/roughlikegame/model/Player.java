@@ -293,6 +293,7 @@ public class Player extends Entity implements EntityDrawable {
 
 
         gc.drawImage(img, getX() - cameraX, getY());
+
     }
 
 
@@ -508,17 +509,38 @@ public class Player extends Entity implements EntityDrawable {
                 break;
             }
         }
-        for (Obstacle o : game.getObstacles()) {
-            double dx = o.getX() - this.getX();
-            double dy = o.getY() - this.getY();
-            double distance = Math.sqrt(dx * dx + dy * dy);
+        // смещения (в пикселях)
+        double offsetX = 0;  // вперед
+        double offsetY = 60;  // вниз
 
-            if (distance <= ATTACK_RANGE && hasKnuckleEquipped()
-                    && (o.getType() == ObstacleType.BOX || o.getType() == ObstacleType.BOX_SMALL)) {
-                o.takeDamage(this.getDamage()); // ← 50 урона
+        for (Obstacle o : game.getObstacles()) {
+            if (!hasKnuckleEquipped()) break;
+            if (o.getType()!=ObstacleType.BOX && o.getType()!=ObstacleType.BOX_SMALL) continue;
+
+            // точка удара игрока
+            double attackOriginX = getX() + (lastHorizontalDirection==Direction.RIGHT
+                    ? getWidth() + offsetX
+                    : -offsetX);
+            double attackOriginY = getY() + getHeight()*0.6 + offsetY;
+
+            // смещения от этой точки до коробки
+            double dx = o.getX() - attackOriginX;
+            double dy = o.getY() - attackOriginY;
+
+            // зона в 80px по X и 80px по Y
+            boolean inFront = lastHorizontalDirection==Direction.RIGHT
+                    ? (dx>=0 && dx<=80)
+                    : (dx<=0 && dx>=-80);
+            boolean inHeight = Math.abs(dy) <= 40;
+
+            if (inFront && inHeight) {
+                o.takeDamage(getDamage());
                 break;
             }
         }
+
+
+
 
     }
     public void restoreHealth(float amount) {
