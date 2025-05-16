@@ -21,7 +21,7 @@ public class Main extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/cz/cvut/fel/pjv/sokolant/roughlikegame/designtest.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-            stage.setTitle("ROAD");
+            stage.setTitle("THE ROAD");
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

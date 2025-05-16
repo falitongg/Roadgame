@@ -53,12 +53,24 @@ public class GameView{
     private boolean transitionScheduled = false;
     private Runnable returnToMenuCallback;
     private AnimationTimer gameLoop;
+    private boolean alreadyLoaded = false;
 
     private String notificationMessage = "";
     private long notificationMessageTime = 0;
 
+    public GameView() {}
+
+    public GameView(Game game, Camera camera) {
+        alreadyLoaded = true;
+        this.game = game;
+        this.camera = camera;
+        initBackgroundLayers();
+    }
+
     public void start(Stage stage) {
-        initGame();
+        if (!alreadyLoaded) {
+            initGame();
+        }
         initUI(stage);
         startGameLoop();
     }
@@ -68,16 +80,16 @@ public class GameView{
         game.startGame();
         camera = new Camera(screenCenter);
         game.getPlayer().setCamera(camera);
-//        background = new Image(getClass().getResourceAsStream("/images/bgs/background_alpha.png"));
+        initBackgroundLayers();
+    }
+
+    public void initBackgroundLayers() {
         backgroundLayers = List.of(
                 new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/far_bg_erased.png")), 0.1),
                 new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/mid_bg.png")), 0.5),
                 new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/near_background_alpha.png")), 1)
-
         );
     }
-
-
 
     private void initUI(Stage stage) {
         setupCanvasAndGraphics();
@@ -363,5 +375,12 @@ public class GameView{
         this.notificationMessageTime = System.currentTimeMillis();
     }
 
+    public Game getGame() {
+        return game;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
 }
 
