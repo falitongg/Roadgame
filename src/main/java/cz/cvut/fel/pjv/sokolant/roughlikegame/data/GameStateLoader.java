@@ -3,6 +3,7 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.data;
 import com.google.gson.Gson;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ObstacleType;
 
 import java.io.File;
@@ -39,7 +40,16 @@ public class GameStateLoader {
             player.setArmor(snapshot.player.armor);
             player.setStamina(snapshot.player.stamina);
             player.setMoney(snapshot.player.money);
-            // inventory пока не трогаем
+            player.getInventory().getItems().clear();
+
+            if (snapshot.player.inventory != null) {
+                for(InventoryItemData itemData : snapshot.player.inventory) {
+                    ItemType type = ItemType.valueOf(itemData.type);
+                    for(int i = 0; i < itemData.count; i++) {
+                        player.getInventory().add(createItemFromType(type));
+                    }
+                }
+            }
 
             // loads enemies
             game.getEnemies().clear();
@@ -74,4 +84,14 @@ public class GameStateLoader {
             e.printStackTrace();
         }
     }
+    private static Item createItemFromType(ItemType type) {
+        return switch (type) {
+            case WATER -> new Item("Water", type, 50);
+            case BANDAGE -> new Item("Bandage", type, 70);
+            case ARMOR -> new Item("Armor", type, 100);
+            case BOXER -> new Item("Knuckle", type, 300);
+            case BUCKET -> new Item("Bucket", type, 0);
+        };
+    }
+
 }

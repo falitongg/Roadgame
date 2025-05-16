@@ -8,5 +8,5 @@ public class PlayerData {
     public float armor;
     public float stamina;
     public int money;
-    public List<String> inventory;
+    public List<InventoryItemData> inventory;
 }

@@ -3,11 +3,13 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.data;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class GameStateSaver {
 
@@ -23,7 +25,13 @@ public class GameStateSaver {
         pd.armor = player.getArmor();
         pd.stamina = player.getStamina();
         pd.money = player.getMoney();
-        pd.inventory = new ArrayList<>(); // пока без логики инвентаря
+        pd.inventory = new ArrayList<>();
+        for(Map.Entry<ItemType, Integer> entry : player.getInventory().getItems().entrySet()) {
+            InventoryItemData itemData = new InventoryItemData();
+            itemData.type = entry.getKey().name();
+            itemData.count = entry.getValue();
+            pd.inventory.add(itemData);
+        }
         snapshot.player = pd;
 
         // saves enemies
@@ -49,6 +57,7 @@ public class GameStateSaver {
             snapshot.lastChunkX = game.getLastChunkX();
         }
 
+        //saves trader position
         snapshot.traderList = new ArrayList<>();
         for (Trader trader : game.getTraders()) {
             TraderData td = new TraderData();
@@ -56,6 +65,7 @@ public class GameStateSaver {
             td.y = trader.getY();
             snapshot.traderList.add(td);
         }
+        //saves inventory
 
         // writes to the file
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
