@@ -65,4 +65,13 @@ public class Inventory {
         }
         return false;
     }
+    public String getItemMessage(ItemType type) {
+        return switch (type){
+            case BANDAGE -> "Used: bandages (+50 HP)";
+            case WATER -> "Used: water (+50 STAMINA)";
+            case ARMOR -> "Used: armor (+50 ARMOR)";
+            case BOXER -> "Equipped: knuckle";
+            case BUCKET -> "Used: bucket (+25 HP & STAMINA BOOST FOR 5 SECS)";
+        };
+    }
 }

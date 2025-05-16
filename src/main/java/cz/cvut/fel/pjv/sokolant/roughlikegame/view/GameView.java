@@ -54,6 +54,9 @@ public class GameView{
     private Runnable returnToMenuCallback;
     private AnimationTimer gameLoop;
 
+    private String notificationMessage = "";
+    private long notificationMessageTime = 0;
+
     public void start(Stage stage) {
         initGame();
         initUI(stage);
@@ -238,7 +241,14 @@ public class GameView{
         //money
         drawMoneyHud(gc, game.getPlayer(), canvas.getWidth());
 
-
+        //notification
+        if (!notificationMessage.isEmpty() && System.currentTimeMillis() - notificationMessageTime < 2000) {
+            gc.setFill(Color.BLACK);
+            gc.setFont(Font.font("Consolas", 20));
+            gc.fillText(notificationMessage, 20, 100);
+        } else {
+            notificationMessage = "";
+        }
     }
     private void drawInventoryBar(GraphicsContext gc, Player player) {
         double startX = 20;
@@ -348,5 +358,10 @@ public class GameView{
         this.playerX = game.getPlayer().getX();
         camera.update(playerX);
     }
+    public void showNotificatrion(String message) {
+        this.notificationMessage = message;
+        this.notificationMessageTime = System.currentTimeMillis();
+    }
+
 }
 

@@ -673,24 +673,20 @@ public class Player extends Entity implements EntityDrawable {
         this.game = game;
     }
 
-    public void useItem(ItemType type) {
-        if (!inventory.hasItem(type)) return;
+    public String useItem(ItemType type) {
+        if (!inventory.hasItem(type)) return "Not enough " + type.name();
 
         switch (type) {
             case BANDAGE -> {
                 restoreHealth(50);
-                System.out.println("Использован бинт. +50 HP");
             }
             case WATER -> {
                 restoreStamina(50);
-                System.out.println("Выпита вода. +50 стамины");
             }
             case ARMOR -> {
                 setArmor(getArmor() + 50);
-                System.out.println("Надета броня. +50 брони");
             }
             case BOXER -> {
-                System.out.println("HERE WE GO");
                 equipKnuckle();
             }
             case BUCKET -> {
@@ -699,6 +695,7 @@ public class Player extends Entity implements EntityDrawable {
         }
 
         inventory.remove(type);
+        return getInventory().getItemMessage(type);
     }
     public void resetMovement() {
         movingUp = false;

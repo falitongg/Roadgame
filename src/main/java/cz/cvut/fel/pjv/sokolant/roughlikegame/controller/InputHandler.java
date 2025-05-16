@@ -37,21 +37,39 @@ public class InputHandler {
                 case SHIFT -> game.getPlayer().setSprinting(true);
                 case CONTROL -> game.getPlayer().setCrouching(true);
 
-                case DIGIT1 -> game.getPlayer().useItem(ItemType.BANDAGE);
-                case DIGIT2 -> game.getPlayer().useItem(ItemType.WATER);
-                case DIGIT3 -> game.getPlayer().useItem(ItemType.ARMOR);
+                case DIGIT1 ->{
+                    String message = game.getPlayer().useItem(ItemType.BANDAGE);
+                    gameView.showNotificatrion(message);
+                }
+                case DIGIT2 -> {
+                    String message = game.getPlayer().useItem(ItemType.WATER);
+                    gameView.showNotificatrion(message);
+                }
+                case DIGIT3 -> {
+                    String message = game.getPlayer().useItem(ItemType.ARMOR);
+                    gameView.showNotificatrion(message);
+                }
                 case DIGIT4 ->{
                     if (game.getPlayer().getInventory().hasItem(ItemType.BOXER)) {
-                        game.getPlayer().equipKnuckle();
+                        String message = game.getPlayer().useItem(ItemType.BOXER);
+                        gameView.showNotificatrion(message);
+                    }else{
+                        String message = "No item found";
+                        gameView.showNotificatrion(message);
                     }
                 }
-                case DIGIT5 -> game.getPlayer().useItem(ItemType.BUCKET);
+                case DIGIT5 -> {
+                    String message = game.getPlayer().useItem(ItemType.BUCKET);
+                    gameView.showNotificatrion(message);
+                }
 
                 case C -> {
                     if (game.getPlayer().getInventory().craftBucket()) {
-                        System.out.println("a Bucket have been crafted");
+                        String message = "Bucket have been crafted";
+                        gameView.showNotificatrion(message);
                     }
-                    System.out.println("Not enough water");
+                    String message = "You need to have 3 water bottles to craft the bucket";
+                    gameView.showNotificatrion(message);
                 }
                 case F5 -> GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
                 case F9 -> {
