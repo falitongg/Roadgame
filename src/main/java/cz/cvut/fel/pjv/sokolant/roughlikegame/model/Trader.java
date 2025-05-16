@@ -43,14 +43,19 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
     /* ----------- ЛОГИКА ПОКУПКИ ----------- */
     public boolean buy(Player player, int index) {
         if (index < 0 || index >= items.size()) return false;
+
         Item item = items.get(index);
+
+        if (item.getType() == ItemType.BOXER && player.getInventory().hasItem(ItemType.BOXER)) {
+            return false;
+        }
 
         if (player.spendMoney(item.getPrice())) {
             player.addItemToInventory(item);
-            // если товар конечный:
-            // items.remove(index);
+
             return true;
         }
+
         return false;
     }
 

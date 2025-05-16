@@ -29,6 +29,9 @@ public class Inventory {
 
     public void add(Item item) {
         ItemType type = item.getType();
+        if (type == ItemType.BOXER && hasItem(ItemType.BOXER)) {
+            return;
+        }
         items.put(type, items.getOrDefault(type, 0) + 1);
     }
 

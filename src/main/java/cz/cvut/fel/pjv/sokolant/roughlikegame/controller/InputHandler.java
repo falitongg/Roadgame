@@ -67,7 +67,7 @@ public class InputHandler {
                         String message = "Bucket have been crafted";
                         gameView.showNotificatrion(message);
                     }else {
-                        String message = "You need to have 3 water bottles to craft the bucket";
+                        String message = "You don't have 3 water bottles to craft the bucket";
                         gameView.showNotificatrion(message);
                     }
                 }
@@ -95,10 +95,48 @@ public class InputHandler {
 
         else if (state == GameState.TRADE) {
             switch (keyEvent.getCode()) {
-                case DIGIT1 -> game.getCurrentTrader().buy(game.getPlayer(), 0);
-                case DIGIT2 -> game.getCurrentTrader().buy(game.getPlayer(), 1);
-                case DIGIT3 -> game.getCurrentTrader().buy(game.getPlayer(), 2);
-                case DIGIT4 -> game.getCurrentTrader().buy(game.getPlayer(), 3);
+                case DIGIT1 ->{
+                    if (game.getCurrentTrader().buy(game.getPlayer(), 0)) {
+                        String message = "+1 BANDAGE";
+                        sendMessage(message);
+                    }else{
+                        String message = "Not enough money";
+                        sendMessage(message);
+                    }
+                }
+                case DIGIT2 -> {
+                    if (game.getCurrentTrader().buy(game.getPlayer(), 1)) {
+                        String message = "+1 WATER";
+                        sendMessage(message);
+                    }else{
+                        String message = "Not enough money";
+                        sendMessage(message);
+                    }
+                }
+                case DIGIT3 -> {
+                    if (game.getCurrentTrader().buy(game.getPlayer(), 2)) {
+                        String message = "+1 ARMOR";
+                        sendMessage(message);
+                    }else{
+                        String message = "Not enough money";
+                        sendMessage(message);
+                    }
+                }
+                case DIGIT4 ->{
+                    if (game.getPlayer().getInventory().hasItem(ItemType.BOXER)) {
+                        String message = "You don't need another one";
+                        gameView.showNotificatrion(message);
+                    }else {
+                        if (game.getCurrentTrader().buy(game.getPlayer(), 3)) {
+                            String message = "+1 BOXER";
+                            sendMessage(message);
+                        }else {
+                            String message = "Not enough money";
+                            sendMessage(message);
+                        }
+                    }
+                }
+
                 case ESCAPE ->{
                     exitTrade();
                     game.getPlayer().resetMovement();
@@ -151,5 +189,8 @@ public class InputHandler {
         game.setState(GameState.PLAYING);
     }
 
+    public void sendMessage(String message) {
+            gameView.showNotificatrion(message);
+    }
 
 }
