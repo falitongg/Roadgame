@@ -5,7 +5,6 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateSaver;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Trader;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
@@ -67,9 +66,10 @@ public class InputHandler {
                     if (game.getPlayer().getInventory().craftBucket()) {
                         String message = "Bucket have been crafted";
                         gameView.showNotificatrion(message);
+                    }else {
+                        String message = "You need to have 3 water bottles to craft the bucket";
+                        gameView.showNotificatrion(message);
                     }
-                    String message = "You need to have 3 water bottles to craft the bucket";
-                    gameView.showNotificatrion(message);
                 }
                 case F5 -> GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
                 case F9 -> {
