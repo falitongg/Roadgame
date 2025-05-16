@@ -4,6 +4,7 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateLoader;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateSaver;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Trader;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
@@ -17,7 +18,6 @@ public class InputHandler {
     private final Game game;
     private final Camera camera;
     private final GameView gameView;
-
     public InputHandler(Game game, Camera camera, GameView gameView) {
         this.game = game;
         this.camera = camera;
@@ -50,8 +50,14 @@ public class InputHandler {
                 }
                 case DIGIT4 ->{
                     if (game.getPlayer().getInventory().hasItem(ItemType.BOXER)) {
-                        String message = game.getPlayer().useItem(ItemType.BOXER);
-                        gameView.showNotificatrion(message);
+                        if (!game.getPlayer().hasKnuckleEquipped()) {
+                            String message = game.getPlayer().useItem(ItemType.BOXER);
+                            gameView.showNotificatrion(message);
+                        }else if(game.getPlayer().hasKnuckleEquipped()){
+                            game.getPlayer().useItem(ItemType.BOXER);
+                            String message = "You took off the knuckles.";
+                            gameView.showNotificatrion(message);
+                        }
                     }else{
                         String message = "No item found";
                         gameView.showNotificatrion(message);

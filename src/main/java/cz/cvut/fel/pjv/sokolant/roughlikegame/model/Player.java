@@ -694,7 +694,8 @@ public class Player extends Entity implements EntityDrawable {
             }
         }
 
-        inventory.remove(type);
+        if(type == ItemType.BOXER) return getInventory().getItemMessage(type);
+        else inventory.remove(type);
         return getInventory().getItemMessage(type);
     }
     public void resetMovement() {
@@ -704,8 +705,13 @@ public class Player extends Entity implements EntityDrawable {
         movingRight = false;
     }
     public void equipKnuckle() {
-        hasKnuckle = true;
-        this.damage = 50;
+        if(!hasKnuckle) {
+            hasKnuckle = true;
+            this.damage = 50;
+        }else{
+            hasKnuckle = false;
+            this.damage = 33;
+        }
     }
 
     public boolean hasKnuckleEquipped() {
@@ -755,12 +761,11 @@ public class Player extends Entity implements EntityDrawable {
 
             if (inFront && inHeight) {
                 game.getObstacles().remove(o);
-                System.out.println("🔥 Костёр потушен!");
+                System.out.println("🔥");
                 return;
             }
         }
 
-        System.out.println("Нет костра перед вами.");
     }
 
 
