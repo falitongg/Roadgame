@@ -4,7 +4,6 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateLoader;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateSaver;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Trader;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;

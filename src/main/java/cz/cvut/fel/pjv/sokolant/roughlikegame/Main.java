@@ -1,5 +1,6 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame;
 
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.LoggingUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,9 +15,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        primaryStage = stage;
-        primaryStage.initStyle(StageStyle.UNDECORATED);
-        showMainMenu(primaryStage);
+        stage.initStyle(StageStyle.UNDECORATED);
+        showMainMenu(stage);
+    }
+
+    @Override
+    public void init() {
+        LoggingUtil.setup();
     }
 
     public static void showMainMenu(Stage stage) {
@@ -29,10 +34,6 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static Stage getPrimaryStage() {
-        return primaryStage;
     }
 
     public static void main(String[] args) {
