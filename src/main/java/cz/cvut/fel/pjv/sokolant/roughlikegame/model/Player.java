@@ -754,7 +754,6 @@ public class Player extends Entity implements EntityDrawable {
 
             if (inFront && inHeight) {
                 game.getObstacles().remove(o);
-                System.out.println("🔥");
                 return;
             }
         }
@@ -765,7 +764,6 @@ public class Player extends Entity implements EntityDrawable {
         regenThread = new Thread(() -> {
             try {
                 while (true) {
-                    System.out.println("regen is running");
                     Thread.sleep(10);
                     // только во время PLAYING
                     if (game.getState() == GameState.PLAYING && onGround && !isAttacking) {
