@@ -6,11 +6,4 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
  */
 public interface Interactable {
 
-    /**
-     * Performs an interaction with the player.
-     * The specific behavior depends on the implementing class.
-     *
-     * @param player the player who initiates the interaction
-     */
-    void interact(Player player);
 }

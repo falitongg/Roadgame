@@ -2,7 +2,6 @@ package cz.cvut.fel.pjv.sokolant.roughlikegame.controller;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.Main;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateLoader;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.data.GameStateSaver;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Camera;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
@@ -12,7 +11,6 @@ import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

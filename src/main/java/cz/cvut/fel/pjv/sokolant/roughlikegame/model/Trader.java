@@ -108,21 +108,6 @@ public class Trader extends Entity implements EntityDrawable, Interactable {
     }
 
     /**
-     * Prints a message to the console with available items for sale.
-     *
-     * @param player the player initiating the interaction
-     */
-    @Override
-    public void interact(Player player) {
-        System.out.println("-- Trader --");
-        for (int i = 0; i < items.size(); i++) {
-            Item it = items.get(i);
-            System.out.printf("[%d] %s ..... %d $\n", i, it.getName(), it.getPrice());
-        }
-        System.out.println("Press 0–4 to buy, Esc to leave");
-    }
-
-    /**
      * Returns a rectangle representing the trader's collision bounds.
      *
      * @return collision bounds
