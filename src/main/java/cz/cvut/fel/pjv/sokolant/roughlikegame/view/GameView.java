@@ -61,8 +61,17 @@ public class GameView{
     private String notificationMessage = "";
     private long notificationMessageTime = 0;
 
+    /**
+     * Default constructor used primarily for initialization purposes.
+     */
     public GameView() {}
 
+    /**
+     * Constructs a GameView with pre-loaded game state and camera.
+     *
+     * @param game   an existing game instance to load
+     * @param camera the camera instance controlling viewport
+     */
     public GameView(Game game, Camera camera) {
         alreadyLoaded = true;
         this.game = game;
@@ -70,6 +79,11 @@ public class GameView{
         initBackgroundLayers();
     }
 
+    /**
+     * Starts the game view, initializes UI elements, and launches the game loop.
+     *
+     * @param stage primary stage for JavaFX
+     */
     public void start(Stage stage) {
         if (!alreadyLoaded) {
             initGame();
@@ -86,6 +100,9 @@ public class GameView{
         initBackgroundLayers();
     }
 
+    /**
+     * Initializes background layers for parallax scrolling effect.
+     */
     public void initBackgroundLayers() {
         backgroundLayers = List.of(
                 new BackgroundLayer(new Image(getClass().getResourceAsStream("/images/bgs/far_bg_erased.png")), 0.1),
@@ -101,8 +118,11 @@ public class GameView{
         stage.show();
     }
 
-
+    /**
+     * Starts the main animation loop of the game, handling updates and rendering.
+     */
     private void startGameLoop() {
+        // Animation timer setup and logic
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -146,11 +166,12 @@ public class GameView{
         gameLoop.start();
     }
 
-
-
+    /**
+     * Renders the current state of the game including UI elements, player, and entities.
+     */
     private void render() {
         if (game.getState() == GameState.MENU) {
-            // очищаем и рисуем меню (можно сделать затемнение и "Paused" текст)
+            // clears and draws the menu
             gc.setGlobalAlpha(0.9);
             gc.setFill(Color.BLACK);
             gc.fillRect(0, 0, WIDTH, HEIGHT);
@@ -190,9 +211,11 @@ public class GameView{
         }
     }
 
-    //posun kamery s hracem
+    /**
+     * Updates camera position to follow the player's movements.
+     */
     private void updateCamera() {
-
+        // Camera following logic
         double newPlayerX = game.getPlayer().getX();
         if (newPlayerX > playerX) {
             camera.update(newPlayerX);
@@ -206,6 +229,7 @@ public class GameView{
     }
 
     private void renderEntities() {
+        // Rendering entities logic
         drawables.clear();
         drawables.addAll(game.getEnemies());
         drawables.addAll(game.getObstacles());
@@ -226,6 +250,7 @@ public class GameView{
 
     }
     private void drawPlayerHud(GraphicsContext gc, Player player, double cameraX) {
+        // Player HUD drawing logic
         double barWidth = 50;
         double barHeight = 6;
         double xOffset = player.getX() - cameraX + 80 - barWidth / 2;
@@ -284,6 +309,7 @@ public class GameView{
         }
     }
     private void drawInventoryBar(GraphicsContext gc, Player player) {
+        // Inventory bar rendering logic
         double startX = 20;
         double y = 20;
         double spacing = 80;
@@ -311,6 +337,7 @@ public class GameView{
         }
     }
     private void drawMoneyHud(GraphicsContext gc, Player player, double canvasWidth) {
+        // Money HUD drawing logic
         int money = player.getMoney();
         String moneyText = "💵 " + money + " $";
 
@@ -324,6 +351,7 @@ public class GameView{
     }
 
     private void drawEnemyHealthBar(GraphicsContext gc, Enemy enemy, double cameraX) {
+        // Enemy health bar rendering logic
         double barWidth;
         double barHeight = 5;
         double spacingAbove = 40;
@@ -348,11 +376,20 @@ public class GameView{
         gc.fillRect(xOffset, yOffset, barWidth * healthRatio, barHeight);
     }
 
+    /**
+     * Sets up canvas and graphics context for rendering.
+     */
     public void setupCanvasAndGraphics(){
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
     }
+
+    /**
+     * Initializes JavaFX Scene with canvas and stage properties.
+     *
+     * @param stage primary JavaFX stage
+     */
     public void setupScene(Stage stage) {
         Pane root = new Pane();
         root.getChildren().add(canvas);
@@ -362,9 +399,13 @@ public class GameView{
         stage.setTitle("ROAD");
         stage.setScene(scene);
     }
+
+    /**
+     * Initializes input handlers for player actions.
+     */
     public void setupInputHandling(){
         InputHandler inputHandler = new InputHandler(game, camera, this);
-
+        //references to the inputHandler class methods
         scene.setOnKeyPressed(inputHandler::handleInput);
 
         scene.setOnKeyReleased(inputHandler::handleKeyReleased);
@@ -384,13 +425,28 @@ public class GameView{
         return HEIGHT;
     }
 
+    /**
+     * Sets the callback method to return to the main menu.
+     *
+     * @param callback Runnable executed when returning to main menu
+     */
     public void setReturnToMenuCallback(Runnable callback) {
         this.returnToMenuCallback = callback;
     }
+
+    /**
+     * Resets the view after loading a saved game state.
+     */
     public void resetAfterLoad() {
         this.playerX = game.getPlayer().getX();
         camera.update(playerX);
     }
+
+    /**
+     * Shows an on-screen notification message to the player.
+     *
+     * @param message message text to be displayed
+     */
     public void showNotificatrion(String message) {
         this.notificationMessage = message;
         this.notificationMessageTime = System.currentTimeMillis();

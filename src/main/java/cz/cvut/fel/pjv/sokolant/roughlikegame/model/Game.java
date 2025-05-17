@@ -9,16 +9,24 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
 
+/**
+ * Represents the core game logic, managing player state, enemy spawning,
+ * obstacle generation, game state transitions, and interactions.
+ */
 public class Game {
+
     private Player player;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
-    List<Item> items = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
     private final List<Trader> traders = new ArrayList<>();
     private Trader currentTrader = null;
     private GameState currentState;
-    private float lastChunkX = 0; // ← перенесено сюда
+    private float lastChunkX = 0;
 
+    /**
+     * Initializes a new game instance with a default player and empty game elements.
+     */
     public Game() {
         this.player = new Player();
         this.player.setGame(this);
@@ -35,29 +43,36 @@ public class Game {
         return enemies;
     }
 
-    public void startGame(){
+    /**
+     * Starts the game by changing its state to PLAYING.
+     */
+    public void startGame() {
         currentState = GameState.PLAYING;
     }
 
+    /**
+     * Updates the game elements including player, enemies, obstacles,
+     * and handles their lifecycle during gameplay.
+     *
+     * @param cameraX Current horizontal position of the camera.
+     */
     public void update(double cameraX) {
         if (currentState != GameState.PLAYING) return;
 
         player.update();
 
         for (Enemy enemy : enemies) {
-            enemy.update(player); // AI of enemies
+            enemy.update(player);
         }
 
         Iterator<Enemy> it = enemies.iterator();
         while (it.hasNext()) {
             Enemy e = it.next();
-
-            boolean dead      = !e.isAlive();
-            boolean offScreen = e.getX() + e.getWidth() < cameraX - 500;  // запас 500 px
+            boolean dead = !e.isAlive();
+            boolean offScreen = e.getX() + e.getWidth() < cameraX - 500;
 
             if (dead && e.getType() == EnemyType.ZOMBIE) {
                 player.addMoney(15);
-                System.out.println(player.getMoney());
             }
 
             if (dead || offScreen) {
@@ -65,14 +80,8 @@ public class Game {
             }
         }
 
-
-        obstacles.removeIf(obstacle ->
-                obstacle.getX() + obstacle.getWidth() < cameraX - 200
-        );
-
-        traders.removeIf(t ->
-                t.getX() + t.getWidth() < cameraX - 500
-        );
+        obstacles.removeIf(obstacle -> obstacle.getX() + obstacle.getWidth() < cameraX - 200);
+        traders.removeIf(t -> t.getX() + t.getWidth() < cameraX - 500);
 
         if (!player.isAlive()) {
             endGame();
@@ -87,6 +96,9 @@ public class Game {
         this.currentState = state;
     }
 
+    /**
+     * Ends the game by setting the game state to GAME_OVER and stopping player regeneration.
+     */
     public void endGame() {
         player.setRegenRunning(false);
         currentState = GameState.GAME_OVER;
@@ -96,71 +108,46 @@ public class Game {
         enemies.add(enemy);
     }
 
+    /**
+     * Generates a new game chunk including enemies, obstacles, and events.
+     *
+     * @param startX Starting horizontal coordinate for generation.
+     * @param endX Ending horizontal coordinate for generation.
+     */
     public void generateChunk(float startX, float endX) {
         generateEnemies(startX, endX);
-        generateObstacles(startX, endX);
-        generateEvents(startX, endX);
-    }
+        generateObstacles(startX, endX);}
 
-    public void generateEnemies(float startX, float endX) {
+    private void generateEnemies(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 200) {
             if (rand.nextFloat() < 0.3f) {
-                float minY = 467;
-                float maxY = 560;
-                float y = minY + rand.nextFloat() * (maxY - minY);
-                int typeIndex = rand.nextInt(2);
-                Enemy enemy = switch (typeIndex) {
-                    case 0 -> new DogEnemy(x, y);
-                    case 1 -> new ZombieEnemy(x, y);
-                    default -> null;
-                };
-                if (enemy != null) {
-                    spawnEnemy(enemy);
-                }
+                float y = 467 + rand.nextFloat() * (560 - 467);
+                Enemy enemy = rand.nextBoolean() ? new DogEnemy(x, y) : new ZombieEnemy(x, y);
+                spawnEnemy(enemy);
             }
         }
     }
 
-    public void generateObstacles(float startX, float endX) {
+    private void generateObstacles(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 150) {
-            if (rand.nextFloat() < 0.01f) {
-                boolean traderAlreadyExists = traders.stream()
-                        .anyMatch(t -> t.getX() >= startX && t.getX() <= endX);
-
-                if (!traderAlreadyExists) {
-                    spawnTrader(x);
-                }
-
+            if (rand.nextFloat() < 0.01f && traders.stream().noneMatch(t -> t.getX() >= startX && t.getX() <= endX)) {
+                spawnTrader(x);
             }
-                Obstacle obstacle = new Obstacle(x, 0);
-                obstacle.setGame(this);
 
+            Obstacle obstacle = new Obstacle(x, 0);
+            obstacle.setGame(this);
 
             float minY, maxY;
-                switch (obstacle.getType()) {
-                    case GARBAGE_BAG, JUNK, BOTTLE -> {
-                        minY = 467 + 125 + 10;
-                        maxY = 500 + 130 + 10;
-                    }
-                    case BOX, BOX_SMALL -> {
-                        minY = 600;
-                        maxY = 690;
-                    }
-                    default -> {
-                        minY = 580;
-                        maxY = 640;
-                    }
-                }
-                float y = minY + rand.nextFloat() * (maxY - minY);
-                obstacle.setY(y);
-                obstacles.add(obstacle);
+            switch (obstacle.getType()) {
+                case GARBAGE_BAG, JUNK, BOTTLE -> { minY = 602; maxY = 640; }
+                case BOX, BOX_SMALL -> { minY = 600; maxY = 690; }
+                default -> { minY = 580; maxY = 640; }
             }
-    }
-
-    public void generateEvents(float startX, float endX) {
-        // future events here
+            obstacle.setY(minY + rand.nextFloat() * (maxY - minY));
+            obstacles.add(obstacle);
+        }
     }
 
     public List<Obstacle> getObstacles() {
@@ -174,14 +161,23 @@ public class Game {
     public void setLastChunkX(float lastChunkX) {
         this.lastChunkX = lastChunkX;
     }
-    public List<Trader> getTraders() { return traders; }
+
+    public List<Trader> getTraders() {
+        return traders;
+    }
 
     private void spawnTrader(float spawnX) {
         float groundY = 420;
         traders.add(new Trader(spawnX, groundY));
     }
-    public Trader getCurrentTrader() { return currentTrader; }
-    public void setCurrentTrader(Trader t) { currentTrader = t; }
+
+    public Trader getCurrentTrader() {
+        return currentTrader;
+    }
+
+    public void setCurrentTrader(Trader t) {
+        currentTrader = t;
+    }
 
     public void spawnItem(float x, float y) {
         ItemType randomType = ItemType.getRandom();
@@ -189,6 +185,7 @@ public class Game {
         item.setPosition(x, y);
         items.add(item);
     }
+
     public List<Item> getItems() {
         return items;
     }
