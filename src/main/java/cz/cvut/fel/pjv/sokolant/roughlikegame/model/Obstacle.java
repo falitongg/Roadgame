@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Represents a destructible or animated obstacle in the game world.
+ * Obstacles can have types such as boxes, fire, bottles, junk, etc.
+ * They may have randomized appearances and can be damaged or animated depending on their type.
+ */
 public class Obstacle implements EntityDrawable {
     private int health = 50;
     private Game game;
@@ -26,6 +31,12 @@ public class Obstacle implements EntityDrawable {
     private Timeline animationTimeline;
     private int frameIndex = 0;
 
+    /**
+     * Constructs an obstacle with a random type at the specified position.
+     *
+     * @param x the X coordinate
+     * @param y the Y coordinate
+     */
     public Obstacle(float x, float y) {
         this.x = x;
         this.y = y;
@@ -42,6 +53,14 @@ public class Obstacle implements EntityDrawable {
         }
 
     }
+
+    /**
+     * Constructs an obstacle with a specific type at the specified position.
+     *
+     * @param x    the X coordinate
+     * @param y    the Y coordinate
+     * @param type the specific obstacle type
+     */
     public Obstacle(float x, float y, ObstacleType type) {
         this.x = x;
         this.y = y;
@@ -63,6 +82,10 @@ public class Obstacle implements EntityDrawable {
     public float getWidth() { return width; }
     public float getHeight() { return height; }
 
+    /**
+     * Returns the obstacle's rendering depth based on its Y position and type.
+     * Used for depth sorting during rendering.
+     */
     @Override
     public double getRenderY() {
         return switch (type) {
@@ -72,20 +95,33 @@ public class Obstacle implements EntityDrawable {
         };
     }
 
-
-
-
-
+    /**
+     * Renders the obstacle using the graphics context and camera offset.
+     *
+     * @param gc       the graphics context
+     * @param cameraX  the current camera X offset
+     * @param player   the player (not used here)
+     */
     @Override
     public void render(GraphicsContext gc, double cameraX, Player player) {
         gc.drawImage(image, x - cameraX, y, width, height);
 
 
     }
+
+    /**
+     * Sets the Y position of the obstacle.
+     *
+     * @param y the new Y coordinate
+     */
     public void setY(float y) {
         this.y = y;
     }
 
+    /**
+     * Initializes static image map for all obstacle types.
+     * Only done once for performance.
+     */
     public void initImages(){
         if (imageMap.isEmpty()) {
             imageMap.put(ObstacleType.BOX, new Image[] {
@@ -139,6 +175,11 @@ public class Obstacle implements EntityDrawable {
             });
         }
     }
+
+    /**
+     * Randomly selects an image for the obstacle based on its type.
+     * Adjusts the dimensions accordingly.
+     */
     public void imageAppearance(){
 
         Image[] options = imageMap.get(type);
@@ -148,11 +189,16 @@ public class Obstacle implements EntityDrawable {
         this.height = (float) image.getHeight() + 5;
 
         if (type == ObstacleType.GARBAGE_BAG) {
-//            this.y -= 10;
             this.width += 20;
             this.height += 20;
         }
     }
+
+    /**
+     * Applies damage to the obstacle. Only boxes and small boxes can be damaged.
+     *
+     * @param amount the damage to apply
+     */
     public void takeDamage(float amount) {
         if (type != ObstacleType.BOX && type != ObstacleType.BOX_SMALL) return;
 
@@ -162,18 +208,31 @@ public class Obstacle implements EntityDrawable {
         }
     }
 
+    /**
+     * Removes the obstacle from the game if it is destroyable.
+     */
     private void destroy() {
         if (type == ObstacleType.BOX || type == ObstacleType.BOX_SMALL || type == ObstacleType.FIRE) {
 
             if (game != null) {
-                game.getObstacles().remove(this); // удаляем из списка
+                game.getObstacles().remove(this); // deletes from list
             }else System.out.println("error");
         }
     }
 
+    /**
+     * Links this obstacle to the game instance.
+     *
+     * @param game the game reference
+     */
     public void setGame(Game game) {
         this.game = game;
     }
+
+    /**
+     * Starts fire animation if the obstacle is of type FIRE.
+     * Cycles through animation frames indefinitely.
+     */
     private void startAnimation() {
         animationTimeline = new Timeline(
                 new KeyFrame

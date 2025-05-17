@@ -35,14 +35,6 @@ public class Game {
         this.currentState = GameState.MENU;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public List<Enemy> getEnemies() {
-        return enemies;
-    }
-
     /**
      * Starts the game by changing its state to PLAYING.
      */
@@ -86,14 +78,6 @@ public class Game {
         if (!player.isAlive()) {
             endGame();
         }
-    }
-
-    public GameState getState() {
-        return currentState;
-    }
-
-    public void setState(GameState state) {
-        this.currentState = state;
     }
 
     /**
@@ -148,6 +132,22 @@ public class Game {
             obstacle.setY(minY + rand.nextFloat() * (maxY - minY));
             obstacles.add(obstacle);
         }
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public GameState getState() {
+        return currentState;
+    }
+
+    public void setState(GameState state) {
+        this.currentState = state;
     }
 
     public List<Obstacle> getObstacles() {

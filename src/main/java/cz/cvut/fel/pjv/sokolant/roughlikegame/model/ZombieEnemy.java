@@ -1,3 +1,8 @@
+/**
+ * Represents a slow-moving zombie enemy.
+ * The zombie walks toward the player and attacks in close proximity.
+ * Implements basic walking animation based on direction and distance.
+ */
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
@@ -5,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class ZombieEnemy extends Enemy {
+
     private Image[] walkRightFrames;
     private Image[] walkLeftFrames;
 
@@ -15,9 +21,16 @@ public class ZombieEnemy extends Enemy {
     private double lastStepX = -1;
     private final double stepDistance = 30;
 
+    /**
+     * Constructs a new ZombieEnemy instance at the specified coordinates.
+     *
+     * @param x initial X coordinate
+     * @param y initial Y coordinate
+     */
     public ZombieEnemy(float x, float y) {
         super(x, y, 100, 15, 1.0f, 100);
         this.type = EnemyType.ZOMBIE;
+
         this.zombieRight = new Image(getClass().getResourceAsStream("/images/enemies/zombie/zombie_right.png"));
         this.zombieLeft = new Image(getClass().getResourceAsStream("/images/enemies/zombie/zombie_left.png"));
 
@@ -34,6 +47,12 @@ public class ZombieEnemy extends Enemy {
         };
     }
 
+    /**
+     * Updates the zombie's position and attacks the player if close enough.
+     * Changes animation frame as the zombie walks.
+     *
+     * @param player the player to chase and attack
+     */
     @Override
     public void update(Player player) {
         double dx = player.getX() - this.getX();
@@ -60,6 +79,13 @@ public class ZombieEnemy extends Enemy {
         }
     }
 
+    /**
+     * Renders the zombie on screen with walking animation and flashing effect when hit.
+     *
+     * @param gc       graphics context to draw to
+     * @param cameraX  current camera X offset
+     * @param player   reference to the player (used to determine direction)
+     */
     @Override
     public void render(GraphicsContext gc, double cameraX, Player player) {
         gc.setImageSmoothing(false);
@@ -68,12 +94,15 @@ public class ZombieEnemy extends Enemy {
 
         Image sprite = playerOnLeft ?
                 walkLeftFrames[walkFrameIndex] : walkRightFrames[walkFrameIndex];
+
         if (isFlashing) {
             gc.setGlobalBlendMode(javafx.scene.effect.BlendMode.GREEN);
         }
+
         gc.drawImage(sprite, (float) x + offsetX - cameraX, (float) y);
+
         if (isFlashing) {
-            gc.setGlobalBlendMode(javafx.scene.effect.BlendMode.SRC_OVER); // вернуть обычный режим
+            gc.setGlobalBlendMode(javafx.scene.effect.BlendMode.SRC_OVER); //returns to normal mode
         }
     }
 }
