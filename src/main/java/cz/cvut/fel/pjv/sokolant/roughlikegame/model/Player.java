@@ -16,7 +16,10 @@ import java.util.TimerTask;
 
 import static javafx.util.Duration.millis;
 
-
+/**
+ * Represents the player character in the game.
+ * Handles movement, actions, rendering, and inventory management.
+ */
 public class Player extends Entity implements EntityDrawable {
 
     private Image[] walkRightFrames;
@@ -110,8 +113,19 @@ public class Player extends Entity implements EntityDrawable {
     public void setCamera(Camera camera) {
         this.camera = camera;
     }
-
-
+    /**
+     * Creates a player instance with specified attributes.
+     *
+     * @param x initial X position
+     * @param y initial Y position
+     * @param health initial health value
+     * @param damage initial damage value
+     * @param inventory initial inventory object
+     * @param speed movement speed
+     * @param armor initial armor value
+     * @param stamina initial stamina value
+     * @param money initial money amount
+     */
     public Player(float x, float y, float health, float damage, Inventory inventory, float speed,  float armor, float stamina, int money) {
         super(x, y, health, damage);
         this.inventory = inventory;
@@ -122,7 +136,12 @@ public class Player extends Entity implements EntityDrawable {
         this.width  = PLAYER_WIDTH;
         this.height = PLAYER_HEIGHT;
     }
+
+    /**
+     * Creates a player with default settings and initializes image resources.
+     */
     public Player() {
+        // Default initialization (images, position, and starting parameters)
         this(100, 500, 100, 33, new Inventory(), 1.0f, 100, 100, 0);
         this.width  = PLAYER_WIDTH;
         this.height = PLAYER_HEIGHT;
@@ -195,7 +214,15 @@ public class Player extends Entity implements EntityDrawable {
         render(gc, cameraX);
     }
 
+    /**
+     * Renders the player according to the current animation and state.
+     *
+     * @param gc graphics context for rendering
+     * @param cameraX current camera X position for viewport offset
+     */
+
     public void render(GraphicsContext gc, double cameraX) {
+        // Rendering logic handling states like blocking, crouching, attacking, jumping
         Image img;
 
         if (isFlashing) {
@@ -303,34 +330,6 @@ public class Player extends Entity implements EntityDrawable {
         return getY() ;
     }
 
-    //move function
-    public void move(Direction direction) {
-
-        double step = isCrouching ? 3 : (isSprinting ? 12 : 7);
-
-        this.currentDirection = direction;
-
-        this.currentState = VisualState.MOVING;
-
-        if (direction == Direction.LEFT || direction == Direction.RIGHT) {
-            lastHorizontalDirection = direction;
-        }
-
-        switch (direction) {
-            case UP -> {
-                if (onGround && y - step >= 467) {
-                    y -= step;
-                }
-            }
-            case DOWN -> y += step;
-            case LEFT -> x -= step;
-            case RIGHT -> x += step;
-            case SPACE -> jump();
-        }
-        clampToBounds();
-
-    }
-
     public void setMovingLeft(boolean movingLeft) {
         this.movingLeft = movingLeft;
     }
@@ -362,8 +361,11 @@ public class Player extends Entity implements EntityDrawable {
         setY(newY);
     }
 
-
+    /**
+     * Makes the player jump if conditions are met (enough stamina, not crouching).
+     */
     public void jump() {
+        // Jump logic including stamina reduction and physics handling
         if (!onGround || isCrouching || stamina < 30f) return;
 
         spendStamina(25f);
@@ -380,10 +382,12 @@ public class Player extends Entity implements EntityDrawable {
 
         onGround = false;
     }
-    //permadeath function
-    public void die() {
-    }
+
+    /**
+     * Updates the player's state each frame (gravity, stamina, health check, obstacle interactions).
+     */
     public void update() {
+        // Frame-by-frame update logic including movement and interaction
 
         if (!onGround) {
             velocityY += gravity;
@@ -409,17 +413,6 @@ public class Player extends Entity implements EntityDrawable {
                 setSprinting(false);
             }
         }
-//        else if (onGround && !isAttacking) {
-//            if (staminaBoostActive) {
-//                restoreStamina(1f);
-//            }
-//            else if (isBlocking) {
-//                restoreStamina(0.1f);
-//            } else {
-//                restoreStamina(0.4f);
-//            }
-//        }
-
 
         if (movingUp && onGround && y - step >= 467) dy -= step;
         if (movingDown) dy += step;
@@ -468,9 +461,15 @@ public class Player extends Entity implements EntityDrawable {
     }
 
 
-    //use item function
+    /**
+     * Handles receiving damage with considerations for armor and blocking.
+     *
+     * @param amount the amount of damage to apply
+     */
     public void takeDamage(float amount) {
-        flash();
+        // Damage calculation and health/armor reduction logic
+
+        flash(); //animation of taking damage
 
         if(armor != 0) {
             damageReductionFactor = 0.5f;
@@ -494,10 +493,15 @@ public class Player extends Entity implements EntityDrawable {
 
         if (this.health <= 0) {
             this.health = 0;
-            die();
         }
     }
+    /**
+     * Attacks nearby enemies or objects, consuming stamina.
+     *
+     * @param enemies list of enemies to check and potentially damage
+     */
     public void attack(List<Enemy> enemies) {
+        // Attack logic with area detection and damage application
 
         if (stamina < 20f) return;
 
@@ -531,15 +535,15 @@ public class Player extends Entity implements EntityDrawable {
             if (!hasKnuckleEquipped()) break;
             if (o.getType()!=ObstacleType.BOX && o.getType()!=ObstacleType.BOX_SMALL) continue;
 
-            // точка удара игрока
+            // player's attack point
             double attackOriginX = getX() + getWidth();
             double attackOriginY = getY() + getHeight()*0.7;
 
-            // смещения от этой точки до коробки
+            // deltas from this point to the box
             double dx = o.getX() - attackOriginX;
             double dy = o.getY() - attackOriginY;
 
-            // зона в 80px по X и 80px по Y
+            // 80px zone in X and 80px zone in Y
             boolean inFront = lastHorizontalDirection==Direction.RIGHT ?
                     (dx>=0 && dx<=80) : (dx<=0 && dx>=-80);
             boolean inHeight = Math.abs(dy) <= 70;
@@ -555,21 +559,37 @@ public class Player extends Entity implements EntityDrawable {
 
 
     }
+    /**
+     * Restores player's health by specified amount (up to max health).
+     *
+     * @param amount amount of health to restore
+     */
     public void restoreHealth(float amount) {
+        // Health restoration logic
         this.health += amount;
         if (this.health > maxHealth) {
             this.health = maxHealth;
         }
     }
-
+    /**
+     * Restores player's stamina by specified amount.
+     *
+     * @param amount amount of stamina to restore
+     */
     public void restoreStamina(float amount) {
+        // Stamina reduction logic
         this.stamina += amount;
         if (this.stamina > 100f) {
             this.stamina = 100f;
         }
     }
-
+    /**
+     * Reduces player's stamina by the specified amount.
+     *
+     * @param amount amount of stamina to reduce
+     */
     public void spendStamina(float amount) {
+        // Stamina reduction logic
         this.stamina -= amount;
         if (this.stamina < 0f) {
             this.stamina = 0f;
@@ -656,7 +676,7 @@ public class Player extends Entity implements EntityDrawable {
         inventory.add(item);
     }
 
-    public Rectangle2D getBounds() {                     // для коллизии
+    public Rectangle2D getBounds() {                     // for collision
         return new Rectangle2D(getX() , getY() - PLAYER_HEIGHT,  width, height);
     }
     public Game getGame() {
@@ -665,8 +685,14 @@ public class Player extends Entity implements EntityDrawable {
     public void setGame(Game game) {
         this.game = game;
     }
-
+    /**
+     * Uses an item from inventory, applying its effects.
+     *
+     * @param type type of item to use
+     * @return message indicating result of item usage
+     */
     public String useItem(ItemType type) {
+        // Inventory item usage logic
         if (!inventory.hasItem(type)) return "Not enough " + type.name();
 
         switch (type) {
@@ -691,12 +717,18 @@ public class Player extends Entity implements EntityDrawable {
         else inventory.remove(type);
         return getInventory().getItemMessage(type);
     }
+    /**
+     * Resets player's movement state (used when stopping movement).
+     */
     public void resetMovement() {
         movingUp = false;
         movingDown = false;
         movingLeft = false;
         movingRight = false;
     }
+    /**
+     * Toggles equipping of knuckle weapon (affects damage dealt).
+     */
     public void equipKnuckle() {
         if(!hasKnuckle) {
             hasKnuckle = true;
@@ -710,8 +742,11 @@ public class Player extends Entity implements EntityDrawable {
     public boolean hasKnuckleEquipped() {
         return hasKnuckle;
     }
-
+    /**
+     * Picks up the nearest item within interaction range.
+     */
     public void pickUpItem(){
+        // Logic to add nearby items to inventory
         float distance = 80f;
         Iterator<Item> iterator = game.getItems().iterator();
         while (iterator.hasNext()) {
@@ -726,7 +761,11 @@ public class Player extends Entity implements EntityDrawable {
             }
         }
     }
+    /**
+     * Uses a water bucket to extinguish fire obstacles and boost stamina.
+     */
     public void useWaterBucket() {
+        // Logic to extinguish fire and boost stamina temporarily
         staminaBoostActive = true;
         restoreHealth(25);
         restoreStamina(100);
@@ -739,11 +778,11 @@ public class Player extends Entity implements EntityDrawable {
         for (Obstacle o : game.getObstacles()) {
             if (o.getType() != ObstacleType.FIRE) continue;
 
-            // точка действия — как будто "плеснул вперёд"
+            // the point of action is like ‘splashing forward’
             double attackOriginX = getX() + getWidth();
             double attackOriginY = getY() + getHeight()*0.7;
 
-            // смещения от этой точки до костра
+            // delta from this point to the fire
             double dx = o.getX() - attackOriginX;
             double dy = o.getY() - attackOriginY;
 
@@ -759,13 +798,16 @@ public class Player extends Entity implements EntityDrawable {
         }
 
     }
-
+    /**
+     * Starts background stamina regeneration thread.
+     */
     private void startStaminaRegenThread() {
+        // Stamina regeneration logic using a dedicated thread
         regenThread = new Thread(() -> {
             try {
                 while (true) {
                     Thread.sleep(10);
-                    // только во время PLAYING
+                    // only during PLAYING
                     if (game.getState() == GameState.PLAYING && onGround && !isAttacking) {
                         float delta = staminaBoostActive ? 1f : (isBlocking ? 0.1f : 0.4f);
                         Platform.runLater(() -> restoreStamina(delta));

@@ -21,11 +21,13 @@ public class LoggingUtil {
 
         //logging on
         try{
-            FileHandler fh = new FileHandler("logs/game.txt");
+            FileHandler fh = new FileHandler("log.txt");
+            fh.setFormatter(new SimpleFormatter());
+            logger.addHandler(fh);
         }catch (IOException e){
             e.printStackTrace();
         }
 
-        logger.setLevel(Level.ALL);
+        logger.setLevel(Level.FINE);
     }
 }
