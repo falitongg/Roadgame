@@ -388,7 +388,6 @@ public class Player extends Entity implements EntityDrawable {
     }
     //permadeath function
     public void die() {
-        //TODO реализовать смерть игрока как конец игры
     }
     public void update() {
 
@@ -468,7 +467,6 @@ public class Player extends Entity implements EntityDrawable {
             if (dist <= 100 && now - lastFireDamageTime >= 1000) {
                 takeDamage(25f);
                 lastFireDamageTime = now;
-                System.out.println("🔥 Урон от огня!");
             }
         }
 

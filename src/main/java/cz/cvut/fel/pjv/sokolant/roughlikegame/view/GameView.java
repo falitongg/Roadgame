@@ -164,9 +164,7 @@ public class GameView{
 
     //posun kamery s hracem
     private void updateCamera() {
-//        System.out.println("cameraX: " + camera.getX() + " | playerX: " + playerX)
-//        System.out.println(getHEIGHT());
-//        System.out.println("playerY" + game.getPlayer().getY());
+
         double newPlayerX = game.getPlayer().getX();
         if (newPlayerX > playerX) {
             camera.update(newPlayerX);
@@ -186,11 +184,6 @@ public class GameView{
         drawables.addAll(game.getItems());
         drawables.addAll(game.getTraders());
         drawables.add(game.getPlayer());
-
-//        System.out.println("---- SORTED DRAWABLES ----");
-//        for (EntityDrawable d : drawables) {
-//            System.out.println(d.getClass().getSimpleName() + ": " + d.getRenderY());
-//        }
 
         drawables.sort(Comparator.comparing(EntityDrawable::getRenderY));
 

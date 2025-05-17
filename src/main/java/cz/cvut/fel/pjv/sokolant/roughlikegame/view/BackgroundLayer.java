@@ -24,7 +24,6 @@ public class BackgroundLayer {
 
         while (x < viewportWidth) {
             gc.drawImage(image, x, 0, imageWidth, viewportHeight);
-            gc.fillText(String.format("x: %.2f", x), x + 10, 20);
             x += imageWidth;
         }
     }
