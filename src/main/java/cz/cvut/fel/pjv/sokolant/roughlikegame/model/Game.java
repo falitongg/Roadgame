@@ -88,6 +88,7 @@ public class Game {
     }
 
     public void endGame() {
+        player.setRegenRunning(false);
         currentState = GameState.GAME_OVER;
     }
 

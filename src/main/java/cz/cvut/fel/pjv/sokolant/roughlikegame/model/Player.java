@@ -1,15 +1,13 @@
 package cz.cvut.fel.pjv.sokolant.roughlikegame.model;
 
-import cz.cvut.fel.pjv.sokolant.roughlikegame.util.Direction;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ObstacleType;
+import cz.cvut.fel.pjv.sokolant.roughlikegame.util.*;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.view.GameView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.util.VisualState;
 import javafx.util.Duration;
 
 import java.util.Iterator;
@@ -78,10 +76,7 @@ public class Player extends Entity implements EntityDrawable {
     private float worldMaxY = 720-160;
 
     private float stamina;// Energy for running and
-    private float thirst;// Increases over time, affects
-    private float hunger;// Like starvation, but grows faster, also harmful
     private float armor;// Defense — reduces the damage received
-    private float radiation; // Radiation level — causes damage over time
     private float speed;//Affects movement speed, may vary depending on the player's state (e.g. 0 stamina - temporary inability to move).
     private final Inventory inventory;
     private int money;
@@ -109,6 +104,9 @@ public class Player extends Entity implements EntityDrawable {
 
     private Game game;
 
+    private volatile boolean regenRunning = true;
+    private Thread regenThread;
+
     public void setCamera(Camera camera) {
         this.camera = camera;
     }
@@ -118,10 +116,7 @@ public class Player extends Entity implements EntityDrawable {
         super(x, y, health, damage);
         this.inventory = inventory;
         this.speed = speed;
-//        this.radiation = radiation;
         this.armor = armor;
-//        this.hunger = hunger;
-//        this.thirst = thirst;
         this.stamina = stamina;
         this.money = money;
         this.width  = PLAYER_WIDTH;
@@ -129,7 +124,6 @@ public class Player extends Entity implements EntityDrawable {
     }
     public Player() {
         this(100, 500, 100, 33, new Inventory(), 1.0f, 100, 100, 0);
-//        this.playerImage = new Image(getClass().getResourceAsStream("/images/player/player_idle_right.png"));
         this.width  = PLAYER_WIDTH;
         this.height = PLAYER_HEIGHT;
         this.currentDirection = Direction.RIGHT;
@@ -192,7 +186,7 @@ public class Player extends Entity implements EntityDrawable {
                 new Image(getClass().getResourceAsStream("/images/player/player_ctrl_2_l.png"))
         };
 
-
+        startStaminaRegenThread();
 
     }
 
@@ -414,16 +408,17 @@ public class Player extends Entity implements EntityDrawable {
             if (stamina <= 0) {
                 setSprinting(false);
             }
-        } else if (onGround && !isAttacking) {
-            if (staminaBoostActive) {
-                restoreStamina(1f);
-            }
-            else if (isBlocking) {
-                restoreStamina(0.1f);
-            } else {
-                restoreStamina(0.4f);
-            }
         }
+//        else if (onGround && !isAttacking) {
+//            if (staminaBoostActive) {
+//                restoreStamina(1f);
+//            }
+//            else if (isBlocking) {
+//                restoreStamina(0.1f);
+//            } else {
+//                restoreStamina(0.4f);
+//            }
+//        }
 
 
         if (movingUp && onGround && y - step >= 467) dy -= step;
@@ -766,6 +761,27 @@ public class Player extends Entity implements EntityDrawable {
 
     }
 
+    private void startStaminaRegenThread() {
+        regenThread = new Thread(() -> {
+            try {
+                while (true) {
+                    System.out.println("regen is running");
+                    Thread.sleep(10);
+                    // только во время PLAYING
+                    if (game.getState() == GameState.PLAYING && onGround && !isAttacking) {
+                        float delta = staminaBoostActive ? 1f : (isBlocking ? 0.1f : 0.4f);
+                        Platform.runLater(() -> restoreStamina(delta));
+                    }
+                }
+            } catch (InterruptedException ignored) { }
+        }, "Player-StaminaRegen");
+        regenThread.setDaemon(true);
+        regenThread.start();
+    }
 
+
+    public void setRegenRunning(boolean regenRunning) {
+        this.regenRunning = regenRunning;
+    }
 }
 
