@@ -6,6 +6,8 @@ import cz.cvut.fel.pjv.sokolant.roughlikegame.model.*;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.ItemType;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.animation.AnimationTimer;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -122,14 +125,21 @@ public class GameView{
                 render();
 
                 if (transitionScheduled) {
-                    long nowMillis = System.currentTimeMillis();
-                    if (nowMillis - gameOverStartTime >= 5000) {
-                        transitionScheduled = false;
-                        gameLoop.stop();
-                        if (returnToMenuCallback != null) {
-                            returnToMenuCallback.run();
-                        }
+                    transitionScheduled = false;
+                    gameLoop.stop();
+
+                    if (game.getState() == GameState.MENU) {
+                        returnToMenuCallback.run();
                     }
+                    new Timeline(
+                            new KeyFrame(
+                                    Duration.seconds(2), e -> {
+                                if (returnToMenuCallback != null) {
+                                    returnToMenuCallback.run();
+                                }
+                            }
+                            )
+                    ).play();
                 }
             }
         };
@@ -139,6 +149,24 @@ public class GameView{
 
 
     private void render() {
+        if (game.getState() == GameState.MENU) {
+            // очищаем и рисуем меню (можно сделать затемнение и "Paused" текст)
+            gc.setGlobalAlpha(0.9);
+            gc.setFill(Color.BLACK);
+            gc.fillRect(0, 0, WIDTH, HEIGHT);
+            gc.setGlobalAlpha(1.0);
+            gc.setFill(Color.WHITE);
+            gc.setFont(Font.font("Impact", FontWeight.BOLD, 48));
+            gc.fillText("PAUSED", WIDTH / 2 - 100, HEIGHT / 2);
+
+            String prompt = "Switch to main menu?  [Y] / [N]";
+            gc.setFont(Font.font("Consolas", FontWeight.NORMAL, 24));
+            double promptWidth = new Text(prompt).getLayoutBounds().getWidth();
+            gc.fillText(prompt, (WIDTH - 500) / 2, HEIGHT / 2 + 40);
+
+            return;
+        }
+
         gc.clearRect(0, 0, WIDTH, HEIGHT);
         renderBackground();
         renderEntities();
@@ -147,7 +175,7 @@ public class GameView{
         if (game.getState() == GameState.GAME_OVER) {
             gc.setGlobalAlpha(0.9);
             gc.setFill(Color.BLACK);
-            gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            gc.fillRect(0, 0, WIDTH, HEIGHT);
             gc.setGlobalAlpha(1.0);
 
             String text = "DEAD";
@@ -374,6 +402,10 @@ public class GameView{
 
     public Camera getCamera() {
         return camera;
+    }
+
+    public void setTransitionScheduled(boolean transitionScheduled) {
+        this.transitionScheduled = transitionScheduled;
     }
 }
 

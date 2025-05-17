@@ -96,10 +96,17 @@ public class InputHandler {
                         game.getPlayer().pickUpItem();
                     }
                 }
+                case ESCAPE -> {
+                    game.setState(GameState.MENU);
+                }
             }
-        }
+        } else if (state == GameState.MENU) {
+            switch (keyEvent.getCode()) {
+                case N -> game.setState(GameState.PLAYING);
+                case Y -> gameView.setTransitionScheduled(true);
+            }
 
-        else if (state == GameState.TRADE) {
+        } else if (state == GameState.TRADE) {
             switch (keyEvent.getCode()) {
                 case DIGIT1 ->{
                     if (game.getCurrentTrader().buy(game.getPlayer(), 0)) {

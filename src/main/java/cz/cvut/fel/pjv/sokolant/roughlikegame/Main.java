@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -14,7 +15,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         primaryStage = stage;
-        showMainMenu(stage);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        showMainMenu(primaryStage);
     }
 
     public static void showMainMenu(Stage stage) {
