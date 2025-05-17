@@ -49,6 +49,6 @@ public class LoggingUtil {
             e.printStackTrace();
         }
 
-        logger.setLevel(Level.FINE);
+        logger.setLevel(Level.INFO);
     }
 }
