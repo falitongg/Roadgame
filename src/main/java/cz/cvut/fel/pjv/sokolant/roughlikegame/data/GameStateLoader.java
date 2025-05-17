@@ -10,8 +10,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Utility class responsible for loading the saved game state from JSON files.
+ * Restores player state, enemies, obstacles, traders, and camera position.
+ */
 public class GameStateLoader {
 
+    /**
+     * Finds the most recently saved game file in the given folder.
+     *
+     * @param folderPath the path to the folder containing save files
+     * @return absolute path to the most recent save file, or null if none found
+     */
     public static String findLatestSaveFile(String folderPath) {
         File folder = new File(folderPath);
         File[] files = folder.listFiles((dir, name) -> name.startsWith("save_") && name.endsWith(".json"));
@@ -27,12 +37,19 @@ public class GameStateLoader {
         return latest.getAbsolutePath();
     }
 
+    /**
+     * Loads the game state from a JSON file and applies it to the current game instance.
+     *
+     * @param game     the game instance to populate with loaded data
+     * @param filename path to the JSON save file
+     * @param camera   the camera to update with saved position
+     */
     public static void loadGame(Game game, String filename, Camera camera) {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader(filename)) {
             GameSnapshot snapshot = gson.fromJson(reader, GameSnapshot.class);
 
-            // loads player
+            // Loads player data
             Player player = game.getPlayer();
             player.setX(snapshot.player.x);
             player.setY(snapshot.player.y);
@@ -43,15 +60,15 @@ public class GameStateLoader {
             player.getInventory().getItems().clear();
 
             if (snapshot.player.inventory != null) {
-                for(InventoryItemData itemData : snapshot.player.inventory) {
+                for (InventoryItemData itemData : snapshot.player.inventory) {
                     ItemType type = ItemType.valueOf(itemData.type);
-                    for(int i = 0; i < itemData.count; i++) {
+                    for (int i = 0; i < itemData.count; i++) {
                         player.getInventory().add(createItemFromType(type));
                     }
                 }
             }
 
-            // loads enemies
+            // Loads enemies
             game.getEnemies().clear();
             for (EnemyData ed : snapshot.enemies) {
                 Enemy enemy = switch (EnemyType.valueOf(ed.type)) {
@@ -62,28 +79,37 @@ public class GameStateLoader {
                 game.spawnEnemy(enemy);
             }
 
-            // loads obstacles
+            // Loads obstacles
             game.getObstacles().clear();
             for (ObstacleData od : snapshot.obstacles) {
                 Obstacle obstacle = new Obstacle((float) od.x, (float) od.y, ObstacleType.valueOf(od.type));
                 obstacle.setGame(game);
                 game.getObstacles().add(obstacle);
             }
-            // loads traders
+
+            // Loads traders
             game.getTraders().clear();
             for (TraderData td : snapshot.traderList) {
                 Trader trader = new Trader((float) td.x, (float) td.y);
                 game.getTraders().add(trader);
             }
 
+            // Restores world state
             game.setLastChunkX(snapshot.lastChunkX);
             camera.setX(snapshot.cameraX);
-
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Creates a new {@link Item} instance based on its type.
+     * Used when reconstructing inventory from saved data.
+     *
+     * @param type the type of item to create
+     * @return a new item with predefined name and price
+     */
     private static Item createItemFromType(ItemType type) {
         return switch (type) {
             case WATER -> new Item("Water", type, 50);
@@ -93,5 +119,4 @@ public class GameStateLoader {
             case BUCKET -> new Item("Bucket", type, 0);
         };
     }
-
 }

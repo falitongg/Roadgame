@@ -11,12 +11,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Utility class responsible for saving the current game state to a JSON file.
+ * Converts the game world into a serializable {@link GameSnapshot} object.
+ */
 public class GameStateSaver {
 
+    /**
+     * Saves the full state of the game to a specified JSON file.
+     * Includes player stats, inventory, enemies, obstacles, traders, camera position, and last chunk info.
+     *
+     * @param game     the current game instance
+     * @param filename the path and name of the file to write to (e.g. "saves/save_123.json")
+     * @param cameraX  the current camera X position to be saved
+     */
     public static void saveGame(Game game, String filename, double cameraX) {
         GameSnapshot snapshot = new GameSnapshot();
 
-        // saves player
+        // Save player
         Player player = game.getPlayer();
         PlayerData pd = new PlayerData();
         pd.x = player.getX();
@@ -26,7 +38,7 @@ public class GameStateSaver {
         pd.stamina = player.getStamina();
         pd.money = player.getMoney();
         pd.inventory = new ArrayList<>();
-        for(Map.Entry<ItemType, Integer> entry : player.getInventory().getItems().entrySet()) {
+        for (Map.Entry<ItemType, Integer> entry : player.getInventory().getItems().entrySet()) {
             InventoryItemData itemData = new InventoryItemData();
             itemData.type = entry.getKey().name();
             itemData.count = entry.getValue();
@@ -34,7 +46,7 @@ public class GameStateSaver {
         }
         snapshot.player = pd;
 
-        // saves enemies
+        // Save enemies
         snapshot.enemies = new ArrayList<>();
         for (Enemy enemy : game.getEnemies()) {
             EnemyData ed = new EnemyData();
@@ -43,10 +55,10 @@ public class GameStateSaver {
             ed.y = enemy.getY();
             ed.health = enemy.getHealth();
             snapshot.enemies.add(ed);
-            snapshot.cameraX = cameraX;
         }
+        snapshot.cameraX = cameraX;
 
-        // saves obstacles
+        // Save obstacles
         snapshot.obstacles = new ArrayList<>();
         for (Obstacle o : game.getObstacles()) {
             ObstacleData od = new ObstacleData();
@@ -54,10 +66,10 @@ public class GameStateSaver {
             od.x = o.getX();
             od.y = o.getY();
             snapshot.obstacles.add(od);
-            snapshot.lastChunkX = game.getLastChunkX();
         }
+        snapshot.lastChunkX = game.getLastChunkX();
 
-        //saves trader position
+        // Save traders
         snapshot.traderList = new ArrayList<>();
         for (Trader trader : game.getTraders()) {
             TraderData td = new TraderData();
@@ -65,15 +77,14 @@ public class GameStateSaver {
             td.y = trader.getY();
             snapshot.traderList.add(td);
         }
-        //saves inventory
 
-        // writes to the file
+        // Write to file
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         File file = new File(filename);
         File dir = file.getParentFile();
         if (dir != null && !dir.exists()) {
-            dir.mkdirs();  // создаёт все необходимые папки (например, saves/)
+            dir.mkdirs();  // create directory structure if needed
         }
 
         try (FileWriter writer = new FileWriter(filename)) {
@@ -81,7 +92,7 @@ public class GameStateSaver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Saved to: " + new java.io.File(filename).getAbsolutePath());
 
+        System.out.println("Saved to: " + file.getAbsolutePath());
     }
 }
