@@ -807,11 +807,13 @@ public class Player extends Entity implements EntityDrawable {
             try {
                 while (true) {
                     Thread.sleep(10);
-                    // only during PLAYING
-                    if (game.getState() == GameState.PLAYING && onGround && !isAttacking) {
-                        float delta = staminaBoostActive ? 1f : (isBlocking ? 0.1f : 0.4f);
-                        Platform.runLater(() -> restoreStamina(delta));
+                    // check that the game is set and in the right state
+                    if (game == null || game.getState() != GameState.PLAYING
+                            || !onGround || isAttacking) {
+                        continue;
                     }
+                    float delta = staminaBoostActive ? 1f : (isBlocking ? 0.1f : 0.4f);
+                    Platform.runLater(() -> restoreStamina(delta));
                 }
             } catch (InterruptedException ignored) { }
         }, "Player-StaminaRegen");
