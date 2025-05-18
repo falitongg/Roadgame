@@ -1,16 +1,12 @@
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Enemy;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Game;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.model.Player;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.model.ZombieEnemy;
-import cz.cvut.fel.pjv.sokolant.roughlikegame.util.EnemyType;
 import cz.cvut.fel.pjv.sokolant.roughlikegame.util.GameState;
 import javafx.scene.canvas.GraphicsContext;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
