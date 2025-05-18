@@ -12,6 +12,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import java.util.logging.Logger;
+
 /**
  * Handles keyboard and mouse input for the game.
  * Processes all player actions depending on the game state.
@@ -20,6 +22,7 @@ public class InputHandler {
     private final Game game;
     private final Camera camera;
     private final GameView gameView;
+    private static final Logger logger = Logger.getLogger(InputHandler.class.getName());
 
     /**
      * Constructs a new InputHandler for the given game, camera, and game view.
@@ -41,6 +44,7 @@ public class InputHandler {
      */
     public void handleInput(KeyEvent keyEvent) {
         GameState state = game.getState();
+        logger.info("Key pressed: " + keyEvent.getCode());
 
         if (state == GameState.PLAYING) {
             // Handle main gameplay controls
@@ -84,9 +88,7 @@ public class InputHandler {
                     String message = game.getPlayer().useItem(ItemType.BUCKET);
                     gameView.showNotificatrion(message);
                 }
-
                 case C -> {
-                    // Try to craft a bucket if enough resources are present
                     if (game.getPlayer().getInventory().craftBucket()) {
                         String message = "Bucket have been crafted";
                         gameView.showNotificatrion(message);
@@ -97,7 +99,6 @@ public class InputHandler {
                 }
                 case F5 -> GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
                 case F9 -> {
-                    // Try to load the latest save
                     String latest = GameStateLoader.findLatestSaveFile("saves/");
                     if (latest != null) {
                         GameStateLoader.loadGame(game, latest, camera);
@@ -107,7 +108,6 @@ public class InputHandler {
                     gameView.resetAfterLoad();
                 }
                 case E -> {
-                    // Either interact with a trader or pick up an item
                     Trader tr = findNearbyTrader();
                     if (tr != null) {
                         game.setCurrentTrader(tr);
@@ -116,18 +116,14 @@ public class InputHandler {
                         game.getPlayer().pickUpItem();
                     }
                 }
-                case ESCAPE -> {
-                    game.setState(GameState.MENU);
-                }
+                case ESCAPE -> game.setState(GameState.MENU);
             }
         } else if (state == GameState.MENU) {
-            // Handle menu controls
             switch (keyEvent.getCode()) {
                 case N -> game.setState(GameState.PLAYING);
                 case Y -> gameView.setTransitionScheduled(true);
             }
         } else if (state == GameState.TRADE) {
-            // Handle trading controls
             switch (keyEvent.getCode()) {
                 case DIGIT1 -> {
                     if (game.getCurrentTrader().buy(game.getPlayer(), 0)) {
@@ -171,7 +167,6 @@ public class InputHandler {
                     }
                 }
                 case ESCAPE -> {
-                    // Exit trading, reset movement and save
                     exitTrade();
                     game.getPlayer().resetMovement();
                     GameStateSaver.saveGame(game, "saves/save_" + System.currentTimeMillis() + ".json", camera.getX());
@@ -180,14 +175,10 @@ public class InputHandler {
         }
     }
 
-    /**
-     * Handles key released events for movement and sprinting.
-     * Only processes when game state is PLAYING.
-     *
-     * @param event the keyboard event
-     */
     public void handleKeyReleased(KeyEvent event) {
         if (game.getState() != GameState.PLAYING) return;
+
+        logger.info("Key released: " + event.getCode());
 
         switch (event.getCode()) {
             case W -> game.getPlayer().setMovingUp(false);
@@ -199,32 +190,25 @@ public class InputHandler {
         }
     }
 
-    /**
-     * Handles mouse button press events (attacking and blocking).
-     *
-     * @param event the mouse event
-     */
     public void handleMousePressed(MouseEvent event) {
+        logger.info("Mouse pressed: " + event.getButton());
+
         if (event.getButton() == MouseButton.PRIMARY) {
             game.getPlayer().attack(game.getEnemies());
         }
-        if (event.getButton() == MouseButton.SECONDARY) { // Right mouse button
+        if (event.getButton() == MouseButton.SECONDARY) {
             game.getPlayer().setBlocking(true);
         }
     }
 
-    /**
-     * Handles mouse button release event for stopping blocking.
-     *
-     * @param event the mouse event
-     */
     public void handleMouseReleased(MouseEvent event) {
+        logger.info("Mouse released: " + event.getButton());
+
         if (event.getButton() == MouseButton.SECONDARY) {
             game.getPlayer().setBlocking(false);
         }
     }
 
-    // Finds a trader that intersects with the player.
     private Trader findNearbyTrader() {
         for (Trader t : game.getTraders()) {
             if (t.getBounds().intersects(game.getPlayer().getBounds())) {
@@ -234,17 +218,11 @@ public class InputHandler {
         return null;
     }
 
-    // Resets trade state and returns to gameplay.
     private void exitTrade() {
         game.setCurrentTrader(null);
         game.setState(GameState.PLAYING);
     }
 
-    /**
-     * Sends a message to the game view's notification system.
-     *
-     * @param message message to display
-     */
     public void sendMessage(String message) {
         gameView.showNotificatrion(message);
     }
