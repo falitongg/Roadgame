@@ -1,0 +1,8 @@
+May 19, 2025 11:57:27 PM cz.cvut.fel.pjv.sokolant.roughlikegame.Main showMainMenu
+INFO: Loading FXML for main menu: designtest.fxml
+May 19, 2025 11:57:28 PM cz.cvut.fel.pjv.sokolant.roughlikegame.controller.MainMenuController initialize
+INFO: Initializing MainMenuController: loading save files into ComboBox
+May 19, 2025 11:57:28 PM cz.cvut.fel.pjv.sokolant.roughlikegame.controller.MainMenuController initialize
+INFO: Default save selected: save_1747648824977.json
+May 19, 2025 11:57:28 PM cz.cvut.fel.pjv.sokolant.roughlikegame.Main showMainMenu
+INFO: Main menu displayed
