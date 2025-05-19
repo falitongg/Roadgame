@@ -40,7 +40,7 @@ public class LoggingUtil {
             return;
         }
 
-        // Set up file logging
+        // Set up file loggingd
         try {
             FileHandler fh = new FileHandler("log.txt");
             fh.setFormatter(new SimpleFormatter());
@@ -49,6 +49,6 @@ public class LoggingUtil {
             e.printStackTrace();
         }
 
-        logger.setLevel(Level.ALL);
+        logger.setLevel(Level.INFO);
     }
 }

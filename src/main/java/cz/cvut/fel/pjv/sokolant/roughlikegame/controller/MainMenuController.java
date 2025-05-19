@@ -84,9 +84,9 @@ public class MainMenuController {
             logger.info("Logging enabled via UI");
             loggerButton.setText("Disable Logging");
         } else {
-            root.setLevel(Level.OFF);
             logger.info("Logging disabled via UI");
             loggerButton.setText("Enable Logging");
+            root.setLevel(Level.OFF);
         }
     }
 
