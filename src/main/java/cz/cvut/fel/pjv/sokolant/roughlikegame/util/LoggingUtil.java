@@ -7,14 +7,6 @@ import java.util.logging.*;
  * Utility class for configuring Java's global logging system.
  * Allows enabling or disabling logging based on a system property.
  * If logging is enabled, messages are written to a file named {@code log.txt}.
- *
- * <p>Usage:</p>
- * <pre>{@code
- *   LoggingUtil.setup();
- * }</pre>
- *
- * <p>To disable logging entirely, pass the system property:
- * {@code -DLOGGING=false} when launching the application.</p>
  */
 public class LoggingUtil {
 
