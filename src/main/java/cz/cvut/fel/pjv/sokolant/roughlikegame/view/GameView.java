@@ -229,6 +229,9 @@ public class GameView{
         }
     }
 
+    /**
+     * Renders all visible game entities on the screen.
+     */
     private void renderEntities() {
         // Rendering entities logic
         drawables.clear();
@@ -250,6 +253,14 @@ public class GameView{
 
 
     }
+
+    /**
+     * Renders the player's HUD (Head-Up Display) on the screen.
+     *
+     * @param gc        used for rendering
+     * @param player    player's status
+     * @param cameraX   the current horizontal offset of the camera, used to align HUD elements correctly
+     */
     private void drawPlayerHud(GraphicsContext gc, Player player, double cameraX) {
         // Player HUD drawing logic
         double barWidth = 50;
@@ -309,6 +320,16 @@ public class GameView{
             notificationMessage = "";
         }
     }
+
+    /**
+     * Renders the player's inventory bar in the top-left corner of the screen.
+     *
+     * Displays icons for predefined item types (bandage, water, armor, etc.) along with their
+     * quantity in the player's inventory. Each item slot is labeled with its corresponding hotkey (1–5).
+     *
+     * @param gc        used to draw the inventory bar
+     * @param player    his inventory is being displayed
+     */
     private void drawInventoryBar(GraphicsContext gc, Player player) {
         // Inventory bar rendering logic
         double startX = 20;
@@ -337,6 +358,17 @@ public class GameView{
             gc.fillText("[" + (i + 1) + "] (" + count + ")", startX + i * spacing, y + 48);
         }
     }
+
+    /**
+     * Renders the player's current amount of money in the top-right corner of the screen.
+     *
+     * Displays the money as a green text label with a dollar icon and value,
+     * aligned relative to the total canvas width.
+     *
+     * @param gc            used to render the HUD
+     * @param player        whose money is being rendered
+     * @param canvasWidth   the width of the canvas, used to position the money display on the right side
+     */
     private void drawMoneyHud(GraphicsContext gc, Player player, double canvasWidth) {
         // Money HUD drawing logic
         int money = player.getMoney();
@@ -351,6 +383,17 @@ public class GameView{
         gc.fillText(moneyText, x, y);
     }
 
+    /**
+     * Renders a health bar above the given enemy entity.
+     *
+     * The health bar is positioned based on the enemy's location and camera offset,
+     * and its width is scaled proportionally to the enemy's current health.
+     * Different spacing and width are used for certain enemy types (e.g., dogs).
+     *
+     * @param gc        used for drawing
+     * @param enemy     whose health bar is being rendered
+     * @param cameraX   the current horizontal offset of the camera
+     */
     private void drawEnemyHealthBar(GraphicsContext gc, Enemy enemy, double cameraX) {
         // Enemy health bar rendering logic
         double barWidth;
