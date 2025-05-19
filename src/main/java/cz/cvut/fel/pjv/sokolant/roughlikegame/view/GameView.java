@@ -76,6 +76,7 @@ public class GameView{
         alreadyLoaded = true;
         this.game = game;
         this.camera = camera;
+        game.getPlayer().setCamera(camera);
         initBackgroundLayers();
     }
 

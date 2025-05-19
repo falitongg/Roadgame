@@ -86,12 +86,12 @@ public class Player extends Entity implements EntityDrawable {
     private Direction currentDirection = Direction.DOWN;
     private VisualState currentState = VisualState.IDLE;
 
-    // Fyzika skákání
-    private double velocityY = 0; //vertikalni rychlost
-    private final double gravity = 2; //jak rychle se hrac bude pochybovat dolu
-    private final double jumpStrength = -18; //pocatecny vystrel vzhuru
-    private boolean onGround = true; //zda je na zemi
-    private double velocityX = 0; //horizontalni rychlost
+    // The physics of jumping
+    private double velocityY = 0; //vertical speed
+    private final double gravity = 2; //how quickly the player will get down
+    private final double jumpStrength = -18; //initial jump
+    private boolean onGround = true; //is on ground
+    private double velocityX = 0; //horizontal speed
     private float maxHealth = 100f;
 
     private boolean isAttacking = false;
@@ -99,7 +99,7 @@ public class Player extends Entity implements EntityDrawable {
     private boolean hasKnuckle = false;
     private boolean staminaBoostActive = false;
 
-    // Úroveň země
+    // ground level
     private double lastGroundY = 530;
     final double ATTACK_RANGE = 80;
     private static final float PLAYER_WIDTH  = 48;
@@ -227,7 +227,7 @@ public class Player extends Entity implements EntityDrawable {
 
         if (isFlashing) {
             gc.setGlobalAlpha(0.6);
-            gc.drawImage(damageEffect, getX() - cameraX + 5, getY() + 10, 50, 50); // подгони под спрайт
+            gc.drawImage(damageEffect, getX() - cameraX + 5, getY() + 10, 50, 50);
             gc.setGlobalAlpha(1.0);
         }
         else if (stamina < 20f) {
