@@ -102,6 +102,16 @@ public class Game {
         generateEnemies(startX, endX);
         generateObstacles(startX, endX);}
 
+    /**
+     * Generates enemy entities within the specified horizontal range.
+     *
+     * Iterates over the given X-range in 200-pixel steps and spawns an enemy
+     * at each step with a 30% probability. The enemy is placed at a random
+     * vertical position within a predefined range, and its type is randomly
+     *
+     * @param startX    the starting horizontal coordinate of the chunk
+     * @param endX      the ending horizontal coordinate of the chunk
+     */
     private void generateEnemies(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 200) {
@@ -113,6 +123,17 @@ public class Game {
         }
     }
 
+    /**
+     * Generates obstacles within the specified horizontal range and occasionally spawns a trader.
+     *
+     * Iterates through the X-range in 150-pixel steps, creating an obstacle at each position.
+     * The vertical position of each obstacle is randomized based on its type.
+     * Additionally, with a 1% probability and if no trader exists in the current chunk,
+     * a trader is spawned at the given location.
+     *
+     * @param startX
+     * @param endX
+     */
     private void generateObstacles(float startX, float endX) {
         Random rand = new Random();
         for (float x = startX; x <= endX; x += 150) {
