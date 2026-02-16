@@ -26,7 +26,6 @@ The goal of the game is to survive as long as possible. During their adventure, 
 1. **Survival**.
 2. **Interaction with the world**:
 * **Combat** – direct confrontation with enemies, use of weapons.
-* **Stealth** – the ability to bypass enemies using the environment.
 * **Trading** – exchanging found resources with traders.
 
 
